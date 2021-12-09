@@ -1,19 +1,16 @@
 {
   "name": "back",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "back end for salazar",
+  "main": "server/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.bundle.js",
-    "build": "webpack",
-    "dev": "nodemon ./server.js localhost 3000"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
-    "nodemon": "^2.0.15",
+    "firebase": "^9.6.0",
     "path": "^0.12.7"
   }
 }
