@@ -1,8 +1,9 @@
 .DS_Store
 
-# User-specific
-.vscode
-*.env
+# dependencies
+*/node_modules
+/.pnp
+.pnp.js
 
 # Module management
 node_modules/
