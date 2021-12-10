@@ -1,17 +1,14 @@
-.modal {
-  z-index: 1;
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  background-color: #5858585b;
+.time {
+  margin: 10px;
 }
-
-
+.selectDate {
+  margin: 15px;
+}
 .form {
-  background-color: #cbd18f;
-  position: absolute;
-  height: 35%;
-  width: 35%;
-  left: 35%;
-  top: 40%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.timeLabel {
+  flex-direction: column;
+  display: flex;
 }

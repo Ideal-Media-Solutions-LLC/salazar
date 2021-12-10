@@ -37,12 +37,13 @@ const ScheduleCall = function(props) {
     title = 'Schedule Call'
     footer = {null}
     >
-      <form >
-        <label>Date <br/>
-          <div className = 'time'>
-          <label>
-            Time :
+      <form className = {styles.form}>
+        <div className = {styles.date}>
+        <div className = 'time'>
+          <label className = {styles.timeLabel}>
+              <h3>Time</h3>
             <select
+              className = {styles.time}
               onChange = {(e) => {setTime({...time, hour: e.target.value})}}
             >
             <option value="" selected disabled hidden>Hour</option>
@@ -50,11 +51,8 @@ const ScheduleCall = function(props) {
               return (<option value = {i + 1}>{i+1}</option>)
             })}
           </select>
-
-          </label>
-          <label>
-
-            <select
+          <select
+              className = {styles.time}
               onChange = {(e) => {setTime({...time, minutes: e.target.value})}}
             >
               <option value="" selected disabled hidden>Minutes</option>
@@ -62,26 +60,31 @@ const ScheduleCall = function(props) {
               return (<option value = {i * 5 }>{ i * 5 < 10 ? `0${i * 5}` : i * 5}</option>)
             })}
           </select>
-          </label>
           <Switch
+            className = {styles.time}
             onChange= {()=> {setAmPm(Number(!AmPm))}}
             checkedChildren="AM" unCheckedChildren="PM" defaultChecked />
-          </div>
-          <label>
-            Select Day
-            <DatePicker onChange = {onChange}/>
           </label>
-        </label>
-        <label>
-          Message <br/>
+
+
+          </div>
+
+            <DatePicker className = {styles.selectDate} onChange = {onChange}/>
+
+        </div>
+
+
+
+        <label style = {{display: 'flex', 'flex-direction': 'column'}}>
+          <h3 style = {{'align-self': 'center'}}>Message</h3>
           <Input.TextArea
           showCount maxLength = {200}
-          style = {{height: 120}}
+          style = {{height: 155}}
           onChange = {(e) => {setMessage(e.target.value)}}
           />
 
         </label>
-        <Button type="primary" onClick={() => {sendInvitation()}}>
+        <Button style = {{'grid-column': '1/span2'}} type="primary" onClick={() => {sendInvitation()}}>
             Send Calendar Invite
           </Button>
       </form>
