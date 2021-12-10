@@ -10,7 +10,8 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
-    "firebase": "^9.6.0",
+    "firebase": "^9.6.1",
+    "googleapis": "^39.2.0",
     "path": "^0.12.7"
   }
 }
