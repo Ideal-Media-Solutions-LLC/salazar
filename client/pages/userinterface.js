@@ -2,6 +2,7 @@ import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import Link from 'next/link'
+import Chat from '../components/textchat/Chat.js';
 
 
 export default function Home() {
@@ -24,6 +25,10 @@ export default function Home() {
           </a>
 
         </Link>
+        <div>
+          <p>Chat</p>
+          <Chat />
+        </div>
 
 
 

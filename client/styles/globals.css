@@ -14,3 +14,106 @@ a {
 * {
   box-sizing: border-box;
 }
+
+/*=================================
+Text chat
+==================================*/
+
+.textchat-app {
+  text-align: center;
+  width: 500px;
+  margin: 0 auto;
+}
+
+.textchat-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border: solid 1px #EEE;
+  min-height: 100vh;
+  background-color: white;
+
+}
+
+.main {
+  /* padding: 10px; */
+  height: 80vh;
+  margin: 10vh 0 10vh;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+}
+
+
+.main::-webkit-scrollbar {
+  width: 0.25rem;
+}
+
+.main::-webkit-scrollbar-track {
+  background: #1e1e24;
+}
+
+.main::-webkit-scrollbar-thumb {
+  background: #6649b8;
+}
+
+.textchat-form {
+  height: 10vh;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  font-size: 1.5rem;
+}
+
+.textchat-button {
+  width: 20%;
+  background-color: grey
+}
+
+.textchat-input {
+  line-height: 1.5;
+  width: 100%;
+  font-size: 1.5rem;
+  outline: none;
+  border: none;
+  padding: 0 10px;
+}
+
+
+
+.message {
+  display: flex;
+  align-items: center;
+}
+
+
+.sent {
+  flex-direction: row-reverse;
+}
+
+.sent p {
+  color: white;
+  background: #0b93f6;
+  /* align-self: flex-end; */
+}
+.received p {
+  background: #e5e5ea;
+  color: black;
+}
+
+.textchat-text {
+  max-width: 500px;
+  margin-bottom: 12px;
+  line-height: 24px;
+  padding: 10px 20px;
+  border-radius: 25px;
+  position: relative;
+  color: white;
+  /* text-align: center; */
+
+}
+
+/*===============================
+===============================*/
