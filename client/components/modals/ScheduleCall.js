@@ -41,7 +41,7 @@ const ScheduleCall = function(props) {
         <div className = {styles.date}>
         <div className = 'time'>
           <label className = {styles.timeLabel}>
-              <h3>Time</h3>
+              <h3 style = {{'align-self': 'center'}}>Time</h3>
             <select
               className = {styles.time}
               onChange = {(e) => {setTime({...time, hour: e.target.value})}}
