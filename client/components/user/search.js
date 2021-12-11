@@ -3,6 +3,7 @@ import { Button } from 'antd';
 import { Menu, Dropdown } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import { Select } from 'antd';
+import Card from './card.js';
 
 const { Option } = Select;
 function handleChange(value) {
@@ -83,11 +84,24 @@ export default function Search() {
 
         </div>
 
-
-      </div> 
+      </div>
 
       <div className='userlist'>
-        ghgdfh
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+        <Card />
       </div>
 
 

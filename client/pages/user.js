@@ -34,13 +34,13 @@ export default function User() {
 
         <Content className='content'>
           <Tabs tabPosition='left' type="card">
-            <TabPane tab=<UserAddOutlined style ={{fontSize: '20px'}}/> key="1">
+            <TabPane tab=<UserAddOutlined style ={{fontSize: '20px', width: '10px'}}/> key="1">
               <Search/>
             </TabPane>
-            <TabPane tab=<CommentOutlined style ={{fontSize: '20px'}}/> key="2">
+            <TabPane tab=<CommentOutlined style ={{fontSize: '20px', width: '10px'}}/> key="2">
               Content of Tab Pane 2
             </TabPane>
-            <TabPane tab=<VideoCameraOutlined style ={{fontSize: '20px'}}/> key="3">
+            <TabPane tab=<VideoCameraOutlined style ={{fontSize: '20px', width: '10px'}}/> key="3">
               Content of Tab Pane 3
             </TabPane>
           </Tabs>
