@@ -38,12 +38,12 @@ export default function User() {
 
       </Header>
 
-      <Layout style={{backgroundColor: 'transparent'}}>
+      <Layout className='innerlayout'>
         <Sider className='sider'><Sidebar/></Sider>
 
         <Content className='content'>
-          <Tabs tabPosition='left' type="card" style={{backgroundColor: 'rgb(255,255,255, 0.8)', height:'90vh'}} >
-            <TabPane tab=<UserAddOutlined style ={{fontSize: '20px', width: '10px', backgroundColor: 'white'}}/> key="1">
+          <Tabs tabPosition='left' type="card" className='tab'>
+            <TabPane tab=<UserAddOutlined style ={{fontSize: '20px', width: '10px', marginTop: '40px', backgroundColor: 'white'}}/> key="1">
               <Search/>
             </TabPane>
             <TabPane tab=<CommentOutlined style ={{fontSize: '20px', width: '10px'}}/> key="2">
