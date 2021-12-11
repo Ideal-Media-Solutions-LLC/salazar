@@ -44,7 +44,36 @@ app.get('/chat', (req, res) => {
 });
 
 app.post('/chat', (req, res) => {
-  res.send('Hello World');
+  const getMessagesFromOther = await db.collection('messages').doc(req.body.reciever_ID).where('user_id', '==', req.query.sender_ID).get();
+
+  if (getMessagesFromOther) {
+    db.collection('messages').doc(req.body.reciever_ID).update({
+      req.body.sender_ID: FieldValue.arrayUnion({
+        message: req.body.message,
+        Time: req.body.timestamp
+      })
+    }).then((suc, err) => {
+      if (err) {
+        req.sendStatus(404);
+      } else {
+        req.sendStatus(201);
+      }
+    })
+  } else {
+    db.collection('messages').doc(req.body.reciever_ID).set({
+      req.body.sender_ID: [{
+        message: req.body.message,
+        time: req.body.timestamp
+      }]
+    }).then((suc, err) => {
+      if (err) {
+        res.sendStatus(404);
+      } else {
+        res.sendStatus(201);
+      }
+    })
+  }
+
 });
 //#endregion
 
