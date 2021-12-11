@@ -8,7 +8,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+<<<<<<< HEAD
     "firebase": "^9.6.1",
+=======
+    "@ant-design/icons": "^4.7.0",
+    "antd": "^4.17.3",
+>>>>>>> 09b9c4bf3cafde676db77db6b4f3c465f2c47c2b
     "next": "12.0.7",
     "react": "^17.0.2",
     "react-dom": "17.0.2",
