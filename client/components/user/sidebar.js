@@ -10,7 +10,8 @@ export default function Sidebar() {
 
   return (
     <div className='useinfo'>
-      <Image className='profilepic'
+      <div>
+        <Image className='profilepic'
           src="/assets/profile.png"
           width={80}
           height={80}
@@ -18,6 +19,8 @@ export default function Sidebar() {
         />
         <div>Name</div>
         <Button className='button'>Log out</Button>
+      </div>
+
         <div>
           <div>Language1 + level</div>
           <div>Language2 + level</div>

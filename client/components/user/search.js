@@ -27,7 +27,7 @@ export default function Search() {
     <div className=''>
       <div className='searchbar'>
 
-        <div>
+        <div >
           Languages:
           <Select
             mode="multiple"
@@ -87,21 +87,11 @@ export default function Search() {
       </div>
 
       <div className='userlist'>
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
+        {/* map template function, to be updated when user data is added */
+        /* {xx.map((user, i) =>
+           <Card name={username} key={i} />
+        )} */}
+        <Card/>
       </div>
 
 
