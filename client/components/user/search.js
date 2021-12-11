@@ -87,8 +87,8 @@ export default function Search() {
       </div>
 
       <div className='userlist'>
-        /* map template function, to be updated when user data is added */
-        {/* {xx.map((user, i) =>
+        {/* map template function, to be updated when user data is added */
+        /* {xx.map((user, i) =>
            <Card name={username} key={i} />
         )} */}
         <Card/>
