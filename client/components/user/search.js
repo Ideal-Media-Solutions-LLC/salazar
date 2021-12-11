@@ -27,7 +27,7 @@ export default function Search() {
     <div className=''>
       <div className='searchbar'>
 
-        <div>
+        <div >
           Languages:
           <Select
             mode="multiple"

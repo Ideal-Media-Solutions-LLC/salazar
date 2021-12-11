@@ -15,26 +15,35 @@ const { Header, Footer, Sider, Content } = Layout;
 
 const { TabPane } = Tabs;
 
+const myLoader = ({ src, width, quality }) => {
+  return `https://example.com/${src}?w=${width}&q=${quality || 75}`
+}
+
 
 export default function User() {
 
   return (
 
-    <Layout>
+    <Layout className='layout'>
       <Header className='header'>
-        <Image
-          src="/assets/logo.png"
-          width={200}
-          height={40}
+        <div style={{position:'unset'}}>
+          <Image
+          src="/assets/logo1.png"
+          width={240}
+          height={60}
+          layout='intrinsic'
+
         />
+        </div>
+
       </Header>
 
-      <Layout>
-        <Sider className='sider' ><Sidebar/></Sider>
+      <Layout style={{backgroundColor: 'transparent'}}>
+        <Sider className='sider'><Sidebar/></Sider>
 
         <Content className='content'>
-          <Tabs tabPosition='left' type="card">
-            <TabPane tab=<UserAddOutlined style ={{fontSize: '20px', width: '10px'}}/> key="1">
+          <Tabs tabPosition='left' type="card" style={{backgroundColor: 'rgb(255,255,255, 0.8)', height:'90vh'}} >
+            <TabPane tab=<UserAddOutlined style ={{fontSize: '20px', width: '10px', backgroundColor: 'white'}}/> key="1">
               <Search/>
             </TabPane>
             <TabPane tab=<CommentOutlined style ={{fontSize: '20px', width: '10px'}}/> key="2">

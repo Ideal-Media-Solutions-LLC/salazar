@@ -8,12 +8,13 @@ export default function Card() {
 
   return (
     <div className='card'>
-      <div>
+      <div >
         <Image className='profilepic'
             src="/assets/profile.png"
             width={60}
             height={60}
         />
+
       </div>
 
       <div>
