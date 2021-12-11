@@ -1,4 +1,5 @@
 @import 'antd/dist/antd.css';
+
 html,
 body {
   padding: 0;
@@ -16,22 +17,76 @@ a {
   box-sizing: border-box;
 }
 
+/* User */
+
 .header {
 background-color: #cbd18f;
-padding: 10px;
+padding: 15px;
 }
 
 .sider {
   background-color: #F0F2F5;
-  height:90vh;
+  height: 90vh;
+  flex: 0 0 250px;
+  width: 250px;
   }
 
-.content{
+.content {
   background-color:white;
-
   padding: 20px;
 }
 
-.footer{
+.footer {
   background-color:white;
+}
+
+.useinfo {
+  text-align: center;
+  padding-top: 20px;
+  font-size: 14px;
+  width: 200px;
+}
+
+.profilepic {
+ border-radius: 40px;
+
+}
+
+.button {
+  margin: 10px;
+  font-size: 14px;
+}
+
+.calendar{
+  margin: 20px;
+  border: solid 1px lightgray;
+  height: 200px;
+
+}
+.tabpane{
+  font-size: 6px;
+}
+
+.searchbar{
+  width: 100%;
+  height: 35px;
+  margin-top: 5px;
+  padding-left: 20px;
+  box-shadow: -5px 9px 10px -7px rgba(0,0,0,0.2);
+  display: flex;
+  flex-wrap:wrap;
+  text-align: end;
+  justify-content:flex-start;
+  align-items:baseline;
+
+}
+
+.userlist{
+  width: 100%;
+  min-height: 400px;
+  margin-top: 10px;
+  padding: 20px;
+  overflow: scroll;
+  box-shadow: -5px 9px 10px -7px rgba(0,0,0,0.2);
+
 }

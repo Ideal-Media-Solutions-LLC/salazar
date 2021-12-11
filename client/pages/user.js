@@ -1,8 +1,13 @@
 // import logo from '../assets/logo.png';
 import Image from 'next/image';
-import sidebar from '../components/user/sidebar.js';
+import Sidebar from '../components/user/sidebar.js';
+import Search from '../components/user/search.js';
+
 import { Layout } from 'antd';
 import { Tabs } from 'antd';
+
+import { Menu } from 'antd';
+import { MailOutlined, AppstoreOutlined, SettingOutlined, UserAddOutlined, CommentOutlined, VideoCameraOutlined } from '@ant-design/icons';
 
 
 
@@ -20,20 +25,22 @@ export default function User() {
         <Image
           src="/assets/logo.png"
           width={200}
-          height={50}
+          height={40}
         />
       </Header>
+
       <Layout>
-        <Sider className='sider'><sidebar/></Sider>
+        <Sider className='sider' ><Sidebar/></Sider>
+
         <Content className='content'>
           <Tabs tabPosition='left' type="card">
-            <TabPane tab="Tab 1" key="1">
-              Content of Tab Pane 1
+            <TabPane tab=<UserAddOutlined style ={{fontSize: '20px'}}/> key="1">
+              <Search/>
             </TabPane>
-            <TabPane tab="Tab 2" key="2">
+            <TabPane tab=<CommentOutlined style ={{fontSize: '20px'}}/> key="2">
               Content of Tab Pane 2
             </TabPane>
-            <TabPane tab="Tab 3" key="3">
+            <TabPane tab=<VideoCameraOutlined style ={{fontSize: '20px'}}/> key="3">
               Content of Tab Pane 3
             </TabPane>
           </Tabs>
