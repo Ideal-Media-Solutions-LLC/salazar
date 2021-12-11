@@ -1,4 +1,4 @@
-
+import { useState } from 'react';
 import { Button } from 'antd';
 import { Menu, Dropdown } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
@@ -22,7 +22,7 @@ export default function Search() {
   // let sharedState = {
   //   username, setUserName
   // }
-
+  const [modalSchedule, setModalSchedule] = useState(null);
   return (
     <div className=''>
       <div className='searchbar'>
@@ -89,12 +89,12 @@ export default function Search() {
       <div className='userlist'>
         {/* map template function, to be updated when user data is added */
         /* {xx.map((user, i) =>
-           <Card name={username} key={i} />
+           <Card name={username} key={i} setModalSchedule = {setModalSchedule}/>
         )} */}
-        <Card/>
+        <Card setModalSchedule = {setModalSchedule}/>
       </div>
 
-
+        {modalSchedule}
     </div>
 
   );

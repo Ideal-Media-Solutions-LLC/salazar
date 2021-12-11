@@ -1,9 +1,9 @@
 import Image from 'next/image';
 import { Button } from 'antd';
-import { PhoneOutlined, MessageOutlined } from '@ant-design/icons';
+import { CalendarOutlined, MessageOutlined } from '@ant-design/icons';
+import ScheduleCall from '../modals/ScheduleCall.js';
 
-
-export default function Card() {
+export default function Card(props) {
 
 
   return (
@@ -29,7 +29,7 @@ export default function Card() {
 
       <div>
       <MessageOutlined style ={{fontSize: '20px', margin: '10px'}}/>
-      <PhoneOutlined style ={{fontSize: '20px', margin: '10px'}}/>
+      <CalendarOutlined onClick = {()=> {props.setModalSchedule( <ScheduleCall close = {props.setModalSchedule}/>)}} style ={{fontSize: '20px', margin: '10px'}}/>
       </div>
 
     </div>

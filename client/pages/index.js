@@ -19,7 +19,7 @@ export default function Home() {
         <h1 className={styles.title}>
           Welcome to Salazar!
         </h1>
-        <Link href = 'userinterface'>
+        <Link href = 'user'>
 
           <a>
             Go to User Interface
