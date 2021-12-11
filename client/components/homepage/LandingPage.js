@@ -7,15 +7,10 @@ import {
 } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 import { useState } from "react";
+import firebaseConfig from "./FirebaseConfig";
+import { writeUserData, readUserData } from "./dbUtils";
+import Router from 'next/router'
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCBvZyin8XtLiv0ifIbzL_pRGOlUn_SGxo",
-  authDomain: "blue-ocean-7af76.firebaseapp.com",
-  projectId: "blue-ocean-7af76",
-  storageBucket: "blue-ocean-7af76.appspot.com",
-  messagingSenderId: "341292625700",
-  appId: "1:341292625700:web:639c7221a0939045b8cdb1",
-};
 
 export default function LandingPage() {
   const app = initializeApp(firebaseConfig);
@@ -28,9 +23,12 @@ export default function LandingPage() {
   function handleSignInWithGoogle() {
     signInWithPopup(auth, provider)
       .then((res) => {
-        console.log(res.user);
+        let user = res.user;
+        console.log('uid:', user.uid);
         setIsLoggedIn(true);
-        setUserName(res.user.displayName);
+        setUserName(user.displayName);
+        readUserData(user.uid, () => Router.push('/userinterface'), () => Router.push('/signup'));
+        // writeUserData(database, user.uid, user.displayName, user.email);
       })
       .catch((e) => {
         console.log(e);
@@ -53,7 +51,7 @@ export default function LandingPage() {
   return (
     <div>
       Hello {userName}
-      <br/>
+      <br />
       <button disabled={isLoggedIn} onClick={handleSignInWithGoogle}>
         Sign in with Google
       </button>
