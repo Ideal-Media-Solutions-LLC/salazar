@@ -87,21 +87,10 @@ export default function Search() {
       </div>
 
       <div className='userlist'>
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
+        {/* {xx.map((user, i) =>
+           <Card name={username} key={i} />
+        )} */}
+        <Card/>
       </div>
 
 
