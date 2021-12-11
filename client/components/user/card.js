@@ -13,6 +13,7 @@ export default function Card() {
             src="/assets/profile.png"
             width={60}
             height={60}
+            layout='intrinsic'
         />
 
       </div>

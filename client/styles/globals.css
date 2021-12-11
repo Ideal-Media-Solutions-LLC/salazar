@@ -31,6 +31,7 @@ a {
 
 .innerlayout{
   max-height: 1200px;
+  min-height: 600px;
   height: 90vh;
   background-color: transparent;
 
@@ -52,7 +53,7 @@ a {
   flex: 0 0 20vw!important;
   max-width: 250px!important;
   min-width: 100px!important;
-  border-radius:50px;
+  border-radius:0px 50px 0px 50px;
   margin-left: 10px;
 
   }
@@ -62,7 +63,7 @@ a {
   padding-left: 15px;
   margin-right: 10px;
   height: 100%;
-  border-radius:50px;
+  border-radius:0px;
 }
 
 .footer {
@@ -103,12 +104,11 @@ a {
 .tab{
   background-color: rgb(255,255,255, 0.8);
   height:100%;
-  border-radius:50px;
+  border-radius:50px 0px 50px 0px;
 }
 
 .tabpane{
   font-size: 8px;
-  border-radius:50px;
 }
 
 .searchbar{
@@ -144,10 +144,10 @@ a {
 .card{
   width: 180px;
   height: 250px;
-  border-radius: 20px;
+  border-radius: 30px;
   background-color: rgb(240,242,245);
   /* border: 1px solid grey; */
-  margin:15px;
+  margin:10px;
   padding: 10px;
   box-shadow: 0px 0px 8px -1px rgba(0,0,0,0.3);
   text-align: center;

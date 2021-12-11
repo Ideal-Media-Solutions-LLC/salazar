@@ -29,7 +29,7 @@ export default function User() {
         <div style={{position:'unset'}}>
           <Image
           src="/assets/logo1.png"
-          width={240}
+          width={250}
           height={60}
           layout='intrinsic'
 
