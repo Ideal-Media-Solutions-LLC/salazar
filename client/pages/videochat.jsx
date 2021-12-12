@@ -3,7 +3,7 @@ import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import Link from 'next/link'
 import { Layout, Menu, Breadcrumb } from 'antd';
-import Transcribe from '../components/videochat/transcribe';
+import transcribe from '../components/videochat/transcribe';
 
 const { Header, Content, Footer } = Layout;
 
