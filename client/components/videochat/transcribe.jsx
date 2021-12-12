@@ -65,22 +65,21 @@ export default function Transcribe() {
 
   //#endregion
 
-  const RequestAuthorizationToken = function() {
-      if (authorizationEndpoint) {
-          var a = new XMLHttpRequest();
-          a.open("GET", authorizationEndpoint);
-          a.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-          a.send("");
-          a.onload = function () {
-              var token = JSON.parse(atob(this.responseText.split(".")[1]));
-              regionOptions.value = token.region;
-              authorizationToken = this.responseText;
-              key.disabled = true;
-              key.value = "using authorization token (hit F5 to refresh)";
-              console.log("Got an authorization token: " + token);
-          }
-      }
-  } 
+  // const RequestAuthorizationToken = function() {
+  //   if (authorizationEndpoint) {
+  //     var a = new XMLHttpRequest();
+  //     a.open("GET", authorizationEndpoint);
+  //     a.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+  //     a.send("");
+  //     a.onload = function () {
+  //       var token = JSON.parse(atob(this.responseText.split(".")[1]));
+  //       setAuthorizationToken(this.responseText);
+  //       //key.disabled = true;
+  //       //key.value = "using authorization token (hit F5 to refresh)";
+  //       console.log("Got an authorization token: " + token);
+  //     }
+  //   }
+  // } 
 
   // const Initialize = function(onComplete) {
   //   if (!!window.SpeechSDK) {
@@ -517,21 +516,6 @@ export default function Transcribe() {
 
   useEffect(()=> {
     // RequestAuthorizationToken();
-    // getAudioConfig();
-    // setSpeechSDK(SpeechSDK);
-    try {
-      var AudioContext = window.AudioContext // our preferred impl
-        || window.webkitAudioContext       // fallback, mostly when on Safari
-        || false;                          // could not find.
-  
-      if (AudioContext) {
-        soundContext = new AudioContext();
-      } else {
-        alert("Audio context not supported");
-      }
-    } catch (e) {
-      console.log("no sound context found, no audio output. " + e);
-    }
   }, []);
 
   // useEffect(()=> {
