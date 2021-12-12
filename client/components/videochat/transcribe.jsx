@@ -17,7 +17,7 @@ export default function Transcribe() {
   const [useDetailedResults, setUseDetailedResults] = useState(null);
   const [recognizer, setRecognizer] = useState(null);
   const [scenarioSelection, setScenarioSelection] = useState("translationRecognizerContinuous");
-  const [scenarioStartButtonText, setScenarioStartButtonText] = useState("");
+  const [scenarioStartButtonText, setScenarioStartButtonText] = useState("Start");
   const [scenarioStopButtonText, setScenarioStopButton] = useState("");
   const [formatSimpleRadio, setFormatSimpleRadio] = useState(null);
   const [formatDetailedRadio, setFormatDetailedRadio] = useState(null);
@@ -65,22 +65,21 @@ export default function Transcribe() {
 
   //#endregion
 
-  const RequestAuthorizationToken = function() {
-      if (authorizationEndpoint) {
-          var a = new XMLHttpRequest();
-          a.open("GET", authorizationEndpoint);
-          a.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-          a.send("");
-          a.onload = function () {
-              var token = JSON.parse(atob(this.responseText.split(".")[1]));
-              regionOptions.value = token.region;
-              authorizationToken = this.responseText;
-              key.disabled = true;
-              key.value = "using authorization token (hit F5 to refresh)";
-              console.log("Got an authorization token: " + token);
-          }
-      }
-  } 
+  // const RequestAuthorizationToken = function() {
+  //   if (authorizationEndpoint) {
+  //     var a = new XMLHttpRequest();
+  //     a.open("GET", authorizationEndpoint);
+  //     a.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+  //     a.send("");
+  //     a.onload = function () {
+  //       var token = JSON.parse(atob(this.responseText.split(".")[1]));
+  //       setAuthorizationToken(this.responseText);
+  //       //key.disabled = true;
+  //       //key.value = "using authorization token (hit F5 to refresh)";
+  //       console.log("Got an authorization token: " + token);
+  //     }
+  //   }
+  // } 
 
   // const Initialize = function(onComplete) {
   //   if (!!window.SpeechSDK) {
@@ -535,6 +534,9 @@ export default function Transcribe() {
 
   //#endregion
 
+  useEffect(()=> {
+    // RequestAuthorizationToken();
+  }, []);
 
   return (
     <div id="transcriber">
@@ -575,18 +577,18 @@ export default function Transcribe() {
                         checked="checked"
                         id ="formatSimpleRadio"
                         value="Simple"/>
-                    <label for="formatSimpleRadio">Simple</label>
+                    <label htmlFor="formatSimpleRadio">Simple</label>
                     <input type="radio"
                         name="formatOption"
                         id ="formatDetailedRadio"
                         value="Detailed"/>
-                    <label for="formatDetailedRadio">Detailed</label>
+                    <label htmlFor="formatDetailedRadio">Detailed</label>
                 </td>
             </tr>
             <tr id="translationOptionsRow">
                 <td align="right">Translation:</td>
                 <td>
-                    <label for="languageTargetOptions">Target language</label>
+                    <label htmlFor="languageTargetOptions">Target language</label>
                     <select id="languageTargetOptions">
                         <option value="Microsoft Server Speech Text to Speech Voice (de-DE, Hedda)" selected="selected">
                             German - DE</option>
@@ -622,20 +624,20 @@ export default function Transcribe() {
             <tr>
                 <td align="right"><b></b></td>
                 <td>
-                    <button id="scenarioStartButton" onClick="onClickScenarioStartButton">{scenarioStartButtonText}</button>
+                    <button id="scenarioStartButton" onClick={onClickScenarioStartButton}>{scenarioStartButtonText}</button>
                     <button id="scenarioStopButton" disabled="disabled">Stop</button>
                 </td>
             </tr>
             <tr>
                 <td align="right">Results:</td>
                 <td align="left">
-                    <textarea id="phraseDiv" >{phraseDivText}</textarea>
+                    <textarea id="phraseDiv" value={phraseDivText} readOnly={true}></textarea>
                 </td>
             </tr>
             <tr >
                 <td align="right">Events:</td>
                 <td align="left">
-                    <textarea id="statusDiv">{statusDivText}
+                    <textarea id="statusDiv" value={statusDivText} readOnly={true}>
                     </textarea>
                 </td>
             </tr>
