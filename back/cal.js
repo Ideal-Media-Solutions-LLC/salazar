@@ -15,7 +15,7 @@ fs.readFile('credentials.json', (err, content) => {
   if (err) return console.log('Error loading client secret file:', err);
   // Authorize a client with credentials, then call the Google Calendar API.
   // authorize(JSON.parse(content), createEvent);
-  authorize(JSON.parse(content), createEvent);
+  authorize(JSON.parse(content), listEvents);
 });
 
 /**
@@ -88,7 +88,7 @@ function listEvents(auth) {
       console.log('Upcoming 10 events:');
       events.map((event, i) => {
         const start = event.start.dateTime || event.start.date;
-        console.log(`${start} - ${event.id}`);
+        console.log(`${start} - ${event}`, event);
       });
     } else {
       console.log('No upcoming events found.');
@@ -107,18 +107,17 @@ function createEvent(auth) {
 
 var event = {
   'summary': 'Salazar has found you a language partner',
-  'description': 'Hi, would you like to chat with me in japanese sometime today?.',
+  'description': 'No timezone just you as attendee.. Hi, would you like to chat with me in japanese sometime today?.',
   'start': {
-    'dateTime': '2021-12-11T09:00:00-07:00',
-    'timeZone': 'America/Los_Angeles',
+    'dateTime': '2021-12-11T19:00:00-07:00',
+    //'timeZone': 'America/Los_Angeles',
   },
   'end': {
-    'dateTime': '2021-12-11T09:30:00-07:00',
-    'timeZone': 'America/Los_Angeles',
+    'dateTime': '2021-12-11T19:30:00-07:00',
+    //'timeZone': 'America/Los_Angeles',
   },
   'attendees': [
     {'email': 'cschillinger1994@gmail.com'},
-    {'email': 'cmorpv@gmail.com'},
   ],
   'reminders': {
     'useDefault': false,
