@@ -1,18 +1,8 @@
-<<<<<<< Updated upstream
-
-=======
 import React, { useState, useEffect } from 'react';
->>>>>>> Stashed changes
-
+import Script from 'next/script';
 
 export default function Transcribe() {
 
-<<<<<<< Updated upstream
-  return (
-
-    
-
-=======
   const [SpeechSDK, setSpeechSDK] = useState(null);
   const [reported, setReported] = useState(null);
 
@@ -26,9 +16,9 @@ export default function Transcribe() {
   const [formatOption, setFormatOption] = useState(null);
   const [useDetailedResults, setUseDetailedResults] = useState(null);
   const [recognizer, setRecognizer] = useState(null);
-  const [scenarioSelection, setScenarioSelection] = useState(null);
-  const [scenarioStartButton, setScenarioStartButton] = useState(null);
-  const [scenarioStopButton, setScenarioStopButton] = useState(null);
+  const [scenarioSelection, setScenarioSelection] = useState("translationRecognizerContinuous");
+  const [scenarioStartButtonText, setScenarioStartButtonText] = useState("");
+  const [scenarioStopButtonText, setScenarioStopButton] = useState("");
   const [formatSimpleRadio, setFormatSimpleRadio] = useState(null);
   const [formatDetailedRadio, setFormatDetailedRadio] = useState(null);
   const [reco, setReco] = useState(null);
@@ -41,6 +31,39 @@ export default function Transcribe() {
 
   var authorizationEndpoint = "token.php";
 
+  //#region react event handlers
+  const onChangeLanguageTarget = function(e) {
+    setLanguageTargetOptions(e.target.value.split("(")[1].substring(0, 5));
+  }  
+
+  const onClickScenarioStartButton = function(e) {
+    switch (scenarioSelection) {
+      case 'speechRecognizerContinuous':
+        doContinuousRecognition();
+        break;
+      case 'translationRecognizerContinuous':
+        doContinuousTranslation();
+        break;
+    }
+  }
+
+  const onClickScenarioStopButton = function(e) {
+    
+    reco.stopContinuousRecognitionAsync(
+      function () {
+        reco.close();
+        reco = undefined;
+      },
+      function (err) {
+        reco.close();
+        reco = undefined;
+      }
+    );
+  }
+
+
+
+  //#endregion
 
   const RequestAuthorizationToken = function() {
       if (authorizationEndpoint) {
@@ -59,13 +82,13 @@ export default function Transcribe() {
       }
   } 
 
-  const Initialize = function(onComplete) {
-    if (!!window.SpeechSDK) {
-        document.getElementById('content').style.display = 'block';
-        document.getElementById('warning').style.display = 'none';
-        onComplete(window.SpeechSDK);
-    }
-  }
+  // const Initialize = function(onComplete) {
+  //   if (!!window.SpeechSDK) {
+  //       document.getElementById('content').style.display = 'block';
+  //       document.getElementById('warning').style.display = 'none';
+  //       onComplete(window.SpeechSDK);
+  //   }
+  // }
 
   //#region top level function
   function doRecognizeOnceAsync() {
@@ -205,7 +228,7 @@ export default function Transcribe() {
     // Defines the language(s) that speech should be translated to.
     // Multiple languages can be specified for text translation and will be returned in a map.
     if (sdkConfigType == SpeechSDK.SpeechTranslationConfig) {
-        speechConfig.addTargetLanguage(languageTargetOptions.value.split("(")[1].substring(0, 5));
+        speechConfig.addTargetLanguage(languageTargetOptions);
         //speechConfig.addTargetLanguage(languageTargetOptions.value.split("(")[1].substring(0, 5));
     }
 
@@ -233,14 +256,8 @@ export default function Transcribe() {
     phraseDiv.scrollTop = phraseDiv.scrollHeight;
 
     statusDiv.innerHTML += `(recognized)  Reason: ${SpeechSDK.ResultReason[result.reason]}`;
-    if (scenarioSelection.value === 'speechRecognizerRecognizeOnce'
-        || scenarioSelection.value === 'intentRecognizerRecognizeOnce') {
-        // Clear the final results view for single-shot scenarios
-        phraseDiv.innerHTML = '';
-    } else {
-        // Otherwise, just remove the ongoing hypothesis line
-        phraseDiv.innerHTML = phraseDiv.innerHTML.replace(/(.*)(^|[\r\n]+).*\[\.\.\.\][\r\n]+/, '$1$2');
-    }
+      phraseDiv.innerHTML = phraseDiv.innerHTML.replace(/(.*)(^|[\r\n]+).*\[\.\.\.\][\r\n]+/, '$1$2');
+    
 
     switch (result.reason) {
       case SpeechSDK.ResultReason.NoMatch:
@@ -287,8 +304,6 @@ export default function Transcribe() {
                 phraseDiv.innerHTML += ` [${translation.Language}] ${translation.Text}\r\n`;
             });
         }
-
-        break;
     }
   }
 
@@ -299,8 +314,8 @@ export default function Transcribe() {
         thingToDisableDuringSession.disabled = true;
     }
 
-    scenarioStartButton.disabled = true;
-    scenarioStopButton.disabled = false;
+    //scenarioStartButton.disabled = true;
+    //scenarioStopButton.disabled = false;
   }
 
   function onSessionStopped(sender, sessionEventArgs) {
@@ -309,8 +324,8 @@ export default function Transcribe() {
         thingToDisableDuringSession.disabled = false;
     }
 
-    scenarioStartButton.disabled = false;
-    scenarioStopButton.disabled = true;
+    //scenarioStartButton.disabled = false;
+    //scenarioStopButton.disabled = true;
   }
 
   function onCanceled (sender, cancellationEventArgs) {
@@ -385,156 +400,149 @@ export default function Transcribe() {
 
   // var capstream;
   try {
-      var AudioContext = window.AudioContext // our preferred impl
-          || window.webkitAudioContext       // fallback, mostly when on Safari
-          || false;                          // could not find.
+    var AudioContext = window.AudioContext // our preferred impl
+      || window.webkitAudioContext       // fallback, mostly when on Safari
+      || false;                          // could not find.
 
-      if (AudioContext) {
-          soundContext = new AudioContext();
-      } else {
-          alert("Audio context not supported");
-      }
+    if (AudioContext) {
+      soundContext = new AudioContext();
+    } else {
+      alert("Audio context not supported");
+    }
   } catch (e) {
-      window.console.log("no sound context found, no audio output. " + e);
+    console.log("no sound context found, no audio output. " + e);
   }
 
   function resetUiForScenarioStart() {
-      phraseDiv.innerHTML = "";
-      statusDiv.innerHTML = "";
-      useDetailedResults = document.querySelector('input[name="formatOption"]:checked').value === "Detailed";
+    setPhraseDiv("");
+    setStatusDiv("");
+    //useDetailedResults = document.querySelector('input[name="formatOption"]:checked').value === "Detailed";
   }
 
-  document.addEventListener("DOMContentLoaded", function () {
-      scenarioStartButton = document.getElementById('scenarioStartButton');
-      scenarioStopButton = document.getElementById('scenarioStopButton');
-      scenarioSelection = document.getElementById('scenarioSelection');
+  // document.addEventListener("DOMContentLoaded", function () {
+  //     //scenarioStartButton = document.getElementById('scenarioStartButton');
+  //     //scenarioStopButton = document.getElementById('scenarioStopButton');
+  //     scenarioSelection = document.getElementById('scenarioSelection');
 
-      phraseDiv = document.getElementById("phraseDiv");
-      statusDiv = document.getElementById("statusDiv");
-      appId = document.getElementById("appId");
-      languageOptions = document.getElementById("languageOptions");
-      languageTargetOptions = document.getElementById("languageTargetOptions");
-      formatSimpleRadio = document.getElementById('formatSimpleRadio');
-      formatDetailedRadio = document.getElementById('formatDetailedRadio');
-      referenceText = document.getElementById('referenceText');
+  //     phraseDiv = document.getElementById("phraseDiv");
+  //     statusDiv = document.getElementById("statusDiv");
+  //     appId = document.getElementById("appId");
+  //     languageOptions = document.getElementById("languageOptions");
+  //     languageTargetOptions = document.getElementById("languageTargetOptions");
+  //     formatSimpleRadio = document.getElementById('formatSimpleRadio');
+  //     formatDetailedRadio = document.getElementById('formatDetailedRadio');
+  //     referenceText = document.getElementById('referenceText');
 
-      thingsToDisableDuringSession = [
-          key,
-          languageOptions,
-          scenarioSelection,
-          formatSimpleRadio,
-          formatDetailedRadio,
-          appId,
-          languageTargetOptions
-      ];
+  //     thingsToDisableDuringSession = [
+  //         key,
+  //         languageOptions,
+  //         scenarioSelection,
+  //         formatSimpleRadio,
+  //         formatDetailedRadio,
+  //         appId,
+  //         languageTargetOptions
+  //     ];
 
-      function setScenario() {
-          var startButtonText = (function() {
-              switch (scenarioSelection.value) {
-                  case 'speechRecognizerContinuous':  return 'startContinuousRecognitionAsync()';
-                  case 'translationRecognizerContinuous': return 'startContinuousTranslation()';
-              }
-          })();
+  //     function setScenario() {
+  //         var startButtonText = (function() {
+  //             switch (scenarioSelection) {
+  //                 case 'speechRecognizerContinuous':  return 'startContinuousRecognitionAsync()';
+  //                 case 'translationRecognizerContinuous': return 'startContinuousTranslation()';
+  //             }
+  //         })();
 
-          scenarioStartButton.innerHTML = startButtonText;
-          scenarioStopButton.innerHTML = `STOP ${startButtonText}`;
+          //scenarioStartButton.innerHTML = startButtonText;
+          // setScenarioStartButtonText(startButtonText);
+          // setScenarioStopButtonText(`STOP ${startButtonText}`);
+          //scenarioStopButton.innerHTML = `STOP ${startButtonText}`;
 
-          document.getElementById('languageUnderstandingAppIdRow').style.display =
-              scenarioSelection.value === 'intentRecognizerRecognizeOnce' ? '' : 'none';
+          // document.getElementById('languageUnderstandingAppIdRow').style.display = scenarioSelection 'intentRecognizerRecognizeOnce' ? '' : 'none';
 
-          var detailedResultsSupported = 
-              (scenarioSelection.value === "speechRecognizerRecognizeOnce"
-              || scenarioSelection.value === "speechRecognizerContinuous");
-          document.getElementById('formatOptionRow').style.display = detailedResultsSupported ? '' : 'none';
+          // var detailedResultsSupported = 
+          //     (scenarioSelection === "speechRecognizerRecognizeOnce"
+          //     || scenarioSelection === "speechRecognizerContinuous");
+          // document.getElementById('formatOptionRow').style.display = detailedResultsSupported ? '' : 'none';
 
-          document.getElementById('translationOptionsRow').style.display =
-              scenarioSelection.value == 'translationRecognizerContinuous' ? '' : 'none';
+          // document.getElementById('translationOptionsRow').style.display =
+          //     scenarioSelection == 'translationRecognizerContinuous' ? '' : 'none';
           
-      }
+      // }
 
-      scenarioSelection.addEventListener("change", function () {
-          setScenario();
-      });
-      setScenario();
+      // scenarioSelection.addEventListener("change", function () {
+      //     setScenario();
+      // });
+      // setScenario();
 
-      scenarioStartButton.addEventListener("click", function () {
-          switch (scenarioSelection.value) {
-              case 'speechRecognizerContinuous':
-                  doContinuousRecognition();
-                  break;
-              case 'translationRecognizerContinuous':
-                  doContinuousTranslation();
-                  break;
-          }
-      });
+      // scenarioStartButton.addEventListener("click", function () {
+      //     switch (scenarioSelection.value) {
+      //         case 'speechRecognizerContinuous':
+      //             doContinuousRecognition();
+      //             break;
+      //         case 'translationRecognizerContinuous':
+      //             doContinuousTranslation();
+      //             break;
+      //     }
+      // });
 
-      scenarioStopButton.addEventListener("click", function() {
-          switch (scenarioSelection.value) {
-              case 'speechRecognizerContinuous':
-              case 'translationRecognizerContinuous':
-                  reco.stopContinuousRecognitionAsync(
-                      function () {
-                          reco.close();
-                          reco = undefined;
-                      },
-                      function (err) {
-                          reco.close();
-                          reco = undefined;
-                      }
-                  );
-                  break;
-          }
-      });
+      // scenarioStopButton.addEventListener("click", function() {
+      //     switch (scenarioSelection.value) {
+      //         case 'speechRecognizerContinuous':
+      //         case 'translationRecognizerContinuous':
+      //             reco.stopContinuousRecognitionAsync(
+      //                 function () {
+      //                     reco.close();
+      //                     reco = undefined;
+      //                 },
+      //                 function (err) {
+      //                     reco.close();
+      //                     reco = undefined;
+      //                 }
+      //             );
+      //             break;
+      //     }
+      // });
 
       
 
-      function enumerateMicrophones() {
-          if (!navigator || !navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
-              console.log(`Unable to query for audio input devices. Default will be used.\r\n`);
-              return;
-          }
-          navigator.mediaDevices.getDisplayMedia({
-              video: true,
-              audio: true
-          }).then((stream) => {
-              capstream = stream;
-              navigator.mediaDevices.enumerateDevices().then((devices) => {
-              });
+  //     function enumerateMicrophones() {
+  //         if (!navigator || !navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
+  //             console.log(`Unable to query for audio input devices. Default will be used.\r\n`);
+  //             return;
+  //         }
+  //         navigator.mediaDevices.getDisplayMedia({
+  //             video: true,
+  //             audio: true
+  //         }).then((stream) => {
+  //             capstream = stream;
+  //             navigator.mediaDevices.enumerateDevices().then((devices) => {
+  //             });
           
               
-          });
-      }
+  //         });
+  //     }
 
-      enumerateMicrophones();
+  //     enumerateMicrophones();
 
-      Initialize(function (speechSdk) {
-          SpeechSDK = speechSdk;
+  //     Initialize(function (speechSdk) {
+  //         SpeechSDK = speechSdk;
 
-          // in case we have a function for getting an authorization token, call it.
-          if (typeof RequestAuthorizationToken === "function") {
-              RequestAuthorizationToken();
-          }
-      });
-  });
+  //         // in case we have a function for getting an authorization token, call it.
+  //         if (typeof RequestAuthorizationToken === "function") {
+  //             RequestAuthorizationToken();
+  //         }
+  //     });
+  // });
 
   //#endregion
 
 
   return (
     <div id="transcriber">
-      <div id="content" style="display:none">
+      <div id="content">
         <table>
-            
-            <tr style="display: none;">
-                <td align="right"><a href="https://www.microsoft.com/cognitive-services/sign-up"
-                        target="_blank">Subscription</a>:</td>
-                <td><input id="key" type="text" size="60" placeholder="required: speech subscription key" value="bfc14462bd234b74b9534588764f1786"></td>
-            </tr>
             <tr>
                 <td align="right">Recognition language:</td>
                 <td align="left">
-                    <!-- For the full list of supported languages see:
-                        https://docs.microsoft.com/azure/cognitive-services/speech-service/supported-languages -->
                     <select id="languageOptions">
                         <option value="en-US" selected="selected">English - US</option>
                         <option value="zh-CN">Chinese - CN</option>
@@ -553,15 +561,15 @@ export default function Transcribe() {
             <tr>
                 <td align="right">Scenario:</td>
                 <td align="left">
-                    <select id="scenarioSelection">
-                        <option value="speechRecognizerContinuous">Continuous speech-to-text</option>
+                    <select id="scenarioSelection" >
+                        {/* <option value="speechRecognizerContinuous">Continuous speech-to-text</option> */}
                         <option value="translationRecognizerContinuous">Continuous translation</option>
                     </select>
                 </td>
             </tr>
-            <tr id="formatOptionRow" style="display: none;">
-                <td align="right" style="display: none;">Result Format:</td>
-                <td align="left" style="display: none;">
+            <tr id="formatOptionRow">
+                <td align="right" >Result Format:</td>
+                <td align="left">
                     <input type="radio"
                         name="formatOption"
                         checked="checked"
@@ -579,8 +587,6 @@ export default function Transcribe() {
                 <td align="right">Translation:</td>
                 <td>
                     <label for="languageTargetOptions">Target language</label>
-                    <!-- For a full list of supported languages see:
-                        https://docs.microsoft.com/azure/cognitive-services/speech-service/language-support#text-to-speech-->
                     <select id="languageTargetOptions">
                         <option value="Microsoft Server Speech Text to Speech Voice (de-DE, Hedda)" selected="selected">
                             German - DE</option>
@@ -616,21 +622,20 @@ export default function Transcribe() {
             <tr>
                 <td align="right"><b></b></td>
                 <td>
-                    <button id="scenarioStartButton">Start</button>
+                    <button id="scenarioStartButton" onClick="onClickScenarioStartButton">{scenarioStartButtonText}</button>
                     <button id="scenarioStopButton" disabled="disabled">Stop</button>
                 </td>
             </tr>
             <tr>
                 <td align="right">Results:</td>
                 <td align="left">
-                    <textarea id="phraseDiv" style="display: inline-block;width:500px;height:200px">{phraseDivText}</textarea>
+                    <textarea id="phraseDiv" >{phraseDivText}</textarea>
                 </td>
             </tr>
             <tr >
                 <td align="right">Events:</td>
                 <td align="left">
-                    <textarea id="statusDiv"
-                        style="display: inline-block;width:500px;height:200px;overflow: scroll;white-space: nowrap;">{statusDivText}
+                    <textarea id="statusDiv">{statusDivText}
                     </textarea>
                 </td>
             </tr>
@@ -639,6 +644,5 @@ export default function Transcribe() {
 
       <Script src="https://aka.ms/csspeech/jsbrowserpackageraw"/>
     </div>
->>>>>>> Stashed changes
   )
 }
