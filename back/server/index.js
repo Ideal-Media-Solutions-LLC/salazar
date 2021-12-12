@@ -13,15 +13,8 @@ app.get('/', (req, res) => {
 
 //#region user auth
 
-axios.get('/auth', (result) => {
-  if (result.status) {
-    route to some route;
-  }
-});
-
 app.get('/auth', (req, res) => {
-  const path = res.query.path;
-  const result = await firefunctions.get(req.query.id, path);
+  const result = await firefunctions.get(req.query.uid);
   if (result === null) {
     res.send(400);
   } else {
@@ -31,11 +24,29 @@ app.get('/auth', (req, res) => {
 });
 
 app.post('/auth', (req, res) => {
-  res.send('Hello World');
+  const data = req.body.info;
+  /*data = {
+    displayName: ,
+    languages: {
+      Chinese: 2,
+      Korean: 2,
+    }
+    uid: ,
+    email: ,
+    apikey: ,
+    refreshtoken: ,
+    photoURL: ,
+  }
+  */
+  firefunctions.write(req.body.uid, data).then(() => {
+    res.send(201);
+  });
 });
 
 app.post('/user', async (req, res) => {
-  writeLanguages()
+  const path = req.body.path;
+  const languages = req.body.languages;
+  const body = req.body.
 }
 //#endregion
 

@@ -83,8 +83,8 @@ function logOut() {
 //   return currentUser;
 // }
 
-async function writeLanguages(email, data, path) {
-  console.log(db);
+async function write(key, data) {
+  //console.log(db);
   let obj = {};
   for (var i = 0; i < data.length; i++) {
     obj[data[i][0]] = data[i][1];
@@ -93,8 +93,8 @@ async function writeLanguages(email, data, path) {
   console.log('write Languages');
 }
 
-async function get(key, path) {
-  const docRef = doc(db, path, key);
+async function get(key) {
+  const docRef = doc(db, 'info', key);
   const result = await getDoc(docRef);
   if (result.exists()) {
     //console.log(result.data(), 'get');
@@ -114,7 +114,7 @@ async function update(key) {
 module.exports = {
   googleSignIn,
   logOut,
-  writeLanguages,
+  write,
   get,
   update,
 }
