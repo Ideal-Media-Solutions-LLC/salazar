@@ -1,11 +1,644 @@
+<<<<<<< Updated upstream
 
+=======
+import React, { useState, useEffect } from 'react';
+>>>>>>> Stashed changes
 
 
 export default function Transcribe() {
 
+<<<<<<< Updated upstream
   return (
 
     
 
+=======
+  const [SpeechSDK, setSpeechSDK] = useState(null);
+  const [reported, setReported] = useState(null);
+
+  //#region browser hooks states
+  const [phraseDivText, setPhraseDiv] = useState("");
+  const [statusDivText, setStatusDiv] = useState("");
+  const [key, setKey] = useState({value: "bfc14462bd234b74b9534588764f1786"});
+  const [authorizationToken, setAuthorizationToken] = useState(null);
+  const [appId, setAppId] = useState(null);
+  const [languageOptions, setLanguageOptions] = useState(null);
+  const [formatOption, setFormatOption] = useState(null);
+  const [useDetailedResults, setUseDetailedResults] = useState(null);
+  const [recognizer, setRecognizer] = useState(null);
+  const [scenarioSelection, setScenarioSelection] = useState(null);
+  const [scenarioStartButton, setScenarioStartButton] = useState(null);
+  const [scenarioStopButton, setScenarioStopButton] = useState(null);
+  const [formatSimpleRadio, setFormatSimpleRadio] = useState(null);
+  const [formatDetailedRadio, setFormatDetailedRadio] = useState(null);
+  const [reco, setReco] = useState(null);
+  const [languageTargetOptions, setLanguageTargetOptions] = useState(null);
+  const [referenceText, setReferenceText] = useState(null);
+  const [thingsToDisableDuringSession, setThingsToDisableDuringSession] = useState(null);
+  const [soundContext, setSoundContext] = useState(null);
+  const [capstream, setCapstream] = useState(null);
+  //#endregion
+
+  var authorizationEndpoint = "token.php";
+
+
+  const RequestAuthorizationToken = function() {
+      if (authorizationEndpoint) {
+          var a = new XMLHttpRequest();
+          a.open("GET", authorizationEndpoint);
+          a.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+          a.send("");
+          a.onload = function () {
+              var token = JSON.parse(atob(this.responseText.split(".")[1]));
+              regionOptions.value = token.region;
+              authorizationToken = this.responseText;
+              key.disabled = true;
+              key.value = "using authorization token (hit F5 to refresh)";
+              console.log("Got an authorization token: " + token);
+          }
+      }
+  } 
+
+  const Initialize = function(onComplete) {
+    if (!!window.SpeechSDK) {
+        document.getElementById('content').style.display = 'block';
+        document.getElementById('warning').style.display = 'none';
+        onComplete(window.SpeechSDK);
+    }
+  }
+
+  //#region top level function
+  function doRecognizeOnceAsync() {
+    resetUiForScenarioStart();
+
+    var audioConfig = getAudioConfig();
+    var speechConfig = getSpeechConfig(SpeechSDK.SpeechConfig);
+    if (!audioConfig || !speechConfig) return;
+
+    // Create the SpeechRecognizer and set up common event handlers and PhraseList data
+    reco = new SpeechSDK.SpeechRecognizer(speechConfig, audioConfig);
+    applyCommonConfigurationTo(reco);
+
+    // Note: in this scenario sample, the 'recognized' event is not being set to instead demonstrate
+    // continuation on the 'recognizeOnceAsync' call. 'recognized' can be set in much the same way as
+    // 'recognizing' if an event-driven approach is preferable.
+    reco.recognized = undefined;
+
+    // Note: this scenario sample demonstrates result handling via continuation on the recognizeOnceAsync call.
+    // The 'recognized' event handler can be used in a similar fashion.
+    reco.recognizeOnceAsync(
+      function (successfulResult) {
+          onRecognizedResult(successfulResult);
+      },
+      function (err) {
+          window.console.log(err);
+          phraseDiv.innerHTML += "ERROR: " + err;
+      }
+    );
+  }
+
+  function doContinuousRecognition() {
+    resetUiForScenarioStart();
+
+    var audioConfig = getAudioConfig();
+    var speechConfig = getSpeechConfig(SpeechSDK.SpeechConfig);
+    if (!speechConfig) return;
+
+    // Create the SpeechRecognizer and set up common event handlers and PhraseList data
+    reco = new SpeechSDK.SpeechRecognizer(speechConfig, audioConfig);
+    applyCommonConfigurationTo(reco);
+
+    // Start the continuous recognition. Note that, in this continuous scenario, activity is purely event-
+    // driven, as use of continuation (as is in the single-shot sample) isn't applicable when there's not a
+    // single result.
+    reco.startContinuousRecognitionAsync();
+  }
+
+  function doRecognizeIntentOnceAsync() {
+    resetUiForScenarioStart();
+    var audioConfig = getAudioConfig();
+    var speechConfig = getSpeechConfig(SpeechSDK.SpeechConfig);
+    if (!audioConfig || !speechConfig) return;
+
+    if (!appId.value) {
+        alert('A language understanding appId is required for intent recognition.');
+        return;
+    }
+
+    // Intent recognizers should be configured with a LanguageUnderstandingModel derived from a known appId.
+    // Set up a Language Understanding Model from Language Understanding Intelligent Service (LUIS).
+    // See https://www.luis.ai/home for more information on LUIS.
+    reco = new SpeechSDK.IntentRecognizer(speechConfig, audioConfig);
+    var intentModel = SpeechSDK.LanguageUnderstandingModel.fromAppId(appId.value);
+    reco.addAllIntents(intentModel);
+
+    // Apply standard event handlers and PhraseListGrammar data
+    applyCommonConfigurationTo(reco);
+
+    // Start the intent recognition. Results will arrive on the appropriate event handlers.
+    reco.recognizeOnceAsync();
+  }
+
+  function doContinuousTranslation() {
+    resetUiForScenarioStart();
+
+    var audioConfig = getAudioConfig();
+    var speechConfig = getSpeechConfig(SpeechSDK.SpeechTranslationConfig);
+    if (!audioConfig || !speechConfig) return;
+
+    // Create the TranslationRecognizer and set up common event handlers and PhraseListGrammar data.
+    reco = new SpeechSDK.TranslationRecognizer(speechConfig, audioConfig);
+    applyCommonConfigurationTo(reco);
+
+    // Additive in TranslationRecognizer, the 'synthesizing' event signals that a payload chunk of synthesized
+    // text-to-speech data is available for playback.
+    // If the event result contains valid audio, it's reason will be ResultReason.SynthesizingAudio
+    // Once a complete phrase has been synthesized, the event will be called with
+    // ResultReason.SynthesizingAudioComplete and a 0-byte audio payload.
+    reco.synthesizing = function (s, e) {
+      var audioSize = e.result.audio === undefined ? 0 : e.result.audio.byteLength;
+
+      statusDiv.innerHTML += `(synthesizing) Reason: ${SpeechSDK.ResultReason[e.result.reason]}` + ` ${audioSize} bytes\r\n`;
+
+      if (e.result.audio && soundContext) {
+        var source = soundContext.createBufferSource();
+        soundContext.decodeAudioData(e.result.audio, function (newBuffer) {
+            source.buffer = newBuffer;
+            source.connect(soundContext.destination);
+            source.start(0);
+        });
+      }
+    };
+
+    // Start the continuous recognition/translation operation.
+    reco.startContinuousRecognitionAsync();
+  }
+
+  //#endregion
+
+  //#region SDK common
+  function getAudioConfig() {
+    return SpeechSDK.AudioConfig.fromStreamInput(capstream);
+  }
+
+  function getSpeechConfig(sdkConfigType) {
+    var speechConfig;
+    if (authorizationToken) {
+        speechConfig = sdkConfigType.fromAuthorizationToken(authorizationToken, "eastus");
+    } else if (!key.value) {
+        alert("Please enter your Cognitive Services Speech subscription key!");
+        return undefined;
+    } else {
+        speechConfig = sdkConfigType.fromSubscription(key.value, "eastus");
+    }
+
+    // Setting the result output format to Detailed will request that the underlying
+    // result JSON include alternates, confidence scores, lexical forms, and other
+    // advanced information.
+    // if (useDetailedResults && sdkConfigType != SpeechSDK.SpeechConfig) {
+    //     window.console.log('Detailed results are not supported for this scenario.\r\n');
+    //     document.getElementById('formatSimpleRadio').click();
+    // } else if (useDetailedResults) {
+    //     speechConfig.outputFormat = SpeechSDK.OutputFormat.Detailed;
+    // }
+
+    // Defines the language(s) that speech should be translated to.
+    // Multiple languages can be specified for text translation and will be returned in a map.
+    if (sdkConfigType == SpeechSDK.SpeechTranslationConfig) {
+        speechConfig.addTargetLanguage(languageTargetOptions.value.split("(")[1].substring(0, 5));
+        //speechConfig.addTargetLanguage(languageTargetOptions.value.split("(")[1].substring(0, 5));
+    }
+
+    speechConfig.speechRecognitionLanguage = languageOptions.value;
+    return speechConfig;
+  }
+
+
+  function onRecognizing(sender, recognitionEventArgs) {
+    var result = recognitionEventArgs.result;
+    statusDiv.innerHTML += `(recognizing) Reason: ${SpeechSDK.ResultReason[result.reason]}`
+        + ` Text: ${result.text}\r\n`;
+    // Update the hypothesis line in the phrase/result view (only have one)
+    phraseDiv.innerHTML = phraseDiv.innerHTML.replace(/(.*)(^|[\r\n]+).*\[\.\.\.\][\r\n]+/, '$1$2')
+        + `${result.text} [...]\r\n`;
+    phraseDiv.scrollTop = phraseDiv.scrollHeight;
+  }
+
+  function onRecognized(sender, recognitionEventArgs) {
+    var result = recognitionEventArgs.result;
+    onRecognizedResult(recognitionEventArgs.result);
+  }
+
+  function onRecognizedResult(result) {
+    phraseDiv.scrollTop = phraseDiv.scrollHeight;
+
+    statusDiv.innerHTML += `(recognized)  Reason: ${SpeechSDK.ResultReason[result.reason]}`;
+    if (scenarioSelection.value === 'speechRecognizerRecognizeOnce'
+        || scenarioSelection.value === 'intentRecognizerRecognizeOnce') {
+        // Clear the final results view for single-shot scenarios
+        phraseDiv.innerHTML = '';
+    } else {
+        // Otherwise, just remove the ongoing hypothesis line
+        phraseDiv.innerHTML = phraseDiv.innerHTML.replace(/(.*)(^|[\r\n]+).*\[\.\.\.\][\r\n]+/, '$1$2');
+    }
+
+    switch (result.reason) {
+      case SpeechSDK.ResultReason.NoMatch:
+        var noMatchDetail = SpeechSDK.NoMatchDetails.fromResult(result);
+        statusDiv.innerHTML += ` NoMatchReason: ${SpeechSDK.NoMatchReason[noMatchDetail.reason]}\r\n`;
+        break;
+      case SpeechSDK.ResultReason.Canceled:
+        var cancelDetails = SpeechSDK.CancellationDetails.fromResult(result);
+        statusDiv.innerHTML += ` CancellationReason: ${SpeechSDK.CancellationReason[cancelDetails.reason]}`;
+            + (cancelDetails.reason === SpeechSDK.CancellationReason.Error 
+                ? `: ${cancelDetails.errorDetails}` : ``)
+            + `\r\n`;
+        break;
+      case SpeechSDK.ResultReason.RecognizedSpeech:
+      case SpeechSDK.ResultReason.TranslatedSpeech:
+      case SpeechSDK.ResultReason.RecognizedIntent:
+        statusDiv.innerHTML += `\r\n`;
+
+        if (useDetailedResults) {
+            var detailedResultJson = JSON.parse(result.json);
+
+            // Detailed result JSON includes substantial extra information:
+            //  detailedResultJson['NBest'] is an array of recognition alternates
+            //  detailedResultJson['NBest'][0] is the highest-confidence alternate
+            //  ...['Confidence'] is the raw confidence score of an alternate
+            //  ...['Lexical'] and others provide different result forms
+            var displayText = detailedResultJson['DisplayText'];
+            phraseDiv.innerHTML += `Detailed result for "${displayText}":\r\n`
+            + `${JSON.stringify(detailedResultJson, null, 2)}\r\n`;
+        } else if (result.text) {
+            phraseDiv.innerHTML += `${result.text}\r\n`;
+        }
+
+        var intentJson = result.properties
+            .getProperty(SpeechSDK.PropertyId.LanguageUnderstandingServiceResponse_JsonResult);
+        if (intentJson) {
+            phraseDiv.innerHTML += `${intentJson}\r\n`;
+        }
+
+        if (result.translations) {
+            var resultJson = JSON.parse(result.json);
+            resultJson['privTranslationPhrase']['Translation']['Translations'].forEach(
+                function (translation) {
+                phraseDiv.innerHTML += ` [${translation.Language}] ${translation.Text}\r\n`;
+            });
+        }
+
+        break;
+    }
+  }
+
+  function onSessionStarted(sender, sessionEventArgs) {
+    statusDiv.innerHTML += `(sessionStarted) SessionId: ${sessionEventArgs.sessionId}\r\n`;
+
+    for (const thingToDisableDuringSession of thingsToDisableDuringSession) {
+        thingToDisableDuringSession.disabled = true;
+    }
+
+    scenarioStartButton.disabled = true;
+    scenarioStopButton.disabled = false;
+  }
+
+  function onSessionStopped(sender, sessionEventArgs) {
+    statusDiv.innerHTML += `(sessionStopped) SessionId: ${sessionEventArgs.sessionId}\r\n`;
+    for (const thingToDisableDuringSession of thingsToDisableDuringSession) {
+        thingToDisableDuringSession.disabled = false;
+    }
+
+    scenarioStartButton.disabled = false;
+    scenarioStopButton.disabled = true;
+  }
+
+  function onCanceled (sender, cancellationEventArgs) {
+    window.console.log(e);
+
+    statusDiv.innerHTML += "(cancel) Reason: " + SpeechSDK.CancellationReason[e.reason];
+    if (e.reason === SpeechSDK.CancellationReason.Error) {
+        statusDiv.innerHTML += ": " + e.errorDetails;
+    }
+    statusDiv.innerHTML += "\r\n";
+  }
+
+  function applyCommonConfigurationTo(recognizer) {
+    // The 'recognizing' event signals that an intermediate recognition result is received.
+    // Intermediate results arrive while audio is being processed and represent the current "best guess" about
+    // what's been spoken so far.
+    recognizer.recognizing = onRecognizing;
+
+    // The 'recognized' event signals that a finalized recognition result has been received. These results are
+    // formed across complete utterance audio (with either silence or eof at the end) and will include
+    // punctuation, capitalization, and potentially other extra details.
+    // 
+    // * In the case of continuous scenarios, these final results will be generated after each segment of audio
+    //   with sufficient silence at the end.
+    // * In the case of intent scenarios, only these final results will contain intent JSON data.
+    // * Single-shot scenarios can also use a continuation on recognizeOnceAsync calls to handle this without
+    //   event registration.
+    recognizer.recognized = onRecognized;
+
+    // The 'canceled' event signals that the service has stopped processing speech.
+    // https://docs.microsoft.com/javascript/api/microsoft-cognitiveservices-speech-sdk/speechrecognitioncanceledeventargs?view=azure-node-latest
+    // This can happen for two broad classes of reasons:
+    // 1. An error was encountered.
+    //    In this case, the .errorDetails property will contain a textual representation of the error.
+    // 2. No additional audio is available.
+    //    This is caused by the input stream being closed or reaching the end of an audio file.
+    recognizer.canceled = onCanceled;
+
+    // The 'sessionStarted' event signals that audio has begun flowing and an interaction with the service has
+    // started.
+    recognizer.sessionStarted = onSessionStarted;
+
+    // The 'sessionStopped' event signals that the current interaction with the speech service has ended and
+    // audio has stopped flowing.
+    recognizer.sessionStopped = onSessionStopped;
+
+    // PhraseListGrammar allows for the customization of recognizer vocabulary.
+    // The semicolon-delimited list of words or phrases will be treated as additional, more likely components
+    // of recognition results when applied to the recognizer.
+    //
+    // See https://docs.microsoft.com/azure/cognitive-services/speech-service/get-started-speech-to-text#improve-recognition-accuracy
+  }
+  //#endregion
+
+
+  //#region browser hooks
+  // var phraseDiv, statusDiv;
+  // var key = {value: "bfc14462bd234b74b9534588764f1786"};
+  // var authorizationToken, appId;
+  // var languageOptions, formatOption;
+  // var useDetailedResults;
+  // var recognizer;
+  // var scenarioSelection, scenarioStartButton, scenarioStopButton;
+  // var formatSimpleRadio, formatDetailedRadio;
+  // var reco;
+  // var languageTargetOptions;
+  // var referenceText;
+
+  // var thingsToDisableDuringSession;
+
+  // var soundContext = undefined;
+
+  // var capstream;
+  try {
+      var AudioContext = window.AudioContext // our preferred impl
+          || window.webkitAudioContext       // fallback, mostly when on Safari
+          || false;                          // could not find.
+
+      if (AudioContext) {
+          soundContext = new AudioContext();
+      } else {
+          alert("Audio context not supported");
+      }
+  } catch (e) {
+      window.console.log("no sound context found, no audio output. " + e);
+  }
+
+  function resetUiForScenarioStart() {
+      phraseDiv.innerHTML = "";
+      statusDiv.innerHTML = "";
+      useDetailedResults = document.querySelector('input[name="formatOption"]:checked').value === "Detailed";
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+      scenarioStartButton = document.getElementById('scenarioStartButton');
+      scenarioStopButton = document.getElementById('scenarioStopButton');
+      scenarioSelection = document.getElementById('scenarioSelection');
+
+      phraseDiv = document.getElementById("phraseDiv");
+      statusDiv = document.getElementById("statusDiv");
+      appId = document.getElementById("appId");
+      languageOptions = document.getElementById("languageOptions");
+      languageTargetOptions = document.getElementById("languageTargetOptions");
+      formatSimpleRadio = document.getElementById('formatSimpleRadio');
+      formatDetailedRadio = document.getElementById('formatDetailedRadio');
+      referenceText = document.getElementById('referenceText');
+
+      thingsToDisableDuringSession = [
+          key,
+          languageOptions,
+          scenarioSelection,
+          formatSimpleRadio,
+          formatDetailedRadio,
+          appId,
+          languageTargetOptions
+      ];
+
+      function setScenario() {
+          var startButtonText = (function() {
+              switch (scenarioSelection.value) {
+                  case 'speechRecognizerContinuous':  return 'startContinuousRecognitionAsync()';
+                  case 'translationRecognizerContinuous': return 'startContinuousTranslation()';
+              }
+          })();
+
+          scenarioStartButton.innerHTML = startButtonText;
+          scenarioStopButton.innerHTML = `STOP ${startButtonText}`;
+
+          document.getElementById('languageUnderstandingAppIdRow').style.display =
+              scenarioSelection.value === 'intentRecognizerRecognizeOnce' ? '' : 'none';
+
+          var detailedResultsSupported = 
+              (scenarioSelection.value === "speechRecognizerRecognizeOnce"
+              || scenarioSelection.value === "speechRecognizerContinuous");
+          document.getElementById('formatOptionRow').style.display = detailedResultsSupported ? '' : 'none';
+
+          document.getElementById('translationOptionsRow').style.display =
+              scenarioSelection.value == 'translationRecognizerContinuous' ? '' : 'none';
+          
+      }
+
+      scenarioSelection.addEventListener("change", function () {
+          setScenario();
+      });
+      setScenario();
+
+      scenarioStartButton.addEventListener("click", function () {
+          switch (scenarioSelection.value) {
+              case 'speechRecognizerContinuous':
+                  doContinuousRecognition();
+                  break;
+              case 'translationRecognizerContinuous':
+                  doContinuousTranslation();
+                  break;
+          }
+      });
+
+      scenarioStopButton.addEventListener("click", function() {
+          switch (scenarioSelection.value) {
+              case 'speechRecognizerContinuous':
+              case 'translationRecognizerContinuous':
+                  reco.stopContinuousRecognitionAsync(
+                      function () {
+                          reco.close();
+                          reco = undefined;
+                      },
+                      function (err) {
+                          reco.close();
+                          reco = undefined;
+                      }
+                  );
+                  break;
+          }
+      });
+
+      
+
+      function enumerateMicrophones() {
+          if (!navigator || !navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
+              console.log(`Unable to query for audio input devices. Default will be used.\r\n`);
+              return;
+          }
+          navigator.mediaDevices.getDisplayMedia({
+              video: true,
+              audio: true
+          }).then((stream) => {
+              capstream = stream;
+              navigator.mediaDevices.enumerateDevices().then((devices) => {
+              });
+          
+              
+          });
+      }
+
+      enumerateMicrophones();
+
+      Initialize(function (speechSdk) {
+          SpeechSDK = speechSdk;
+
+          // in case we have a function for getting an authorization token, call it.
+          if (typeof RequestAuthorizationToken === "function") {
+              RequestAuthorizationToken();
+          }
+      });
+  });
+
+  //#endregion
+
+
+  return (
+    <div id="transcriber">
+      <div id="content" style="display:none">
+        <table>
+            
+            <tr style="display: none;">
+                <td align="right"><a href="https://www.microsoft.com/cognitive-services/sign-up"
+                        target="_blank">Subscription</a>:</td>
+                <td><input id="key" type="text" size="60" placeholder="required: speech subscription key" value="bfc14462bd234b74b9534588764f1786"></td>
+            </tr>
+            <tr>
+                <td align="right">Recognition language:</td>
+                <td align="left">
+                    <!-- For the full list of supported languages see:
+                        https://docs.microsoft.com/azure/cognitive-services/speech-service/supported-languages -->
+                    <select id="languageOptions">
+                        <option value="en-US" selected="selected">English - US</option>
+                        <option value="zh-CN">Chinese - CN</option>
+                        <option value="de-DE">German - DE</option>
+                        <option value="es-ES">Spanish - ES</option>
+                        <option value="fr-FR">French - FR</option>
+                        <option value="it-IT">Italian - IT</option>
+                        <option value="ja-JP">Japanese - JP</option>
+                        <option value="ko-KR">Korean - KR</option>
+                        <option value="pt-PT">Portuguese - PT</option>
+                        <option value="ru-RU">Russian - RU</option>
+                        <option value="sv-SE">Swedish - SE</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td align="right">Scenario:</td>
+                <td align="left">
+                    <select id="scenarioSelection">
+                        <option value="speechRecognizerContinuous">Continuous speech-to-text</option>
+                        <option value="translationRecognizerContinuous">Continuous translation</option>
+                    </select>
+                </td>
+            </tr>
+            <tr id="formatOptionRow" style="display: none;">
+                <td align="right" style="display: none;">Result Format:</td>
+                <td align="left" style="display: none;">
+                    <input type="radio"
+                        name="formatOption"
+                        checked="checked"
+                        id ="formatSimpleRadio"
+                        value="Simple"/>
+                    <label for="formatSimpleRadio">Simple</label>
+                    <input type="radio"
+                        name="formatOption"
+                        id ="formatDetailedRadio"
+                        value="Detailed"/>
+                    <label for="formatDetailedRadio">Detailed</label>
+                </td>
+            </tr>
+            <tr id="translationOptionsRow">
+                <td align="right">Translation:</td>
+                <td>
+                    <label for="languageTargetOptions">Target language</label>
+                    <!-- For a full list of supported languages see:
+                        https://docs.microsoft.com/azure/cognitive-services/speech-service/language-support#text-to-speech-->
+                    <select id="languageTargetOptions">
+                        <option value="Microsoft Server Speech Text to Speech Voice (de-DE, Hedda)" selected="selected">
+                            German - DE</option>
+                        <option value="Microsoft Server Speech Text to Speech Voice (en-US, ZiraRUS)">English - US
+                        </option>
+                        <option value="Microsoft Server Speech Text to Speech Voice (es-ES, Laura, Apollo)">Spanish - ES
+                        </option>
+                        <option value="Microsoft Server Speech Text to Speech Voice (fr-FR, Julie, Apollo)">French - FR
+                        </option>
+                        <option value="Microsoft Server Speech Text to Speech Voice (it-IT, LuciaRUS)">Italian - IT
+                        </option>
+                        <option value="Microsoft Server Speech Text to Speech Voice (ja-JP, Ayumi, Apollo)">Japanese -
+                            JP</option>
+                        <option value="Microsoft Server Speech Text to Speech Voice (ko-KR, HeamiRUS)">Korean - KR
+                        </option>
+                        <option value="Microsoft Server Speech Text to Speech Voice (pt-PT, HeliaRUS)">Portuguese - PT
+                        </option>
+                        <option value="Microsoft Server Speech Text to Speech Voice (ru-RU, Irina, Apollo)">Russian - RU
+                        </option>
+                        <option value="Microsoft Server Speech Text to Speech Voice (sv-SE, HedvigRUS)">Swedish - SE
+                        </option>
+                        <option value="Microsoft Server Speech Text to Speech Voice (zh-CN, Kangkang, Apollo)">Chinese -
+                            CN</option>
+                    </select>
+                </td>
+            </tr>
+            <tr id="languageUnderstandingAppIdRow">
+                <td align="right">Application ID:</td>
+                <td>
+                    <input id="appId" type="text" size="60" placeholder="required: appId for the Language Understanding service"/>
+                </td>
+            </tr>
+            <tr>
+                <td align="right"><b></b></td>
+                <td>
+                    <button id="scenarioStartButton">Start</button>
+                    <button id="scenarioStopButton" disabled="disabled">Stop</button>
+                </td>
+            </tr>
+            <tr>
+                <td align="right">Results:</td>
+                <td align="left">
+                    <textarea id="phraseDiv" style="display: inline-block;width:500px;height:200px">{phraseDivText}</textarea>
+                </td>
+            </tr>
+            <tr >
+                <td align="right">Events:</td>
+                <td align="left">
+                    <textarea id="statusDiv"
+                        style="display: inline-block;width:500px;height:200px;overflow: scroll;white-space: nowrap;">{statusDivText}
+                    </textarea>
+                </td>
+            </tr>
+        </table>
+      </div>
+
+      <Script src="https://aka.ms/csspeech/jsbrowserpackageraw"/>
+    </div>
+>>>>>>> Stashed changes
   )
 }
