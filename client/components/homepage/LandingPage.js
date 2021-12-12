@@ -24,7 +24,12 @@ export default function LandingPage() {
     signInWithPopup(auth, provider)
       .then((res) => {
         let user = res.user;
-        console.log('uid:', user.uid);
+
+        const credential = GoogleAuthProvider.credentialFromResult(res);
+        const token = credential.accessToken;
+        console.log(token);
+
+        console.log('uid:', user);
         setIsLoggedIn(true);
         setUserName(user.displayName);
         readUserData(user.uid, () => Router.push('/userinterface'), () => Router.push('/signup'));

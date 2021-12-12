@@ -8,18 +8,19 @@
     "lint": "next lint"
   },
   "dependencies": {
-<<<<<<< HEAD
-    "firebase": "^9.6.1",
-=======
     "@ant-design/icons": "^4.7.0",
     "antd": "^4.17.3",
->>>>>>> 09b9c4bf3cafde676db77db6b4f3c465f2c47c2b
+    "firebase": "^9.6.1",
+    "i18next": "^21.6.0",
+    "i18next-browser-languagedetector": "^6.1.2",
+    "i18next-http-backend": "^1.3.1",
     "next": "12.0.7",
     "react": "^17.0.2",
     "react-dom": "17.0.2",
     "react-dropdown": "^1.9.2",
     "react-firebase-hooks": "^4.0.1",
-    "react-firebaseui": "^6.0.0"
+    "react-firebaseui": "^6.0.0",
+    "react-i18next": "^11.15.0"
   },
   "devDependencies": {
     "eslint": "8.4.1",
