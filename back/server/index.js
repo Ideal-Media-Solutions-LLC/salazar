@@ -241,15 +241,17 @@ app.get('/video/link', (req, res) => {
   res.send('Hello World');
 });
 
-app.get('/video/token', (req, res) => {
+app.post('/video/token', (req, res) => {
   axios({
     method: 'post',
     url: 'https://eastus.api.cognitive.microsoft.com/sts/v1.0/issueToken',
     headers: {
       'Content-Type': 'application/json',
       'Ocp-Apim-Subscription-Key': api_z
-    },
-  }).then((response) => {res.send(response)})
+    }
+  }).then((response) => {
+    res.send(JSON.stringify(response.data))
+  })
   .catch((error => {
     console.log(error);
     res.sendStatus(500);
