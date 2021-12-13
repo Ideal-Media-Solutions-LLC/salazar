@@ -26,6 +26,14 @@ export default function Home() {
           </a>
 
         </Link>
+        <Link href = 'speech'>
+
+          <a>
+            Go to speech
+          </a>
+
+        </Link>
+
 
 
 
