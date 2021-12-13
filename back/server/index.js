@@ -104,14 +104,46 @@ app.post('/chat', (req, res) => {
 
 //azure translation
 const axios = require('axios');
+const { v4: uuidv4 } = require('uuid');
+
+var subscriptionKey = require('../Azure_api_config.js');
+var endpoint = "https://api.cognitive.microsofttranslator.com";
 
 app.get('/chat/translation', (req, res) => {
-  const messages = await db.collection('messages').doc(req.body.sender_ID).where('user_id', '==', req.body.reciever_ID);
+  const messages = await db.collection('messages').doc(req.query.sender_ID).where('user_id', '==', req.query.reciever_ID);
   var promises = [];
   for (var i = 0; i < messages.length; ++i) {
-    
+
   }
+
+  // Add your location, also known as region. The default is global.
+  // This is required if using a Cognitive Services resource.
+  var location = "westus2";
+  var language = req.query.language;
+
+  axios({
+    baseURL: endpoint,
+    url: '/translate',
+    method: 'post',
+    headers: {
+        'Ocp-Apim-Subscription-Key': subscriptionKey.token,
+        'Ocp-Apim-Subscription-Region': location,
+        'Content-type': 'application/json',
+        'X-ClientTraceId': uuidv4().toString()
+    },
+    params: {
+        'api-version': '3.0',
+        'to': language
+    },
+    data: [{
+        'text': 'Hello World!'
+    }],
+    responseType: 'json'
+  }).then(function(response){
+    console.log(JSON.stringify(response.data, null, 4));
+  })
 })
+
 //#endregion
 
 //#region calendar
