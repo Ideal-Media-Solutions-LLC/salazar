@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Switch, DatePicker, Button, Input, Modal } from 'antd';
 import styles from '../../styles/modals/ScheduleCall.module.css';
+// import axios from 'axios';
 
 const ScheduleCall = function(props) {
   const [time, setTime ] = useState({hour: 0, minutes: 0});
@@ -15,14 +16,24 @@ const ScheduleCall = function(props) {
 
   const sendInvitation = function(e) {
    if (time.hour && time.minutes && day && message) {
-    let hour;
     // If pm toggle selected adds 12 to hours
+    let hour;
     AmPm ? hour = Number(time.hour) + 12 : hour = time.hour;
 
     const data = {
+      toUser: props.user,
       date: new Date(`${day}T${hour < 10 ? ('0'+String(hour)) : hour}:${time.minutes < 10 ? ('0'+String(time.minutes)) : time.minutes}:00`),
       message
+
     }
+
+  //   axios.post('calendar/events', data)
+  //     .then(results => {
+  //       props.close(null);
+  //     })
+  //     .catch(err => {
+  //       console.log('Failed to send google calendar invitation.', err);
+  //     });
 
     console.log(data);
     props.close(null);

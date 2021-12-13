@@ -1,35 +1,50 @@
-import Image from 'next/image';
-import { Button } from 'antd';
+// import Image from 'next/image';
+import { Image, Button } from 'antd';
 import { CalendarOutlined, MessageOutlined } from '@ant-design/icons';
 import ScheduleCall from '../modals/ScheduleCall.js';
 
 export default function Card(props) {
-
+  const {username, photo, languages, uid} = props.user;
+  const skillLevel = {
+    1: 'Beginner',
+    2: 'Intermediate',
+    3: 'Fluent'
+  }
+  const listLanguages = function() {
+    const elements = [];
+    for (let language in languages) {
+      const element =  (<div>{language} : {skillLevel[languages[language]]}</div>)
+      elements.push(element)
+    }
+    return elements;
+  }
 
   return (
     <div className='card'>
       <div >
-        <Image className='profilepic'
-            src="/assets/profile.png"
+        <Image
+            preview = {false}
+            className='profilepic'
+            src={props.user.image || "https://picsum.photos/id/237/200/300"}
             width={60}
             height={60}
             layout='intrinsic'
+            alt = 'profile-picture'
         />
 
       </div>
 
       <div>
-        name
+        {props.user.username}
       </div>
 
-      <div>Laguange level
-      Laguange level
-      Laguange level
+      <div>
+        {listLanguages()}
       </div>
 
       <div>
       <MessageOutlined style ={{fontSize: '20px', margin: '10px'}}/>
-      <CalendarOutlined onClick = {()=> {props.setModalSchedule( <ScheduleCall close = {props.setModalSchedule}/>)}} style ={{fontSize: '20px', margin: '10px'}}/>
+      <CalendarOutlined onClick = {()=> {props.setModalSchedule( <ScheduleCall user = {uid} close = {props.setModalSchedule}/>)}} style ={{fontSize: '20px', margin: '10px'}}/>
       </div>
 
     </div>
