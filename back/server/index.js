@@ -2,9 +2,9 @@ const express = require('express');
 const app = express();
 app.use(express.json());
 const port = require('../port.js');
-import { route } from 'express/lib/application';
-import { writeLanguages } from '../helpers.js';
-const firefunctions = require('../helpers.js');
+// import { route } from 'express/lib/application';
+// import { writeLanguages } from '../helpers.js';
+// const firefunctions = require('../helpers.js');
 
 app.get('/', (req, res) => {
   res.send('Hello World');
@@ -64,7 +64,7 @@ initializeApp({
 
 const db = getFirestore();
 
-app.get('/chat', (req, res) => {
+app.get('/chat', async (req, res) => {
   const getMessagesFromMe = await db.collection('messages').doc(req.query.sender_ID).where('user_id', '==', req.query.reciever_ID).get();
   const getMessagesFromOther = await db.collection('messages').doc(req.query.reciever_ID).where('user_id', '==', req.query.sender_ID).get();
 
@@ -99,7 +99,7 @@ app.get('/chat', (req, res) => {
   res.send(inOrderMsg);
 });
 
-app.post('/chat', (req, res) => {
+app.post('/chat', async (req, res) => {
   const getMessagesFromOther = await db.collection('messages').doc(req.body.reciever_ID).where('user_id', '==', req.query.sender_ID).get();
 
   //{reviever_ID: sender_ID: {msg}}
@@ -140,39 +140,36 @@ const { v4: uuidv4 } = require('uuid');
 var subscriptionKey = require('../Azure_api_config.js');
 var endpoint = "https://api.cognitive.microsofttranslator.com";
 
-app.get('/chat/translation', (req, res) => {
-  const messages = await db.collection('messages').doc(req.query.sender_ID).where('user_id', '==', req.query.reciever_ID);
-  var promises = [];
-  for (var i = 0; i < messages.length; ++i) {
-
-  }
-
-  // Add your location, also known as region. The default is global.
-  // This is required if using a Cognitive Services resource.
+app.get('/chat/translation', async (req, res) => {
   var location = "westus2";
   var language = req.query.language;
-
-  axios({
-    baseURL: endpoint,
-    url: '/translate',
-    method: 'post',
-    headers: {
-        'Ocp-Apim-Subscription-Key': subscriptionKey.token,
-        'Ocp-Apim-Subscription-Region': location,
-        'Content-type': 'application/json',
-        'X-ClientTraceId': uuidv4().toString()
-    },
-    params: {
-        'api-version': '3.0',
-        'to': language
-    },
-    data: [{
-        'text': 'Hello World!'
-    }],
-    responseType: 'json'
-  }).then(function(response){
-    console.log(JSON.stringify(response.data, null, 4));
-  })
+  const messages = await db.collection('messages').doc(req.query.sender_ID).where('user_id', '==', req.query.reciever_ID);
+  // const messages = [{Time: '4:30', message:'Hello there'}, {Time: '5:00', message: 'Wow. Ignore me. That is cool'}, {Time: '6:00', message: 'Baby come back'}];
+  var translatedMessages = [];
+  for (var i = 0; i < messages.length; ++i) {
+    await axios({
+      baseURL: endpoint,
+      url: '/translate',
+      method: 'post',
+      headers: {
+          'Ocp-Apim-Subscription-Key': subscriptionKey.token,
+          'Ocp-Apim-Subscription-Region': location,
+          'Content-type': 'application/json',
+          'X-ClientTraceId': uuidv4().toString()
+      },
+      params: {
+          'api-version': '3.0',
+          'to': language
+      },
+      data: [{
+          'text': messages[i].message
+      }],
+      responseType: 'json'
+    }).then((result) => {
+      translatedMessages.push(result.data[0]['translations'][0]['text']);
+    });
+  }
+  res.send(translatedMessages);
 })
 
 //#endregion
