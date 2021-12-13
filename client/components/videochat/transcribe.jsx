@@ -516,6 +516,21 @@ export default function Transcribe() {
 
   useEffect(()=> {
     // RequestAuthorizationToken();
+    // getAudioConfig();
+    // setSpeechSDK(SpeechSDK);
+    try {
+      var AudioContext = window.AudioContext // our preferred impl
+        || window.webkitAudioContext       // fallback, mostly when on Safari
+        || false;                          // could not find.
+  
+      if (AudioContext) {
+        soundContext = new AudioContext();
+      } else {
+        alert("Audio context not supported");
+      }
+    } catch (e) {
+      console.log("no sound context found, no audio output. " + e);
+    }
   }, []);
 
   // useEffect(()=> {
