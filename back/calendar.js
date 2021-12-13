@@ -10,7 +10,7 @@ function listEvents(callback) {
     calendarId: 'primary',
     timeMin: (new Date()).toISOString(),
     maxResults: 10,
-    q: 'Salazar',
+    //q: 'Salazar',
     singleEvents: true,
     orderBy: 'startTime',
   },
@@ -28,8 +28,8 @@ function createEvent(callback) {
   const calendar = google.calendar({ version: 'v3'});
   const startTime = '2021-12-13T19:00:00-07:00';
   const endTime = '2021-12-13T19:30:00-07:00';
-  const peer = 'caranibarf@gmail.com';
-  const description = 'Para que me cuentes tus historias que te estas haciendo a la loca super heavy';
+  const peer = '1makedadavis@gmail.com';
+  const description = 'Trying out during our meeting';
 
   var event = {
     'summary': 'Salazar has found you a language partner',
