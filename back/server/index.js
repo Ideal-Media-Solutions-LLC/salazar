@@ -2,8 +2,8 @@ const express = require('express');
 const app = express();
 app.use(express.json());
 const port = require('../port.js');
-import { route } from 'express/lib/application';
-import { writeLanguages } from '../helpers.js';
+//import { route } from 'express/lib/application';
+//import { writeLanguages } from '../helpers.js';
 const firefunctions = require('../helpers.js');
 
 app.get('/', (req, res) => {
@@ -13,7 +13,7 @@ app.get('/', (req, res) => {
 
 //#region user auth
 
-app.get('/auth', (req, res) => {
+app.get('/auth', async (req, res) => {
   const result = await firefunctions.get(req.query.uid);
   if (result === null) {
     res.send(400);
@@ -43,11 +43,8 @@ app.post('/auth', (req, res) => {
   });
 });
 
-app.post('/user', async (req, res) => {
-  const path = req.body.path;
-  const languages = req.body.languages;
-  const body = req.body.
-}
+
+
 //#endregion
 
 
