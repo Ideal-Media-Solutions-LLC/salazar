@@ -3,7 +3,7 @@ import Script from 'next/script';
 
 export default function Transcribe() {
 
-  const [SpeechSDK, setSpeechSDK] = useState(null);
+  //const [SpeechSDK, setSpeechSDK] = useState(null);
   const [reported, setReported] = useState(null);
 
   //#region browser hooks states
@@ -97,26 +97,10 @@ export default function Transcribe() {
     var speechConfig = getSpeechConfig(SpeechSDK.SpeechConfig);
     if (!audioConfig || !speechConfig) return;
 
-    // Create the SpeechRecognizer and set up common event handlers and PhraseList data
     reco = new SpeechSDK.SpeechRecognizer(speechConfig, audioConfig);
     applyCommonConfigurationTo(reco);
 
-    // Note: in this scenario sample, the 'recognized' event is not being set to instead demonstrate
-    // continuation on the 'recognizeOnceAsync' call. 'recognized' can be set in much the same way as
-    // 'recognizing' if an event-driven approach is preferable.
     reco.recognized = undefined;
-
-    // Note: this scenario sample demonstrates result handling via continuation on the recognizeOnceAsync call.
-    // The 'recognized' event handler can be used in a similar fashion.
-    reco.recognizeOnceAsync(
-      function (successfulResult) {
-          onRecognizedResult(successfulResult);
-      },
-      function (err) {
-          window.console.log(err);
-          phraseDiv.innerHTML += "ERROR: " + err;
-      }
-    );
   }
 
   function doContinuousRecognition() {
@@ -126,13 +110,9 @@ export default function Transcribe() {
     var speechConfig = getSpeechConfig(SpeechSDK.SpeechConfig);
     if (!speechConfig) return;
 
-    // Create the SpeechRecognizer and set up common event handlers and PhraseList data
     reco = new SpeechSDK.SpeechRecognizer(speechConfig, audioConfig);
     applyCommonConfigurationTo(reco);
 
-    // Start the continuous recognition. Note that, in this continuous scenario, activity is purely event-
-    // driven, as use of continuation (as is in the single-shot sample) isn't applicable when there's not a
-    // single result.
     reco.startContinuousRecognitionAsync();
   }
 
@@ -147,17 +127,12 @@ export default function Transcribe() {
         return;
     }
 
-    // Intent recognizers should be configured with a LanguageUnderstandingModel derived from a known appId.
-    // Set up a Language Understanding Model from Language Understanding Intelligent Service (LUIS).
-    // See https://www.luis.ai/home for more information on LUIS.
     reco = new SpeechSDK.IntentRecognizer(speechConfig, audioConfig);
     var intentModel = SpeechSDK.LanguageUnderstandingModel.fromAppId(appId.value);
     reco.addAllIntents(intentModel);
 
-    // Apply standard event handlers and PhraseListGrammar data
     applyCommonConfigurationTo(reco);
 
-    // Start the intent recognition. Results will arrive on the appropriate event handlers.
     reco.recognizeOnceAsync();
   }
 
@@ -168,15 +143,9 @@ export default function Transcribe() {
     var speechConfig = getSpeechConfig(SpeechSDK.SpeechTranslationConfig);
     if (!audioConfig || !speechConfig) return;
 
-    // Create the TranslationRecognizer and set up common event handlers and PhraseListGrammar data.
     reco = new SpeechSDK.TranslationRecognizer(speechConfig, audioConfig);
     applyCommonConfigurationTo(reco);
 
-    // Additive in TranslationRecognizer, the 'synthesizing' event signals that a payload chunk of synthesized
-    // text-to-speech data is available for playback.
-    // If the event result contains valid audio, it's reason will be ResultReason.SynthesizingAudio
-    // Once a complete phrase has been synthesized, the event will be called with
-    // ResultReason.SynthesizingAudioComplete and a 0-byte audio payload.
     reco.synthesizing = function (s, e) {
       var audioSize = e.result.audio === undefined ? 0 : e.result.audio.byteLength;
 
@@ -192,7 +161,6 @@ export default function Transcribe() {
       }
     };
 
-    // Start the continuous recognition/translation operation.
     reco.startContinuousRecognitionAsync();
   }
 
@@ -214,18 +182,6 @@ export default function Transcribe() {
         speechConfig = sdkConfigType.fromSubscription(key.value, "eastus");
     }
 
-    // Setting the result output format to Detailed will request that the underlying
-    // result JSON include alternates, confidence scores, lexical forms, and other
-    // advanced information.
-    // if (useDetailedResults && sdkConfigType != SpeechSDK.SpeechConfig) {
-    //     window.console.log('Detailed results are not supported for this scenario.\r\n');
-    //     document.getElementById('formatSimpleRadio').click();
-    // } else if (useDetailedResults) {
-    //     speechConfig.outputFormat = SpeechSDK.OutputFormat.Detailed;
-    // }
-
-    // Defines the language(s) that speech should be translated to.
-    // Multiple languages can be specified for text translation and will be returned in a map.
     if (sdkConfigType == SpeechSDK.SpeechTranslationConfig) {
         speechConfig.addTargetLanguage(languageTargetOptions);
         //speechConfig.addTargetLanguage(languageTargetOptions.value.split("(")[1].substring(0, 5));
@@ -252,20 +208,23 @@ export default function Transcribe() {
   }
 
   function onRecognizedResult(result) {
+
     phraseDiv.scrollTop = phraseDiv.scrollHeight;
+    let tempStatus = '';
+    let tempPhrase = '';
+
 
     statusDiv.innerHTML += `(recognized)  Reason: ${SpeechSDK.ResultReason[result.reason]}`;
       phraseDiv.innerHTML = phraseDiv.innerHTML.replace(/(.*)(^|[\r\n]+).*\[\.\.\.\][\r\n]+/, '$1$2');
     
-
     switch (result.reason) {
       case SpeechSDK.ResultReason.NoMatch:
         var noMatchDetail = SpeechSDK.NoMatchDetails.fromResult(result);
-        statusDiv.innerHTML += ` NoMatchReason: ${SpeechSDK.NoMatchReason[noMatchDetail.reason]}\r\n`;
+        tempStatus += ` NoMatchReason: ${SpeechSDK.NoMatchReason[noMatchDetail.reason]}\r\n`;
         break;
       case SpeechSDK.ResultReason.Canceled:
         var cancelDetails = SpeechSDK.CancellationDetails.fromResult(result);
-        statusDiv.innerHTML += ` CancellationReason: ${SpeechSDK.CancellationReason[cancelDetails.reason]}`;
+        tempStatus += ` CancellationReason: ${SpeechSDK.CancellationReason[cancelDetails.reason]}`;
             + (cancelDetails.reason === SpeechSDK.CancellationReason.Error 
                 ? `: ${cancelDetails.errorDetails}` : ``)
             + `\r\n`;
@@ -273,37 +232,28 @@ export default function Transcribe() {
       case SpeechSDK.ResultReason.RecognizedSpeech:
       case SpeechSDK.ResultReason.TranslatedSpeech:
       case SpeechSDK.ResultReason.RecognizedIntent:
-        statusDiv.innerHTML += `\r\n`;
+        tempStatus += `\r\n`;
 
-        if (useDetailedResults) {
-            var detailedResultJson = JSON.parse(result.json);
-
-            // Detailed result JSON includes substantial extra information:
-            //  detailedResultJson['NBest'] is an array of recognition alternates
-            //  detailedResultJson['NBest'][0] is the highest-confidence alternate
-            //  ...['Confidence'] is the raw confidence score of an alternate
-            //  ...['Lexical'] and others provide different result forms
-            var displayText = detailedResultJson['DisplayText'];
-            phraseDiv.innerHTML += `Detailed result for "${displayText}":\r\n`
-            + `${JSON.stringify(detailedResultJson, null, 2)}\r\n`;
-        } else if (result.text) {
-            phraseDiv.innerHTML += `${result.text}\r\n`;
+        if (result.text) {
+          // setPhraseDiv(phraseDivText + `${result.text}\r\n`);
+          tempPhrase += `${result.text}\r\n`;
         }
 
         var intentJson = result.properties
-            .getProperty(SpeechSDK.PropertyId.LanguageUnderstandingServiceResponse_JsonResult);
+          .getProperty(SpeechSDK.PropertyId.LanguageUnderstandingServiceResponse_JsonResult);
         if (intentJson) {
-            phraseDiv.innerHTML += `${intentJson}\r\n`;
+          tempPhrase += `${intentJson}\r\n`;
         }
 
         if (result.translations) {
-            var resultJson = JSON.parse(result.json);
-            resultJson['privTranslationPhrase']['Translation']['Translations'].forEach(
-                function (translation) {
-                phraseDiv.innerHTML += ` [${translation.Language}] ${translation.Text}\r\n`;
-            });
+          var resultJson = JSON.parse(result.json);
+          resultJson['privTranslationPhrase']['Translation']['Translations'].forEach(
+            function (translation) {
+              tempPhrase += ` [${translation.Language}] ${translation.Text}\r\n`;
+          });
         }
     }
+
   }
 
   function onSessionStarted(sender, sessionEventArgs) {
@@ -398,19 +348,7 @@ export default function Transcribe() {
   // var soundContext = undefined;
 
   // var capstream;
-  try {
-    var AudioContext = window.AudioContext // our preferred impl
-      || window.webkitAudioContext       // fallback, mostly when on Safari
-      || false;                          // could not find.
 
-    if (AudioContext) {
-      soundContext = new AudioContext();
-    } else {
-      alert("Audio context not supported");
-    }
-  } catch (e) {
-    console.log("no sound context found, no audio output. " + e);
-  }
 
   function resetUiForScenarioStart() {
     setPhraseDiv("");
@@ -536,7 +474,28 @@ export default function Transcribe() {
 
   useEffect(()=> {
     // RequestAuthorizationToken();
+    // getAudioConfig();
+    // setSpeechSDK(SpeechSDK);
+    try {
+      var AudioContext = window.AudioContext // our preferred impl
+        || window.webkitAudioContext       // fallback, mostly when on Safari
+        || false;                          // could not find.
+  
+      if (AudioContext) {
+        soundContext = new AudioContext();
+      } else {
+        alert("Audio context not supported");
+      }
+    } catch (e) {
+      console.log("no sound context found, no audio output. " + e);
+    }
   }, []);
+
+  // useEffect(()=> {
+  //   // RequestAuthorizationToken();
+  //   // getAudioConfig();
+  //   //setSpeechSDK(SpeechSDK);
+  // }, [SpeechSDK]);
 
   return (
     <div id="transcriber">
