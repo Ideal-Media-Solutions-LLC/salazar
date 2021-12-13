@@ -18,7 +18,7 @@ export default function VideoChat() {
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Video CHat
+          Video Chat
         </h1>
         
         <Transcribe/>
