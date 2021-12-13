@@ -1,5 +1,7 @@
 import '../styles/globals.css'
-import {AppWrapper} from '../components/context/State.js';
+import '../styles/carousel.css'
+
+import { AppWrapper } from '../components/context/State.js';
 
 function MyApp({ Component, pageProps }) {
   return <AppWrapper><Component {...pageProps} /></AppWrapper>
