@@ -1,12 +1,22 @@
 import Image from 'next/image';
-import { Button } from 'antd';
+import Languages from './languages.js';
+import { Button, Modal, Popover } from 'antd';
+import React, { useEffect, useState } from "react";
 
 
 export default function Sidebar() {
-  // const [username, setUserName] = useState('test');
-  // let sharedState = {
-  //   username, setUserName
-  // }
+
+ const [visible, setVisible] = useState(false);
+
+ const showModal = () => {
+    setVisible(true);
+  };
+
+  const hide = () => {
+    setVisible(false);
+  };
+
+  // const [modalText, setModalText] = useState('Content of the modal');
 
   return (
     <div className='useinfo'>
@@ -19,20 +29,30 @@ export default function Sidebar() {
         />
         <div>Name</div>
         <Button className='button'>Log out</Button>
+
+        <Button className='button' type="primary" onClick={showModal}>
+          Languages
+        </Button>
+
+        <Popover
+          content={
+          <div>
+            <div><Languages/></div>
+            <a onClick={hide}>Cancel</a>
+            <a style={{marginLeft:'15px'}} onClick={hide}>Submit</a>
+          </div>}
+          title="Language List"
+          trigger="click"
+          visible={visible}
+          >
+
+        </Popover>
+
       </div>
 
-        <div>
-          <div>Language1 + level</div>
-          <div>Language2 + level</div>
-          <div>Language3 + level</div>
-          <div>Language1 + level</div>
-          <div>Language2 + level</div>
-          <div>Language3 + level</div>
-        </div>
-
-        <div className='calendar'>
-        calendar
-        </div>
+      <div className='calendar'>
+      calendar
+      </div>
 
 
 
