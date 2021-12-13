@@ -8,21 +8,14 @@ export default function Transcribe() {
 
   //#region states
   
-  //#region display states
+  //#region display 
   const [phraseDivText, setPhraseDiv] = useState("");
   const [statusDivText, setStatusDiv] = useState("");
- 
-  const [scenarioStartButtonText, setScenarioStartButtonText] = useState("Start");
-  const [scenarioStopButtonText, setScenarioStopButton] = useState("");
-  const [formatSimpleRadio, setFormatSimpleRadio] = useState(null);
-  const [formatDetailedRadio, setFormatDetailedRadio] = useState(null);
-  
-  const [referenceText, setReferenceText] = useState(null);
-  const [thingsToDisableDuringSession, setThingsToDisableDuringSession] = useState(null);
+  const [startButtonEnabled, setStartButtonEnabled] = useState(false);
+  const [stopButtonEnabled, setStopButtonEnabled] = useState(false);
+  const [enableButtonOnOff, setEnableButtonOnOff] = useState(true);
   //#endregion
   
- 
-
   //#region speech sdk states
   const [mySpeechSDK, setSpeechSDK] = useState(null);
   const [key, setKey] = useState({value: "bfc14462bd234b74b9534588764f1786"});
@@ -43,7 +36,7 @@ export default function Transcribe() {
 
   var authorizationEndpoint = "token.php";
 
-  //#region react event handlers
+  //#region event handlers
   const onChangeLanguageTarget = function(e) {
     setLanguageTargetOptions(e.target.value.split("(")[1].substring(0, 5));
   }  
@@ -93,29 +86,21 @@ export default function Transcribe() {
 
   //#endregion
 
-  // const RequestAuthorizationToken = function() {
-  //   if (authorizationEndpoint) {
-  //     var a = new XMLHttpRequest();
-  //     a.open("GET", authorizationEndpoint);
-  //     a.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-  //     a.send("");
-  //     a.onload = function () {
-  //       var token = JSON.parse(atob(this.responseText.split(".")[1]));
-  //       setAuthorizationToken(this.responseText);
-  //       //key.disabled = true;
-  //       //key.value = "using authorization token (hit F5 to refresh)";
-  //       console.log("Got an authorization token: " + token);
-  //     }
-  //   }
-  // } 
-
-  // const Initialize = function(onComplete) {
-  //   if (!!window.SpeechSDK) {
-  //       document.getElementById('content').style.display = 'block';
-  //       document.getElementById('warning').style.display = 'none';
-  //       onComplete(window.SpeechSDK);
-  //   }
-  // }
+  const RequestAuthorizationToken = function() {
+    if (authorizationEndpoint) {
+      var a = new XMLHttpRequest();
+      a.open("GET", authorizationEndpoint);
+      a.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+      a.send("");
+      a.onload = function () {
+        var token = JSON.parse(atob(this.responseText.split(".")[1]));
+        setAuthorizationToken(this.responseText);
+        //key.disabled = true;
+        //key.value = "using authorization token (hit F5 to refresh)";
+        console.log("Got an authorization token: " + token);
+      }
+    }
+  } 
 
   //#region top level function
   function doRecognizeOnceAsync() {
@@ -211,7 +196,6 @@ export default function Transcribe() {
 
     if (sdkConfigType == SpeechSDK.SpeechTranslationConfig) {
         speechConfig.addTargetLanguage(languageTargetOptions);
-        //speechConfig.addTargetLanguage(languageTargetOptions.value.split("(")[1].substring(0, 5));
     }
 
     speechConfig.speechRecognitionLanguage = languageOptions;
@@ -319,44 +303,11 @@ export default function Transcribe() {
   }
 
   function applyCommonConfigurationTo(recognizer) {
-    // The 'recognizing' event signals that an intermediate recognition result is received.
-    // Intermediate results arrive while audio is being processed and represent the current "best guess" about
-    // what's been spoken so far.
     recognizer.recognizing = onRecognizing;
-
-    // The 'recognized' event signals that a finalized recognition result has been received. These results are
-    // formed across complete utterance audio (with either silence or eof at the end) and will include
-    // punctuation, capitalization, and potentially other extra details.
-    // 
-    // * In the case of continuous scenarios, these final results will be generated after each segment of audio
-    //   with sufficient silence at the end.
-    // * In the case of intent scenarios, only these final results will contain intent JSON data.
-    // * Single-shot scenarios can also use a continuation on recognizeOnceAsync calls to handle this without
-    //   event registration.
     recognizer.recognized = onRecognized;
-
-    // The 'canceled' event signals that the service has stopped processing speech.
-    // https://docs.microsoft.com/javascript/api/microsoft-cognitiveservices-speech-sdk/speechrecognitioncanceledeventargs?view=azure-node-latest
-    // This can happen for two broad classes of reasons:
-    // 1. An error was encountered.
-    //    In this case, the .errorDetails property will contain a textual representation of the error.
-    // 2. No additional audio is available.
-    //    This is caused by the input stream being closed or reaching the end of an audio file.
     recognizer.canceled = onCanceled;
-
-    // The 'sessionStarted' event signals that audio has begun flowing and an interaction with the service has
-    // started.
     recognizer.sessionStarted = onSessionStarted;
-
-    // The 'sessionStopped' event signals that the current interaction with the speech service has ended and
-    // audio has stopped flowing.
     recognizer.sessionStopped = onSessionStopped;
-
-    // PhraseListGrammar allows for the customization of recognizer vocabulary.
-    // The semicolon-delimited list of words or phrases will be treated as additional, more likely components
-    // of recognition results when applied to the recognizer.
-    //
-    // See https://docs.microsoft.com/azure/cognitive-services/speech-service/get-started-speech-to-text#improve-recognition-accuracy
   }
   //#endregion
 
@@ -382,7 +333,7 @@ export default function Transcribe() {
         <table>
             <tr>
               <td align="right"></td>
-              <td align="left"><button id="enableTranslation" onClick={onClickEnableTranslation} >Enable Translation</button></td>
+              <td align="left"><button id="enableTranslation" onClick={onClickEnableTranslation} style={{display: enableButtonOnOff ? 'block' : 'none' }} >Enable Translation</button></td>
             </tr>
             <tr>
                 <td align="right">Recognition language:</td>
@@ -411,22 +362,6 @@ export default function Transcribe() {
                     </select>
                 </td>
             </tr>
-            {/* <tr id="formatOptionRow">
-                <td align="right" >Result Format:</td>
-                <td align="left">
-                    <input type="radio"
-                        name="formatOption"
-                        checked="checked"
-                        id ="formatSimpleRadio"
-                        value="Simple"/>
-                    <label htmlFor="formatSimpleRadio">Simple</label>
-                    <input type="radio"
-                        name="formatOption"
-                        id ="formatDetailedRadio"
-                        value="Detailed"/>
-                    <label htmlFor="formatDetailedRadio">Detailed</label>
-                </td>
-            </tr> */}
             <tr id="translationOptionsRow">
                 <td align="right">Translation:</td>
                 <td>
@@ -457,17 +392,12 @@ export default function Transcribe() {
                     </select>
                 </td>
             </tr>
-            <tr id="languageUnderstandingAppIdRow">
-                <td align="right">Application ID:</td>
-                <td>
-                    <input id="appId" type="text" size="60" placeholder="required: appId for the Language Understanding service"/>
-                </td>
-            </tr>
+           
             <tr>
                 <td align="right"><b></b></td>
                 <td>
-                    <button id="scenarioStartButton" onClick={onClickScenarioStartButton}>{scenarioStartButtonText}</button>
-                    <button id="scenarioStopButton" disabled="disabled">Stop</button>
+                    <button id="scenarioStartButton" onClick={onClickScenarioStartButton} disabled={!startButtonEnabled}>Start</button>
+                    <button id="scenarioStopButton" onClick={onClickScenarioStopButton} disabled={!stopButtonEnabled}>Stop</button>
                 </td>
             </tr>
             <tr>
@@ -485,8 +415,6 @@ export default function Transcribe() {
             </tr>
         </table>
       </div>
-
-      {/* <Script src="https://aka.ms/csspeech/jsbrowserpackageraw"/> */}
       <Script src="microsoft.cognitiveservices.speech.sdk.bundle.js"/>
     </div>
   )
