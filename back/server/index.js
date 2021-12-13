@@ -7,6 +7,7 @@ const port = require('../port.js');
 //import { writeLanguages } from '../helpers.js';
 const firefunctions = require('../helpers.js');
 const api_z = require('../api_z.js');
+const api_z = require('../api_z.js');
 
 app.get('/', (req, res) => {
   res.send('Hello World');
