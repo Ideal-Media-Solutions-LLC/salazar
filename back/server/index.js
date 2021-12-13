@@ -2,7 +2,9 @@ const express = require('express');
 const app = express();
 app.use(express.json());
 const port = require('../port.js');
-
+import { route } from 'express/lib/application';
+import { writeLanguages } from '../helpers.js';
+const firefunctions = require('../helpers.js');
 
 app.get('/', (req, res) => {
   res.send('Hello World');
@@ -10,13 +12,42 @@ app.get('/', (req, res) => {
 
 
 //#region user auth
+
 app.get('/auth', (req, res) => {
+  const result = await firefunctions.get(req.query.uid);
+  if (result === null) {
+    res.send(400);
+  } else {
+    res.status(200).send(result);
+  }
   res.send('Hello World');
 });
 
 app.post('/auth', (req, res) => {
-  res.send('Hello World');
+  const data = req.body.info;
+  /*data = {
+    displayName: ,
+    languages: {
+      Chinese: 2,
+      Korean: 2,
+    }
+    uid: ,
+    email: ,
+    apikey: ,
+    refreshtoken: ,
+    photoURL: ,
+  }
+  */
+  firefunctions.write(req.body.uid, data).then(() => {
+    res.send(201);
+  });
 });
+
+app.post('/user', async (req, res) => {
+  const path = req.body.path;
+  const languages = req.body.languages;
+  const body = req.body.
+}
 //#endregion
 
 
