@@ -11,10 +11,15 @@ const { loadClient } = require('../googleCalApiClient.js');
 
 //import { route } from 'express/lib/application';
 //import { writeLanguages } from '../helpers.js';
+<<<<<<< HEAD
 const firefunctions = require('../helpers.js');
 const req = require('express/lib/request');
 const api_z = require('../api_z.js');
 
+=======
+//const firefunctions = require('../helpers.js');
+const api_z = require('../api_z.js');
+>>>>>>> video_bt
 
 app.get('/', (req, res) => {
   res.send('Hello World');
