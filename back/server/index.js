@@ -2,9 +2,9 @@ const express = require('express');
 const app = express();
 app.use(express.json());
 const port = require('../port.js');
-// import { route } from 'express/lib/application';
-// import { writeLanguages } from '../helpers.js';
-// const firefunctions = require('../helpers.js');
+import { route } from 'express/lib/application';
+import { writeLanguages } from '../helpers.js';
+const firefunctions = require('../helpers.js');
 
 app.get('/', (req, res) => {
   res.send('Hello World');
