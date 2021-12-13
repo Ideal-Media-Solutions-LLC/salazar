@@ -21,8 +21,7 @@ const {google} = require('googleapis');
 function listEvents(callback, userToken) {
 
 
-  let string = `{"access_token":"ya29.a0ARrdaM9ceFnU6X73_tgIwXnaXExATjqUJpya88lVuKf24U_CJE1NeRgdQCDJ9hP1cJdTa464wwzWD_nOQGReGSrnNhobSJr3UX_rHHoTUkcuc54B3EJfOILKqcV1sfswk9VKqdAGR2wiDWv1Z1Ujyn3de8W7","refresh_token":"1//06iv-Y7YqBRaICgYIARAAGAYSNwF-L9IrBYsgFsM_-Ym_Fti3gJawOcZ3VJQQ4mtDgamdexwJCMYJ9pCZH7bLpcFFVnT4wDAQqU8","scope":"https://www.googleapis.com/auth/calendar.events","token_type":"Bearer","expiry_date":1639254574701}`;
-
+  // string here
 
 
   const {client_secret, client_id, redirect_uris} = appAuth.installed;
