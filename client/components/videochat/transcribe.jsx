@@ -6,10 +6,25 @@ export default function Transcribe() {
   //const [SpeechSDK, setSpeechSDK] = useState(null);
   const [reported, setReported] = useState(null);
 
-  //#region browser hooks states
-  const [mySpeechSDK, setSpeechSDK] = useState(null);
+  //#region states
+  
+  //#region display states
   const [phraseDivText, setPhraseDiv] = useState("");
   const [statusDivText, setStatusDiv] = useState("");
+ 
+  const [scenarioStartButtonText, setScenarioStartButtonText] = useState("Start");
+  const [scenarioStopButtonText, setScenarioStopButton] = useState("");
+  const [formatSimpleRadio, setFormatSimpleRadio] = useState(null);
+  const [formatDetailedRadio, setFormatDetailedRadio] = useState(null);
+  
+  const [referenceText, setReferenceText] = useState(null);
+  const [thingsToDisableDuringSession, setThingsToDisableDuringSession] = useState(null);
+  //#endregion
+  
+ 
+
+  //#region speech sdk states
+  const [mySpeechSDK, setSpeechSDK] = useState(null);
   const [key, setKey] = useState({value: "bfc14462bd234b74b9534588764f1786"});
   const [authorizationToken, setAuthorizationToken] = useState(null);
   const [appId, setAppId] = useState(null);
@@ -18,16 +33,12 @@ export default function Transcribe() {
   const [useDetailedResults, setUseDetailedResults] = useState(null);
   const [recognizer, setRecognizer] = useState(null);
   const [scenarioSelection, setScenarioSelection] = useState("translationRecognizerContinuous");
-  const [scenarioStartButtonText, setScenarioStartButtonText] = useState("Start");
-  const [scenarioStopButtonText, setScenarioStopButton] = useState("");
-  const [formatSimpleRadio, setFormatSimpleRadio] = useState(null);
-  const [formatDetailedRadio, setFormatDetailedRadio] = useState(null);
   const [reco, setReco] = useState(null);
   const [languageTargetOptions, setLanguageTargetOptions] = useState("de-DE");
-  const [referenceText, setReferenceText] = useState(null);
-  const [thingsToDisableDuringSession, setThingsToDisableDuringSession] = useState(null);
   const [soundContext, setSoundContext] = useState(null);
   const [capstream, setCapstream] = useState(null);
+  //#endregion
+
   //#endregion
 
   var authorizationEndpoint = "token.php";
@@ -392,159 +403,20 @@ export default function Transcribe() {
   //#endregion
 
 
-  //#region browser hooks
-  // var phraseDiv, statusDiv;
-  // var key = {value: "bfc14462bd234b74b9534588764f1786"};
-  // var authorizationToken, appId;
-  // var languageOptions, formatOption;
-  // var useDetailedResults;
-  // var recognizer;
-  // var scenarioSelection, scenarioStartButton, scenarioStopButton;
-  // var formatSimpleRadio, formatDetailedRadio;
-  // var reco;
-  // var languageTargetOptions;
-  // var referenceText;
-
-  // var thingsToDisableDuringSession;
-
-  // var soundContext = undefined;
-
-  // var capstream;
-
-
   function resetUiForScenarioStart() {
     setPhraseDiv("");
     setStatusDiv("");
     //useDetailedResults = document.querySelector('input[name="formatOption"]:checked').value === "Detailed";
   }
 
-  // document.addEventListener("DOMContentLoaded", function () {
-  //     //scenarioStartButton = document.getElementById('scenarioStartButton');
-  //     //scenarioStopButton = document.getElementById('scenarioStopButton');
-  //     scenarioSelection = document.getElementById('scenarioSelection');
-
-  //     phraseDiv = document.getElementById("phraseDiv");
-  //     statusDiv = document.getElementById("statusDiv");
-  //     appId = document.getElementById("appId");
-  //     languageOptions = document.getElementById("languageOptions");
-  //     languageTargetOptions = document.getElementById("languageTargetOptions");
-  //     formatSimpleRadio = document.getElementById('formatSimpleRadio');
-  //     formatDetailedRadio = document.getElementById('formatDetailedRadio');
-  //     referenceText = document.getElementById('referenceText');
-
-  //     thingsToDisableDuringSession = [
-  //         key,
-  //         languageOptions,
-  //         scenarioSelection,
-  //         formatSimpleRadio,
-  //         formatDetailedRadio,
-  //         appId,
-  //         languageTargetOptions
-  //     ];
-
-  //     function setScenario() {
-  //         var startButtonText = (function() {
-  //             switch (scenarioSelection) {
-  //                 case 'speechRecognizerContinuous':  return 'startContinuousRecognitionAsync()';
-  //                 case 'translationRecognizerContinuous': return 'startContinuousTranslation()';
-  //             }
-  //         })();
-
-          //scenarioStartButton.innerHTML = startButtonText;
-          // setScenarioStartButtonText(startButtonText);
-          // setScenarioStopButtonText(`STOP ${startButtonText}`);
-          //scenarioStopButton.innerHTML = `STOP ${startButtonText}`;
-
-          // document.getElementById('languageUnderstandingAppIdRow').style.display = scenarioSelection 'intentRecognizerRecognizeOnce' ? '' : 'none';
-
-          // var detailedResultsSupported = 
-          //     (scenarioSelection === "speechRecognizerRecognizeOnce"
-          //     || scenarioSelection === "speechRecognizerContinuous");
-          // document.getElementById('formatOptionRow').style.display = detailedResultsSupported ? '' : 'none';
-
-          // document.getElementById('translationOptionsRow').style.display =
-          //     scenarioSelection == 'translationRecognizerContinuous' ? '' : 'none';
-          
-      // }
-
-      // scenarioSelection.addEventListener("change", function () {
-      //     setScenario();
-      // });
-      // setScenario();
-
-      // scenarioStartButton.addEventListener("click", function () {
-      //     switch (scenarioSelection.value) {
-      //         case 'speechRecognizerContinuous':
-      //             doContinuousRecognition();
-      //             break;
-      //         case 'translationRecognizerContinuous':
-      //             doContinuousTranslation();
-      //             break;
-      //     }
-      // });
-
-      // scenarioStopButton.addEventListener("click", function() {
-      //     switch (scenarioSelection.value) {
-      //         case 'speechRecognizerContinuous':
-      //         case 'translationRecognizerContinuous':
-      //             reco.stopContinuousRecognitionAsync(
-      //                 function () {
-      //                     reco.close();
-      //                     reco = undefined;
-      //                 },
-      //                 function (err) {
-      //                     reco.close();
-      //                     reco = undefined;
-      //                 }
-      //             );
-      //             break;
-      //     }
-      // });
-
-      
-
-      // function enumerateMicrophones() {
-      //     if (!navigator || !navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
-      //         console.log(`Unable to query for audio input devices. Default will be used.\r\n`);
-      //         return;
-      //     }
-      //     navigator.mediaDevices.getDisplayMedia({
-      //         video: true,
-      //         audio: true
-      //     }).then((stream) => {
-      //         capstream = stream;
-      //         navigator.mediaDevices.enumerateDevices().then((devices) => {
-      //         });
-          
-              
-  //         });
-  //     }
-
-  //     enumerateMicrophones();
-
-  //     Initialize(function (speechSdk) {
-  //         SpeechSDK = speechSdk;
-
-  //         // in case we have a function for getting an authorization token, call it.
-  //         if (typeof RequestAuthorizationToken === "function") {
-  //             RequestAuthorizationToken();
-  //         }
-  //     });
-  // });
-
-  //#endregion
-
+  
   useEffect(()=> {
     // RequestAuthorizationToken();
     // getAudioConfig();
-    setSpeechSDK(window.SpeechSDK);
+    //setSpeechSDK(window.SpeechSDK);
   }, []);
 
-  // useEffect(()=> {
-  //   // RequestAuthorizationToken();
-  //   // getAudioConfig();
-  //   //setSpeechSDK(SpeechSDK);
-  // }, [SpeechSDK]);
+
 
   return (
     <div id="transcriber">
@@ -552,7 +424,7 @@ export default function Transcribe() {
         <table>
             <tr>
               <td align="right"></td>
-              <td align="left"><button id="enableTranslation" onClick={onClickEnableTranslation}>Enable Translation</button></td>
+              <td align="left"><button id="enableTranslation" onClick={onClickEnableTranslation} >Enable Translation</button></td>
             </tr>
             <tr>
                 <td align="right">Recognition language:</td>
