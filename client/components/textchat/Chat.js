@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
@@ -21,7 +21,7 @@ import Button from '@mui/material/Button';
 
 import Message from './Message.js';
 import Contact from './Contact.js';
-// import Select from './Select.js';
+import Languages from './Languages.js';
 
 const useStyles = makeStyles({
   table: {
@@ -54,20 +54,56 @@ const Chat = () => {
   const users = ['Alice', 'Makeda', 'Brett', 'Jinho', 'Chris', 'Xinyi', 'Carlos', 'Viola', 'Elton'];
 
   //first load - contact list + latest message
-  const firstLoadInfo = [{1:'Alice', 2:'Makeda', 3:'Brett', 4:'Jinho', 5:'Chris', 6:'Xinyi', 7:'Carlos', 8:'Viola', 9:'Elton'}, [{1: 'hello'}, {2: 'HEY'}, {2: 'how is it going?'}] ]
+  // const firstLoadInfo = [{1:'Alice', 2:'Makeda', 3:'Brett', 4:'Jinho', 5:'Chris', 6:'Xinyi', 7:'Carlos', 8:'Viola', 9:'Elton'}, [{1: 'hello'}, {2: 'HEY'}, {2: 'how is it going?'}] ]
+  const firstLoadInfo = [{1:'Alice', 2:'Makeda', 3:'Brett', 4:'Jinho', 5:'Chris', 6:'Xinyi', 7:'Carlos', 8:'Viola', 9:'Elton'}]
 
   //set time interval to get contact list
   const contact = [{1:'Alice', 2:'Makeda', 3:'Brett', 4:'Jinho', 5:'Chris', 6:'Xinyi', 7:'Carlos', 8:'Viola', 9:'Elton'}]
 
   //set time interval to get chats/every time a user click on a contact
   // const messages = [{1: 'hello'}, {2: 'HEY'}, {2: 'how is it going?'}];
-  const messages = [];
 
-  const [language, setLanguage] = React.useState('');
 
-  const handleChange = (event) => {
+  const [language, setLanguage] = useState('');
+  const [messages, setMessages] = useState([]);
+  const [contacts, setContacts] = useState({});
+  const [receiverId, setReceiverId] = useState('');
+  const [translations, setTranslations] = useState([]);
+
+  const getContacts =() => {
+    //axios call
+    setContacts({1:'Alice', 2:'Makeda', 3:'Brett', 4:'Jinho', 5:'Chris', 6:'Xinyi', 7:'Carlos', 8:'Viola', 9:'Elton'})
+  }
+
+  const getMessages =() => {
+    //axios call
+    setMessages([{1: 'hello'}, {2: 'HEY'}, {2: 'how is it going?'}]);
+  }
+
+
+  const handleSelect = (event) => {
+    alert(event.target.value);
     setLanguage(event.target.value);
+
   };
+
+  const handleContactClick = (receiverId, sender_id = '1') => {
+    setReceiverId(receiverId);
+    getMessages();
+    alert(receiverId + " and " + sender_id);
+
+  }
+
+  const handleTranslateButtonClick = (event) => {
+    alert(receiverId + " and " + language);
+    //axios call
+    setTranslations(['你好', '嘿', '最近怎么样?']);
+
+  }
+
+  useEffect( () => {
+    getContacts();
+  }, [])
 
   return (
       <div>
@@ -82,34 +118,11 @@ const Chat = () => {
                 Chat</Typography>
             </Grid>
             <Grid item xs={3} >
-              <FormControl fullWidth>
-                 <InputLabel id="demo-simple-select-label">Select a language</InputLabel>
-                 <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={language}
-                  label="language"
-                  onChange={handleChange}
-                  style={{
-                    color: '#21b6ae',
-                  }}
-                >
-                   <MenuItem value='zh'>Chinese (Simplified)</MenuItem>
-                   <MenuItem value='en'>English</MenuItem>
-                   <MenuItem value='fr'>French</MenuItem>
-                   <MenuItem value='de'>German</MenuItem>
-                   <MenuItem value='it'>Italian</MenuItem>
-                   <MenuItem value='ja'>Japanese</MenuItem>
-                   <MenuItem value='ko'>Korean</MenuItem>
-                   <MenuItem value='pt'>Portuguese</MenuItem>
-                   <MenuItem value='ru'>Russian</MenuItem>
-                   <MenuItem value='es'>Spanish</MenuItem>
-                   <MenuItem value='sv'>Swedish</MenuItem>
-                 </Select>
-              </FormControl>
+              <Languages language={language} handleSelect={handleSelect}/>
+
             </Grid>
             <Grid item xs={1} align="right">
-               <Button variant="text"
+               <Button variant="text" onClick={handleTranslateButtonClick}
                  style={{
                    color: '#21b6ae',
                    padding: "15px 5px"
@@ -121,12 +134,12 @@ const Chat = () => {
         <Grid container component={Paper} className={classes.chatSection}>
             <Grid item xs={3} className={classes.borderRight500}>
               <List>
-                 {users.map((user, i) => <Contact  user={user} index={i}/> )}
+                 {Object.keys(contacts).map((id, i) => <Contact  handleContactClick={handleContactClick} name={contacts[id]} contactId={id} index={i}/> )}
               </List>
             </Grid>
             <Grid item xs={9}>
                 <List className={classes.messageArea}>
-                  {messages.map((message, i) => <Message message={message} index={i}/>)}
+                  {translations.length? messages.map((message, i) => <Message message={message} translation={translations[i]} key ={i} index={i}/>) : messages.map((message, i) => <Message message={message} key={i} index={i}/>)}
                 </List>
                 <Divider />
                 <Grid container style={{padding: '20px'}}>

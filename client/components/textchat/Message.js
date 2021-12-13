@@ -22,7 +22,7 @@ const Message = (props) => {
                  <ListItemText align={alignment} primary={text}></ListItemText>
              </Grid>
             <Grid item xs={12}>
-                <ListItemText align={alignment} secondary="09:30"></ListItemText>
+                <ListItemText align={alignment} secondary={props.translation}></ListItemText>
             </Grid>
          </Grid>
     </ListItem>
