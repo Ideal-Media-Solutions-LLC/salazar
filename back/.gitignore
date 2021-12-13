@@ -51,4 +51,9 @@ pids
 # Output of 'npm pack'
 *.tgz
 
+# Calendar
+/credentials.json
+/token.json
+/config.js
 config.js
+

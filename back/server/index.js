@@ -1,10 +1,16 @@
+require('dotenv').config();
 const express = require('express');
 const app = express();
 app.use(express.json());
 const port = require('../port.js');
+
+const { listEvents, createEvent } = require('../calendar.js');
+const { loadClient } = require('../googleCalApiClient.js');
+
 //import { route } from 'express/lib/application';
 //import { writeLanguages } from '../helpers.js';
 const firefunctions = require('../helpers.js');
+
 
 app.get('/', (req, res) => {
   res.send('Hello World');
@@ -172,9 +178,23 @@ app.get('/chat/translation', async (req, res) => {
 //#endregion
 
 //#region calendar
-app.get('/calendar', (req, res) => {
-  res.send('Hello World');
+
+loadClient();
+
+app.get('/calendar/list', async (req, res) => {
+
+  await listEvents((events) => {
+    res.send(events);
+  })
 });
+
+app.post('/calendar/create', async (req, res) => {
+
+  await createEvent((events) => {
+    res.send(events);
+  })
+});
+
 //#endregion
 
 //#region users
