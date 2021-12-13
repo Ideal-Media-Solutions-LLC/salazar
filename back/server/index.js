@@ -5,6 +5,7 @@ const port = require('../port.js');
 //import { route } from 'express/lib/application';
 //import { writeLanguages } from '../helpers.js';
 const firefunctions = require('../helpers.js');
+const req = require('express/lib/request');
 
 app.get('/', (req, res) => {
   res.send('Hello World');
@@ -20,12 +21,12 @@ app.get('/auth', async (req, res) => {
   } else {
     res.status(200).send(result);
   }
-  res.send('Hello World');
 });
 
 app.post('/auth', (req, res) => {
   const data = req.body.info;
-  /*data = {
+  /*
+  data = {
     displayName: ,
     languages: {
       Chinese: 2,
@@ -43,7 +44,35 @@ app.post('/auth', (req, res) => {
   });
 });
 
+app.get('/user', async (req, res) => {
+  let result = {};
+  const response = await firebasefunctions.get(req.query.uid);
+  result.uid = req.query.uid;
+  result.username = response.username;
+  result.displayName = response.displayName;
+  result.photo = response.photo;
+  result.languages = response.languages;
+  res.status(200).send(result);
+});
 
+app.get('/users', async (req, res) => {
+  /*
+  [
+  {
+    uid:
+    username:
+    displayName:
+    photo:
+    languages: {
+      Chinese: 2,
+      Japanese: 2,
+    },
+  },
+  ]
+  */
+  const result = await firebasefunctions.getusers();
+  res.status(200).send(result);
+})
 
 //#endregion
 
