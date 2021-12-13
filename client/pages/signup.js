@@ -4,6 +4,17 @@ import styles from '../styles/Home.module.css'
 import Link from 'next/link'
 import SignUpForm from '../components/homepage/SignUpForm'
 
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useTranslation, initReactI18next } from "react-i18next";
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['home'])),
+    }
+  }
+}
+
 
 export default function Home() {
   return (

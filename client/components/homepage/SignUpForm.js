@@ -6,24 +6,6 @@ import { useTranslation, initReactI18next } from "react-i18next";
 import HttpApi from 'i18next-http-backend'
 import LanguageDetector from 'i18next-browser-languagedetector'
 
-i18n
-  .use(HttpApi)
-  .use(initReactI18next) // passes i18n down to react-i18next
-  .use(LanguageDetector)
-  .init({
-    fallbackLng: "en",
-    detection: {
-      order: ['cookie', 'htmlTag'],
-      caches: ['cookie'],
-    },
-
-    backend: {
-      loadPath: '/assets/locales/{{lng}}/translation.json',
-    },
-
-    react: { useSuspense: false }
-  });
-
 const SignUpForm = function () {
 
   const { t } = useTranslation();
@@ -35,51 +17,51 @@ const SignUpForm = function () {
 
   return (
     <form className='signup-container'>
-      <h2 className='signup'>{t('Sign_Up')}</h2>
+      <h2 className='signup'>{t('home:Sign_Up')}</h2>
 
       <div className='user-photo'>
-        User Photo
+        {t('home:user_photo')}
       </div>
 
       <div className="form-group">
-        <label>User name</label>
-        <input type="text" className="form-control" placeholder="First name" />
+        <label>{t('home:user_name')}</label>
+        <input type="text" className="form-control" placeholder={t('home:first_name')} />
       </div>
 
 
 
-      <h4>{t('lang_speak')}</h4>
+      <h4>{t('home:lang_speak')}</h4>
 
       <div className='choice'>
-        <Dropdown options={options} placeholder="Select a language" />
-        <Dropdown options={options} placeholder="Select a level" />
+        <Dropdown options={options} placeholder={t('home:Select_lang')} />
+        <Dropdown options={options} placeholder={t('home:Select_level')} />
       </div>
 
       <div className='choice'>
-        <Dropdown options={options} placeholder="Select a language" />
-        <Dropdown options={options} placeholder="Select a level" />
+        <Dropdown options={options} placeholder={t('home:Select_lang')} />
+        <Dropdown options={options} placeholder={t('home:Select_level')} />
       </div>
 
-      <h4>{t('lang_learn')}</h4>
+      <h4>{t('home:lang_learn')}</h4>
       <div className='choice'>
-        <Dropdown options={options} placeholder="Select a language" />
-        <Dropdown options={options} placeholder="Select a level" />
-      </div>
-
-
-      <div className='choice'>
-        <Dropdown options={options} placeholder="Select a language" />
-        <Dropdown options={options} placeholder="Select a level" />
+        <Dropdown options={options} placeholder={t('home:Select_lang')} />
+        <Dropdown options={options} placeholder={t('home:Select_level')} />
       </div>
 
 
       <div className='choice'>
-        <Dropdown options={options} placeholder="Select a language" />
-        <Dropdown options={options} placeholder="Select a level" />
+        <Dropdown options={options} placeholder={t('home:Select_lang')} />
+        <Dropdown options={options} placeholder={t('home:Select_level')} />
       </div>
 
 
-      <button type="submit" className="btn btn-primary btn-block">Sign Up</button>
+      <div className='choice'>
+        <Dropdown options={options} placeholder={t('home:Select_lang')} />
+        <Dropdown options={options} placeholder={t('home:Select_level')} />
+      </div>
+
+
+      <button type="submit" className="btn btn-primary btn-block">{t('home:Sign_Up')}</button>
 
     </form>
   )

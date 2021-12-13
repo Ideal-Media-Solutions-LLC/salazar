@@ -2,9 +2,9 @@
   "name": "front",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
+    "dev": "i18nexus pull && next dev",
+    "build": "i18nexus pull && next build",
+    "start": "i18nexus pull && next start",
     "lint": "next lint"
   },
   "dependencies": {
@@ -16,6 +16,7 @@
     "i18next-browser-languagedetector": "^6.1.2",
     "i18next-http-backend": "^1.3.1",
     "next": "12.0.7",
+    "next-i18next": "^10.0.1",
     "react": "^17.0.2",
     "react-bootstrap": "^2.0.3",
     "react-dom": "17.0.2",
@@ -26,6 +27,7 @@
   },
   "devDependencies": {
     "eslint": "8.4.1",
-    "eslint-config-next": "12.0.7"
+    "eslint-config-next": "12.0.7",
+    "i18nexus-cli": "^2.0.2"
   }
 }
