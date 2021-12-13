@@ -4,13 +4,19 @@
   "description": "back end for salazar",
   "main": "server/index.js",
   "scripts": {
+    "start": "nodemon server/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.24.0",
+    "dotenv": "^10.0.0",
     "express": "^4.17.1",
-    "firebase": "^9.6.0",
-    "path": "^0.12.7"
+    "firebase": "^9.6.1",
+    "googleapis": "^39.2.0",
+    "nodemon": "^2.0.15",
+    "path": "^0.12.7",
+    "uuid": "^8.3.2"
   }
 }

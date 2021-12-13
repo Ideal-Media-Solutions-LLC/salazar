@@ -11,6 +11,7 @@
 # User-specific
 .vscode
 *.env
+Azure_api_config.js
 
 # Module management
 node_modules/
@@ -49,3 +50,10 @@ pids
 
 # Output of 'npm pack'
 *.tgz
+
+# Calendar
+/credentials.json
+/token.json
+/config.js
+config.js
+
