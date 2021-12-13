@@ -1,5 +1,6 @@
 import Image from 'next/image';
-import { Button } from 'antd';
+import EventsList from './EventsList.js';
+import { Button, Typography } from 'antd';
 
 
 export default function Sidebar() {
@@ -21,17 +22,14 @@ export default function Sidebar() {
         <Button className='button'>Log out</Button>
       </div>
 
-        <div>
+        {/* <div>
           <div>Language1 + level</div>
           <div>Language2 + level</div>
-          <div>Language3 + level</div>
-          <div>Language1 + level</div>
-          <div>Language2 + level</div>
-          <div>Language3 + level</div>
-        </div>
+        </div> */}
 
         <div className='calendar'>
-        calendar
+          <Typography><h5>Scheduled Calls</h5></Typography>
+          <EventsList/>
         </div>
 
 

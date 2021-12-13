@@ -94,11 +94,16 @@ a {
 
 .calendar{
   margin: 20px;
-  border: solid 1px lightgray;
-  height: 200px;
+  /* border: solid 1px lightgray; */
+  height: 255px;
   width: 90%;
+  /* overflow-y: scroll; */
 
 }
+/* ::-webkit-scrollbar {
+  width: 0;  /* Remove scrollbar space */
+  /* background: transparent;  Optional: just make scrollbar invisible */
+/* }  */
 
 .tab{
   background-color: rgb(255,255,255, 0.8);
