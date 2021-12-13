@@ -34,10 +34,10 @@ const SignUpForm = function () {
   ];
 
   return (
-    <form>
-      <h2>{t('Sign_Up')}</h2>
+    <form className='signup-container'>
+      <h2 className='signup'>{t('Sign_Up')}</h2>
 
-      <div>
+      <div className='user-photo'>
         User Photo
       </div>
 
@@ -48,34 +48,34 @@ const SignUpForm = function () {
 
 
 
-      <h2>{t('lang_speak')}</h2>
+      <h4>{t('lang_speak')}</h4>
 
-      <div>
-        <Dropdown options={options} placeholder="Select an language" />
+      <div className='choice'>
+        <Dropdown options={options} placeholder="Select a language" />
         <Dropdown options={options} placeholder="Select a level" />
       </div>
 
-      <div>
-        <Dropdown options={options} placeholder="Select an language" />
-        <Dropdown options={options} placeholder="Select an level" />
+      <div className='choice'>
+        <Dropdown options={options} placeholder="Select a language" />
+        <Dropdown options={options} placeholder="Select a level" />
+      </div>
+
+      <h4>{t('lang_learn')}</h4>
+      <div className='choice'>
+        <Dropdown options={options} placeholder="Select a language" />
+        <Dropdown options={options} placeholder="Select a level" />
       </div>
 
 
-      <div>
-        <Dropdown options={options} placeholder="Select an language" />
-        <Dropdown options={options} placeholder="Select an level" />
-      </div>
-
-      <h2>{t('lang_learn')}</h2>
-      <div>
-        <Dropdown options={options} placeholder="Select an language" />
-        <Dropdown options={options} placeholder="Select an level" />
+      <div className='choice'>
+        <Dropdown options={options} placeholder="Select a language" />
+        <Dropdown options={options} placeholder="Select a level" />
       </div>
 
 
-      <div>
-        <Dropdown options={options} placeholder="Select an language" />
-        <Dropdown options={options} placeholder="Select an level" />
+      <div className='choice'>
+        <Dropdown options={options} placeholder="Select a language" />
+        <Dropdown options={options} placeholder="Select a level" />
       </div>
 
 
