@@ -7,12 +7,13 @@ export default function Transcribe() {
   const [reported, setReported] = useState(null);
 
   //#region browser hooks states
+  const [mySpeechSDK, setSpeechSDK] = useState(null);
   const [phraseDivText, setPhraseDiv] = useState("");
   const [statusDivText, setStatusDiv] = useState("");
   const [key, setKey] = useState({value: "bfc14462bd234b74b9534588764f1786"});
   const [authorizationToken, setAuthorizationToken] = useState(null);
   const [appId, setAppId] = useState(null);
-  const [languageOptions, setLanguageOptions] = useState(null);
+  const [languageOptions, setLanguageOptions] = useState("");
   const [formatOption, setFormatOption] = useState(null);
   const [useDetailedResults, setUseDetailedResults] = useState(null);
   const [recognizer, setRecognizer] = useState(null);
@@ -36,7 +37,12 @@ export default function Transcribe() {
     setLanguageTargetOptions(e.target.value.split("(")[1].substring(0, 5));
   }  
 
+  const onChangeLanguageInput = function(e) {
+    setLanguageOptions(e.target.value);
+  } 
+
   const onClickScenarioStartButton = function(e) {
+    
     switch (scenarioSelection) {
       case 'speechRecognizerContinuous':
         doContinuousRecognition();
@@ -61,7 +67,18 @@ export default function Transcribe() {
     );
   }
 
+  const onClickEnableTranslation = function(e) {
+    getInputStream();
+  }
 
+  function getInputStream() {
+    navigator.mediaDevices.getDisplayMedia({
+        video: true,
+        audio: true
+    }).then((stream) => {
+        setCapstream(stream);
+      });
+    }
 
   //#endregion
 
@@ -180,7 +197,7 @@ export default function Transcribe() {
 
   function doContinuousTranslation() {
     resetUiForScenarioStart();
-
+    debugger;
     var audioConfig = getAudioConfig();
     var speechConfig = getSpeechConfig(SpeechSDK.SpeechTranslationConfig);
     if (!audioConfig || !speechConfig) return;
@@ -229,19 +246,19 @@ export default function Transcribe() {
         //speechConfig.addTargetLanguage(languageTargetOptions.value.split("(")[1].substring(0, 5));
     }
 
-    speechConfig.speechRecognitionLanguage = languageOptions.value;
+    speechConfig.speechRecognitionLanguage = languageOptions;
     return speechConfig;
   }
 
 
   function onRecognizing(sender, recognitionEventArgs) {
     var result = recognitionEventArgs.result;
-    statusDiv.innerHTML += `(recognizing) Reason: ${SpeechSDK.ResultReason[result.reason]}`
+    setStatusDiv(statusDivText += `(recognizing) Reason: ${SpeechSDK.ResultReason[result.reason]}`);
         + ` Text: ${result.text}\r\n`;
     // Update the hypothesis line in the phrase/result view (only have one)
-    phraseDiv.innerHTML = phraseDiv.innerHTML.replace(/(.*)(^|[\r\n]+).*\[\.\.\.\][\r\n]+/, '$1$2')
-        + `${result.text} [...]\r\n`;
-    phraseDiv.scrollTop = phraseDiv.scrollHeight;
+    setPhraseDiv(phraseDivText.replace(/(.*)(^|[\r\n]+).*\[\.\.\.\][\r\n]+/, '$1$2')
+        + `${result.text} [...]\r\n`);
+    //phraseDiv.scrollTop = phraseDiv.scrollHeight;
   }
 
   function onRecognized(sender, recognitionEventArgs) {
@@ -256,8 +273,8 @@ export default function Transcribe() {
     let tempPhrase = '';
 
 
-    statusDiv.innerHTML += `(recognized)  Reason: ${SpeechSDK.ResultReason[result.reason]}`;
-      phraseDiv.innerHTML = phraseDiv.innerHTML.replace(/(.*)(^|[\r\n]+).*\[\.\.\.\][\r\n]+/, '$1$2');
+    tempStatus = statusDivText + `(recognized)  Reason: ${SpeechSDK.ResultReason[result.reason]}`;
+    tempPhrase = phraseDivText.replace(/(.*)(^|[\r\n]+).*\[\.\.\.\][\r\n]+/, '$1$2');
     
     switch (result.reason) {
       case SpeechSDK.ResultReason.NoMatch:
@@ -295,11 +312,12 @@ export default function Transcribe() {
           });
         }
     }
-
+    setStatusDiv(tempStatus);
+    setPhraseDiv(tempPhrase);
   }
 
   function onSessionStarted(sender, sessionEventArgs) {
-    statusDiv.innerHTML += `(sessionStarted) SessionId: ${sessionEventArgs.sessionId}\r\n`;
+    setStatusDiv(statusDivText +  `(sessionStarted) SessionId: ${sessionEventArgs.sessionId}\r\n`);
 
     for (const thingToDisableDuringSession of thingsToDisableDuringSession) {
         thingToDisableDuringSession.disabled = true;
@@ -310,7 +328,7 @@ export default function Transcribe() {
   }
 
   function onSessionStopped(sender, sessionEventArgs) {
-    statusDiv.innerHTML += `(sessionStopped) SessionId: ${sessionEventArgs.sessionId}\r\n`;
+    setStatusDiv(statusDivText + `(sessionStopped) SessionId: ${sessionEventArgs.sessionId}\r\n`);
     for (const thingToDisableDuringSession of thingsToDisableDuringSession) {
         thingToDisableDuringSession.disabled = false;
     }
@@ -483,18 +501,18 @@ export default function Transcribe() {
 
       
 
-  //     function enumerateMicrophones() {
-  //         if (!navigator || !navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
-  //             console.log(`Unable to query for audio input devices. Default will be used.\r\n`);
-  //             return;
-  //         }
-  //         navigator.mediaDevices.getDisplayMedia({
-  //             video: true,
-  //             audio: true
-  //         }).then((stream) => {
-  //             capstream = stream;
-  //             navigator.mediaDevices.enumerateDevices().then((devices) => {
-  //             });
+      // function enumerateMicrophones() {
+      //     if (!navigator || !navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
+      //         console.log(`Unable to query for audio input devices. Default will be used.\r\n`);
+      //         return;
+      //     }
+      //     navigator.mediaDevices.getDisplayMedia({
+      //         video: true,
+      //         audio: true
+      //     }).then((stream) => {
+      //         capstream = stream;
+      //         navigator.mediaDevices.enumerateDevices().then((devices) => {
+      //         });
           
               
   //         });
@@ -517,20 +535,7 @@ export default function Transcribe() {
   useEffect(()=> {
     // RequestAuthorizationToken();
     // getAudioConfig();
-    // setSpeechSDK(SpeechSDK);
-    try {
-      var AudioContext = window.AudioContext // our preferred impl
-        || window.webkitAudioContext       // fallback, mostly when on Safari
-        || false;                          // could not find.
-  
-      if (AudioContext) {
-        soundContext = new AudioContext();
-      } else {
-        alert("Audio context not supported");
-      }
-    } catch (e) {
-      console.log("no sound context found, no audio output. " + e);
-    }
+    setSpeechSDK(window.SpeechSDK);
   }, []);
 
   // useEffect(()=> {
@@ -544,9 +549,13 @@ export default function Transcribe() {
       <div id="content">
         <table>
             <tr>
+              <td align="right"></td>
+              <td align="left"><button id="enableTranslation" onClick={onClickEnableTranslation}>Enable Translation</button></td>
+            </tr>
+            <tr>
                 <td align="right">Recognition language:</td>
                 <td align="left">
-                    <select id="languageOptions">
+                    <select id="languageOptions" onChange={onChangeLanguageInput}>
                         <option value="en-US" selected="selected">English - US</option>
                         <option value="zh-CN">Chinese - CN</option>
                         <option value="de-DE">German - DE</option>
@@ -570,7 +579,7 @@ export default function Transcribe() {
                     </select>
                 </td>
             </tr>
-            <tr id="formatOptionRow">
+            {/* <tr id="formatOptionRow">
                 <td align="right" >Result Format:</td>
                 <td align="left">
                     <input type="radio"
@@ -585,12 +594,12 @@ export default function Transcribe() {
                         value="Detailed"/>
                     <label htmlFor="formatDetailedRadio">Detailed</label>
                 </td>
-            </tr>
+            </tr> */}
             <tr id="translationOptionsRow">
                 <td align="right">Translation:</td>
                 <td>
                     <label htmlFor="languageTargetOptions">Target language</label>
-                    <select id="languageTargetOptions">
+                    <select id="languageTargetOptions" onChange={onChangeLanguageTarget}>
                         <option value="Microsoft Server Speech Text to Speech Voice (de-DE, Hedda)" selected="selected">
                             German - DE</option>
                         <option value="Microsoft Server Speech Text to Speech Voice (en-US, ZiraRUS)">English - US
@@ -645,7 +654,8 @@ export default function Transcribe() {
         </table>
       </div>
 
-      <Script src="https://aka.ms/csspeech/jsbrowserpackageraw"/>
+      {/* <Script src="https://aka.ms/csspeech/jsbrowserpackageraw"/> */}
+      <Script src="microsoft.cognitiveservices.speech.sdk.bundle.js"/>
     </div>
   )
 }
