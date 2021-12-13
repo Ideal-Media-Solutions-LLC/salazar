@@ -15,6 +15,10 @@ const SignUpForm = function () {
     { label: "two", value: 2 }
   ];
 
+  const handleSubmit = function () {
+
+  };
+
   return (
     <form className='signup-container'>
       <h2 className='signup'>{t('home:Sign_Up')}</h2>
@@ -61,7 +65,7 @@ const SignUpForm = function () {
       </div>
 
 
-      <button type="submit" className="btn btn-primary btn-block">{t('home:Sign_Up')}</button>
+      <button type="submit" className="btn btn-primary btn-block" onClick={handleSubmit}>{t('home:Sign_Up')}</button>
 
     </form>
   )

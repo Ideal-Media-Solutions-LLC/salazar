@@ -2,7 +2,7 @@ const { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sig
 //const functions = require('firebase/auth');
 const { initializeApp } = require('firebase/app');
 const { getFirestore } = require("firebase/firestore");
-const { collection, addDoc, setDoc, getDoc, doc, onSnapshot, updateDoc, increment } = require("firebase/firestore");
+const { collection, addDoc, setDoc, getDoc, getDocs, doc, onSnapshot, updateDoc, increment } = require("firebase/firestore");
 //import React, {useState, useEffect} from 'react';
 const config = require('./config.js');
 const app = initializeApp(config);
@@ -111,10 +111,30 @@ async function update(key) {
   console.log('incremented');
 }
 
+async function getusers() {
+  let result = [];
+  const querySnapshot = await getDocs(collection(db, "info"));
+  querySnapshot.forEach((doc) => {
+    let obj = {};
+    let user = doc.data();
+    //console.log(doc.id);
+    obj.uid = doc.id;
+    obj.username = user.username;
+    obj.photo = user.photo;
+    obj.displayName = user.displayName;
+    obj.languages = user.languages;
+    result.push(obj);
+    // doc.data() is never undefined for query doc snapshots
+    //console.log(doc.id, " => ", doc.data());
+  });
+  return result;
+}
+
 module.exports = {
   googleSignIn,
   logOut,
   write,
   get,
   update,
+  getusers,
 }

@@ -15,12 +15,18 @@ import Dropdown from 'react-dropdown';
 import { urlObjectKeys } from "next/dist/shared/lib/utils";
 import chat from '../../public/assets/logo.png';
 import { useTranslation, initReactI18next } from "react-i18next";
+import { createContext, useContext } from "react";
+import { useAppContext } from "../context/State";
+import LanguageDropdown from "./LanguageDropdown";
 
 
 export default function LandingPage() {
   const app = initializeApp(firebaseConfig);
   const auth = getAuth();
   let provider = new GoogleAuthProvider();
+  const { uid } = useAppContext();
+  console.log(uid);
+
 
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -35,9 +41,9 @@ export default function LandingPage() {
 
         const credential = GoogleAuthProvider.credentialFromResult(res);
         const token = credential.accessToken;
-        console.log(token);
+        // console.log(token);
 
-        console.log('uid:', user);
+        // console.log('uid:', );
         setIsLoggedIn(true);
         setUserName(user.displayName);
         readUserData(user.uid, () => Router.push('/userinterface'), () => Router.push('/signup'));
@@ -76,15 +82,9 @@ export default function LandingPage() {
           <div className="collapse navbar-collapse" id="navbarCollapse">
           </div>
           <div className="dropdown">
-            <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Dropdown button
-            </button>
-            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a className="dropdown-item" href="#">Action</a>
-              <a className="dropdown-item" href="#">Another action</a>
-              <a className="dropdown-item" href="#">Something else here</a>
-            </div>
-          </div>        </nav>
+            <LanguageDropdown />
+          </div>
+        </nav>
         <main role="main">
 
           <div id="myCarousel" className="carousel slide" data-ride="carousel">
@@ -167,7 +167,7 @@ export default function LandingPage() {
 
           {/* <!-- FOOTER --> */}
           <footer className="container">
-            <p className="float-right"><a href="#">{t('home:Access_to_learn')}</a></p>
+            <p className="float-right"><a href="#">{t('home:Back_to_top')}</a></p>
             <p>&copy; 2021 Company, Inc. &middot; <a href="#">{t('home:Privacy')}</a> &middot; <a href="#">{t('home:Terms')}</a></p>
           </footer>
         </main>
