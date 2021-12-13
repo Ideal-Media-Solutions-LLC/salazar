@@ -12,8 +12,16 @@ export default function Languages() {
   const languagesList = [
     { label: 'English', value: 'English' },
     { label: 'Chinese', value: 'Chinese' },
-  ];
-
+    { label: 'French', value: 'French' },
+    { label: 'German', value: 'German' },
+    { label: 'Italian', value: 'Italian' },
+    { label: 'Japanese', value: 'Japanese' },
+    { label: 'Korean', value: 'Korean' },
+    { label: 'Portuguese', value: 'Portuguese' },
+    { label: 'Russian', value: 'Russian' },
+    { label: 'Spanish', value: 'Spanish' },
+    { label: 'Swedish', value: 'Swedish' },
+  ]
 
   const levelList = [
     { label: 'Entry', value: 'Entry' },

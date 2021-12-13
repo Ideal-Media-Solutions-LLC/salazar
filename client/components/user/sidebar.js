@@ -16,32 +16,43 @@ export default function Sidebar() {
     setVisible(false);
   };
 
-  // const [modalText, setModalText] = useState('Content of the modal');
+  const user = {
+    uid:'',
+    username: 'Alice',
+    displayName: 'Alice',
+    photo:'/assets/profile.png',
+    languages: {
+      Chinese: 2,
+      Japanese: 2,
+      English: 4,
+    },
+  };
+
 
   return (
     <div className='useinfo'>
       <div>
         <Image className='profilepic'
-          src="/assets/profile.png"
+          src={user.photo}
           width={80}
           height={80}
 
         />
-        <div>Name</div>
-        <Button className='button'>Log out</Button>
+        <div style={{fontWeight:'bold', fontSize:'16px'}}>{user.displayName}</div>
+
 
         <Button className='button' type="primary" onClick={showModal}>
-          Languages
+          Set Language
         </Button>
 
         <Popover
           content={
-          <div>
+          <div style={{width:'300px'}}>
             <div><Languages/></div>
             <a onClick={hide}>Cancel</a>
             <a style={{marginLeft:'15px'}} onClick={hide}>Submit</a>
           </div>}
-          title="Language List"
+          title="Set Language"
           trigger="click"
           visible={visible}
           >
