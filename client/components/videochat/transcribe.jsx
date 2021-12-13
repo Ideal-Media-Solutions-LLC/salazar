@@ -13,7 +13,7 @@ export default function Transcribe() {
   const [key, setKey] = useState({value: "bfc14462bd234b74b9534588764f1786"});
   const [authorizationToken, setAuthorizationToken] = useState(null);
   const [appId, setAppId] = useState(null);
-  const [languageOptions, setLanguageOptions] = useState("");
+  const [languageOptions, setLanguageOptions] = useState("en-US");
   const [formatOption, setFormatOption] = useState(null);
   const [useDetailedResults, setUseDetailedResults] = useState(null);
   const [recognizer, setRecognizer] = useState(null);
@@ -23,7 +23,7 @@ export default function Transcribe() {
   const [formatSimpleRadio, setFormatSimpleRadio] = useState(null);
   const [formatDetailedRadio, setFormatDetailedRadio] = useState(null);
   const [reco, setReco] = useState(null);
-  const [languageTargetOptions, setLanguageTargetOptions] = useState(null);
+  const [languageTargetOptions, setLanguageTargetOptions] = useState("de-DE");
   const [referenceText, setReferenceText] = useState(null);
   const [thingsToDisableDuringSession, setThingsToDisableDuringSession] = useState(null);
   const [soundContext, setSoundContext] = useState(null);
@@ -197,7 +197,6 @@ export default function Transcribe() {
 
   function doContinuousTranslation() {
     resetUiForScenarioStart();
-    debugger;
     var audioConfig = getAudioConfig();
     var speechConfig = getSpeechConfig(SpeechSDK.SpeechTranslationConfig);
     if (!audioConfig || !speechConfig) return;
@@ -268,6 +267,7 @@ export default function Transcribe() {
 
   function onRecognizedResult(result) {
 
+
     phraseDiv.scrollTop = phraseDiv.scrollHeight;
     let tempStatus = '';
     let tempPhrase = '';
@@ -317,21 +317,23 @@ export default function Transcribe() {
   }
 
   function onSessionStarted(sender, sessionEventArgs) {
-    setStatusDiv(statusDivText +  `(sessionStarted) SessionId: ${sessionEventArgs.sessionId}\r\n`);
 
-    for (const thingToDisableDuringSession of thingsToDisableDuringSession) {
-        thingToDisableDuringSession.disabled = true;
-    }
+    setStatusDiv(statusDivText + `(sessionStarted) SessionId: ${sessionEventArgs.sessionId}\r\n`);
+
+    // for (const thingToDisableDuringSession of thingsToDisableDuringSession) {
+    //     thingToDisableDuringSession.disabled = true;
+    // }
 
     //scenarioStartButton.disabled = true;
     //scenarioStopButton.disabled = false;
   }
 
   function onSessionStopped(sender, sessionEventArgs) {
+
     setStatusDiv(statusDivText + `(sessionStopped) SessionId: ${sessionEventArgs.sessionId}\r\n`);
-    for (const thingToDisableDuringSession of thingsToDisableDuringSession) {
-        thingToDisableDuringSession.disabled = false;
-    }
+    // for (const thingToDisableDuringSession of thingsToDisableDuringSession) {
+    //     thingToDisableDuringSession.disabled = false;
+    // }
 
     //scenarioStartButton.disabled = false;
     //scenarioStopButton.disabled = true;
@@ -340,11 +342,11 @@ export default function Transcribe() {
   function onCanceled (sender, cancellationEventArgs) {
     window.console.log(e);
 
-    statusDiv.innerHTML += "(cancel) Reason: " + SpeechSDK.CancellationReason[e.reason];
+    setStatusDiv(statusDivText + "(cancel) Reason: " + SpeechSDK.CancellationReason[e.reason]);
     if (e.reason === SpeechSDK.CancellationReason.Error) {
-        statusDiv.innerHTML += ": " + e.errorDetails;
+      setStatusDiv(statusDivText + ": " + e.errorDetails);
     }
-    statusDiv.innerHTML += "\r\n";
+    //statusDiv.innerHTML += "\r\n";
   }
 
   function applyCommonConfigurationTo(recognizer) {
