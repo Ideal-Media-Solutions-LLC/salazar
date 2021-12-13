@@ -237,7 +237,7 @@ app.get('/users', (req, res) => {
 
 
 //#region video
-app.get('/video', (req, res) => {
+app.get('/video/link', (req, res) => {
   res.send('Hello World');
 });
 
@@ -249,11 +249,11 @@ app.get('/video/token', (req, res) => {
       'Content-Type': 'application/json',
       'Ocp-Apim-Subscription-Key': api_z
     },
-    
-
-    
-  });
-  res.send('Hello World');
+  }).then((response) => {res.send(response)})
+  .catch((error => {
+    console.log(error);
+    res.sendStatus(500);
+  }))
 });
 //#endregion
 
