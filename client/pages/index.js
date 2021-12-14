@@ -8,6 +8,8 @@ import { Layout, Menu, Breadcrumb } from 'antd';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation, initReactI18next } from "react-i18next";
 
+
+
 const { Header, Content, Footer } = Layout;
 
 export async function getStaticProps({ locale }) {

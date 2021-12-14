@@ -1,15 +1,5 @@
-import {
-  getAuth,
-  signInWithPopup,
-  GoogleAuthProvider,
-  signOut,
-  onAuthStateChanged,
-} from "firebase/auth";
-import { initializeApp } from "firebase/app";
 import { useState } from "react";
-import firebaseConfig from "./FirebaseConfig";
-import { writeUserData, readUserData } from "./dbUtils";
-import Router from 'next/router';
+import { handleSignInWithGoogle, LogoutUser } from "./dbUtils";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Dropdown from 'react-dropdown';
 import { urlObjectKeys } from "next/dist/shared/lib/utils";
@@ -19,53 +9,9 @@ import { createContext, useContext } from "react";
 import { useAppContext } from "../context/State";
 import LanguageDropdown from "./LanguageDropdown";
 
-
 export default function LandingPage() {
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth();
-  let provider = new GoogleAuthProvider();
   const { uid } = useAppContext();
-  console.log(uid);
-
-
-
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userName, setUserName] = useState('guest');
-
   const { t } = useTranslation();
-
-  function handleSignInWithGoogle() {
-    signInWithPopup(auth, provider)
-      .then((res) => {
-        let user = res.user;
-
-        const credential = GoogleAuthProvider.credentialFromResult(res);
-        const token = credential.accessToken;
-        // console.log(token);
-
-        // console.log('uid:', );
-        setIsLoggedIn(true);
-        setUserName(user.displayName);
-        readUserData(user.uid, () => Router.push('/userinterface'), () => Router.push('/signup'));
-        // writeUserData(database, user.uid, user.displayName, user.email);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  }
-
-  function LogoutUser() {
-    console.log("Logout Btn Call");
-    signOut(auth)
-      .then(() => {
-        console.log("logout success!");
-        setIsLoggedIn(false);
-        setUserName('guest');
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  }
 
   const options = {
 
@@ -166,11 +112,13 @@ export default function LandingPage() {
 
 
           {/* <!-- FOOTER --> */}
+          {/* <LanguageDropdown /> */}
           <footer className="container">
             <p className="float-right"><a href="#">{t('home:Back_to_top')}</a></p>
             <p>&copy; 2021 Company, Inc. &middot; <a href="#">{t('home:Privacy')}</a> &middot; <a href="#">{t('home:Terms')}</a></p>
           </footer>
         </main>
-      </header>    </div>
+      </header>
+    </div>
   );
 }
