@@ -1,9 +1,8 @@
 import { createContext, useContext, useState } from 'react';
-import User from '../../pages/user.js';
 
-const AppContext = createContext();
+const AppContext = createContext({});
 
-export function AppWrapper({ children }) {
+function AppProvider({ children }) {
   const [username, setUserName] = useState('test');
   let sharedState = {
     username, setUserName
@@ -22,12 +21,10 @@ export function AppWrapper({ children }) {
   });
 
   return (
-    <AppContext.Provider value={curUser}>
-      <User/>
+    <AppContext.Provider value={curUser, setCurUser}>
+      {children}
     </AppContext.Provider>
   );
 }
 
-export function useAppContext() {
-  return useContext(AppContext);
-}
+export { AppContext, AppProvider };
