@@ -8,7 +8,7 @@ export default function Transcribe() {
   //#region display 
   const [phraseDivText, setPhraseDiv] = useState("");
   const [statusDivText, setStatusDiv] = useState("");
-  const [startButtonEnabled, setStartButtonEnabled] = useState(true);
+  const [startButtonEnabled, setStartButtonEnabled] = useState(false);
   const [stopButtonEnabled, setStopButtonEnabled] = useState(false);
   const [enableButtonOnOff, setEnableButtonOnOff] = useState(true);
   //#endregion
@@ -66,15 +66,8 @@ export default function Transcribe() {
   } 
 
   const onClickScenarioStartButton = function(e) {
+    doContinuousTranslation();
     
-    switch (scenarioSelection) {
-      case 'speechRecognizerContinuous':
-        doContinuousRecognition();
-        break;
-      case 'translationRecognizerContinuous':
-        doContinuousTranslation();
-        break;
-    }
   }
 
   const onClickScenarioStopButton = function(e) {
@@ -97,30 +90,14 @@ export default function Transcribe() {
 
   function getInputStream() {
     navigator.mediaDevices.getDisplayMedia({
-        video: true,
-        audio: true
+      video: true,
+      audio: true
     }).then((stream) => {
-        setCapstream(stream);
-      });
-    }
-
-  //#endregion
-
-
-  const onClickScenarioStopButton = function(e) {
-    
-    reco.stopContinuousRecognitionAsync(
-      function () {
-        reco.close();
-        reco = undefined;
-      },
-      function (err) {
-        reco.close();
-        reco = undefined;
-      }
-    );
+      setCapstream(stream);
+    });
   }
 
+  //#endregion
 
 
   //#endregion
@@ -140,14 +117,6 @@ export default function Transcribe() {
   //     }
   //   }
   // } 
-
-  // const Initialize = function(onComplete) {
-  //   if (!!window.SpeechSDK) {
-  //       document.getElementById('content').style.display = 'block';
-  //       document.getElementById('warning').style.display = 'none';
-  //       onComplete(window.SpeechSDK);
-  //   }
-  // }
 
   //#region top level function
   function doRecognizeOnceAsync() {
@@ -266,13 +235,9 @@ export default function Transcribe() {
   }
 
   function onRecognizedResult(result) {
-
-
     phraseDiv.scrollTop = phraseDiv.scrollHeight;
     let tempStatus = '';
     let tempPhrase = '';
-
-
     tempStatus = statusDivText + `(recognized)  Reason: ${SpeechSDK.ResultReason[result.reason]}`;
     tempPhrase = phraseDivText.replace(/(.*)(^|[\r\n]+).*\[\.\.\.\][\r\n]+/, '$1$2');
     
@@ -294,7 +259,6 @@ export default function Transcribe() {
         tempStatus += `\r\n`;
 
         if (result.text) {
-          // setPhraseDiv(phraseDivText + `${result.text}\r\n`);
           tempPhrase += `${result.text}\r\n`;
         }
 
@@ -318,35 +282,27 @@ export default function Transcribe() {
 
   function onSessionStarted(sender, sessionEventArgs) {
 
-    setStatusDiv(statusDivText + `(sessionStarted) SessionId: ${sessionEventArgs.sessionId}\r\n`);
-
-    // for (const thingToDisableDuringSession of thingsToDisableDuringSession) {
-    //     thingToDisableDuringSession.disabled = true;
-    // }
-
-    //scenarioStartButton.disabled = true;
-    //scenarioStopButton.disabled = false;
+    setStatusDiv(statusDivText + `(sessionStarted) SessionId: ${sessionEventArgs.sessionId}\r\n`)
+    setStopButtonEnabled(true);
+    setStartButtonEnabled(false);
   }
 
   function onSessionStopped(sender, sessionEventArgs) {
-
     setStatusDiv(statusDivText + `(sessionStopped) SessionId: ${sessionEventArgs.sessionId}\r\n`);
-    // for (const thingToDisableDuringSession of thingsToDisableDuringSession) {
-    //     thingToDisableDuringSession.disabled = false;
-    // }
-
-    //scenarioStartButton.disabled = false;
-    //scenarioStopButton.disabled = true;
+    setStopButtonEnabled(false);
+    setStartButtonEnabled(true);
   }
 
   function onCanceled (sender, cancellationEventArgs) {
     window.console.log(e);
-
-    setStatusDiv(statusDivText + "(cancel) Reason: " + SpeechSDK.CancellationReason[e.reason]);
+    let temp = statusDivText;
+    temp += "(cancel) Reason: " + SpeechSDK.CancellationReason[e.reason];
     if (e.reason === SpeechSDK.CancellationReason.Error) {
-      setStatusDiv(statusDivText + ": " + e.errorDetails);
+      temp += ": " + e.errorDetails;
     }
-    //statusDiv.innerHTML += "\r\n";
+    
+    temp += "\r\n";
+    setStatusDiv(temp);
   }
 
   function applyCommonConfigurationTo(recognizer) {
@@ -366,10 +322,9 @@ export default function Transcribe() {
   useEffect(()=> {
     if(capstream) {
       setEnableButtonOnOff(false);
+      setStartButtonEnabled(true);
     }
   }, [capstream]);
-
-
 
   return (
     <div id="transcriber">
