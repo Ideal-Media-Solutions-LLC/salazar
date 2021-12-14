@@ -79,12 +79,14 @@ const GlobeIcon = ({ width = 24, height = 24 }) => (
 
 export default function LanguageDropdown() {
 
-  const currentLanguageCode = cookies.get('i18next') || 'en';
-  console.log('curent >>', currentLanguageCode);
-  const currentLanguage = languages.find((l) => l.code === currentLanguageCode);
+
+  // const currentLanguage = languages.find((l) => l.code === currentLanguageCode);
 
   const handleChangeSystemLanguage = function (code) {
-    return Router.replace(`/${code}`);
+    cookies.set('i18next', code);
+    const currentLanguageCode = cookies.get('i18next') || code;
+    console.log('cookie >>>', currentLanguageCode);
+    return Router.push('/', code);
   };
 
   return (

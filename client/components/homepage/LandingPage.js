@@ -34,14 +34,10 @@ export default function LandingPage() {
         <main role="main">
 
           <div id="myCarousel" className="carousel slide" data-ride="carousel">
-            <ol className="carousel-indicators">
-              <li data-target="#myCarousel" data-slide-to="0" className="active"></li>
-              <li data-target="#myCarousel" data-slide-to="1"></li>
-              <li data-target="#myCarousel" data-slide-to="2"></li>
-            </ol>
+
             <div className="carousel-inner">
               <div className="carousel-item active">
-                <img className="first-slide" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="First slide" />
+                <img className="first-slide" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Hogwarts_model_studio_tour.jpg/1024px-Hogwarts_model_studio_tour.jpg" alt="First slide" />
                 <div className="container">
                   <div className="carousel-caption text-left">
                     <h1>{t('home:Salazar_School')}</h1>
@@ -116,7 +112,7 @@ export default function LandingPage() {
           <footer className="container">
             <p className="float-right"><a href="#">{t('home:Back_to_top')}</a></p>
             <p>&copy; 2021 Company, Inc. &middot; <a href="#">{t('home:Privacy')}</a> &middot; <a href="#">{t('home:Terms')}</a></p>
-          </footer>
+                    </footer>
         </main>
       </header>
     </div>

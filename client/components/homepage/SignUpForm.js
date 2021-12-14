@@ -4,7 +4,8 @@ import 'react-dropdown/style.css';
 import i18n from "i18next";
 import { useTranslation, initReactI18next } from "react-i18next";
 import HttpApi from 'i18next-http-backend'
-import LanguageDetector from 'i18next-browser-languagedetector'
+import LanguageDetector from 'i18next-browser-languagedetector';
+import Languages from '../user/languages';
 
 const SignUpForm = function () {
 
@@ -33,37 +34,11 @@ const SignUpForm = function () {
       </div>
 
 
-
       <h4>{t('home:lang_speak')}</h4>
 
-      <div className='choice'>
-        <Dropdown options={options} placeholder={t('home:Select_lang')} />
-        <Dropdown options={options} placeholder={t('home:Select_level')} />
-      </div>
-
-      <div className='choice'>
-        <Dropdown options={options} placeholder={t('home:Select_lang')} />
-        <Dropdown options={options} placeholder={t('home:Select_level')} />
-      </div>
-
+      <Languages />
       <h4>{t('home:lang_learn')}</h4>
-      <div className='choice'>
-        <Dropdown options={options} placeholder={t('home:Select_lang')} />
-        <Dropdown options={options} placeholder={t('home:Select_level')} />
-      </div>
-
-
-      <div className='choice'>
-        <Dropdown options={options} placeholder={t('home:Select_lang')} />
-        <Dropdown options={options} placeholder={t('home:Select_level')} />
-      </div>
-
-
-      <div className='choice'>
-        <Dropdown options={options} placeholder={t('home:Select_lang')} />
-        <Dropdown options={options} placeholder={t('home:Select_level')} />
-      </div>
-
+      <Languages />
 
       <button type="submit" className="btn btn-primary btn-block" onClick={handleSubmit}>{t('home:Sign_Up')}</button>
 
