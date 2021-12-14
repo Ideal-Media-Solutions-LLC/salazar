@@ -1,5 +1,4 @@
-@import 'antd/dist/antd.css';
-
+@import '~antd/dist/antd.css';
 html,
 body {
   padding: 0;
@@ -20,13 +19,19 @@ a {
   box-sizing: border-box;
 }
 
-/* User */
-.layout {
+/* *************************** */
+/* *** User-interface Page *** */
+/* *************************** */
+
+/* ****** Layout ***** */
+/* ******************* */
+
+.layout{
   background-image: url("../public/assets/background.jpg");
   width: 100vw;
-  max-width: 1500px;
-  background-repeat: no-repeat;
-  background-size: 1500px;
+  max-width: 2000px;
+  background-repeat: repeat;
+  background-size: 150vw;
 }
 
 .innerlayout {
@@ -38,8 +43,12 @@ a {
 }
 
 .header {
+<<<<<<< HEAD
   /* background-color: #cbd18f; */
   background-color: transparent;
+=======
+  background-color:transparent;
+>>>>>>> 77276a058c75466eacb829ea8b0641da27ccc75c
   height: 80px;
   width: 100vw;
   padding: 10px;
@@ -50,10 +59,17 @@ a {
 .sider {
   background-color: #F0F2F5;
   height: 100%;
+<<<<<<< HEAD
   flex: 0 0 20vw !important;
   max-width: 250px !important;
   min-width: 100px !important;
   border-radius: 0px 50px 0px 50px;
+=======
+  flex: 0 0 20vw!important;
+  max-width: 300px!important;
+  min-width: 100px!important;
+  border-radius:0px 50px 0px 50px;
+>>>>>>> 77276a058c75466eacb829ea8b0641da27ccc75c
   margin-left: 10px;
 
 }
@@ -70,6 +86,9 @@ a {
   background-color: transparent;
 }
 
+
+/* *** Inside Sider *** */
+/* ******************** */
 .useinfo {
   text-align: center;
   padding-top: 20px;
@@ -78,8 +97,13 @@ a {
   height: 100%;
   display: flex;
   flex-direction: column;
+<<<<<<< HEAD
   justify-content: space-around;
   align-items: center;
+=======
+  justify-content: start;
+  align-items:center;
+>>>>>>> 77276a058c75466eacb829ea8b0641da27ccc75c
 
 }
 
@@ -91,31 +115,60 @@ a {
 .button {
   margin: 10px;
   font-size: 14px;
+  width: auto;
+  text-align: center;
+  background-color: transparent;
+  color: black;
+  border-color: lightgray;
+
+}
+
+.button:hover {
+  background-color: lightgray;
+  color: black;
+  border: 0px;
 }
 
 .calendar {
   margin: 20px;
-  border: solid 1px lightgray;
-  height: 200px;
+  height: 255px;
   width: 90%;
+
 
 }
 
+<<<<<<< HEAD
 .tab {
   background-color: rgb(255, 255, 255, 0.8);
   height: 100%;
   border-radius: 50px 0px 50px 0px;
+=======
+
+/* ***** Content ***** */
+/* ******************* */
+
+.tab{
+  background-color: rgb(255,255,255, 0.8);
+  height:100%;
+  border-radius:50px 0px 50px 0px;
+>>>>>>> 77276a058c75466eacb829ea8b0641da27ccc75c
 }
 
 .tabpane {
   font-size: 8px;
 }
 
+<<<<<<< HEAD
 .searchbar {
+=======
+/* ***** Search ***** */
+/* ******************* */
+
+.searchbar{
+>>>>>>> 77276a058c75466eacb829ea8b0641da27ccc75c
   width: cal(100%+25px);
   min-width: 200px;
   min-height: 40px;
-  /* margin-top: 5px; */
   margin-left: -24px;
   padding-right: 40px;
   padding-top: 5px;
@@ -135,25 +188,38 @@ a {
   margin-top: 20px;
   padding: 10px;
   overflow: scroll;
-  /* box-shadow: -5px 9px 10px -7px rgba(0,0,0,0.2); */
   display: flex;
   flex-wrap: wrap;
-
 }
 
 .card {
   width: 180px;
   height: 250px;
   border-radius: 30px;
+<<<<<<< HEAD
   background-color: rgb(240, 242, 245);
   /* border: 1px solid grey; */
   margin: 10px;
+=======
+  background-color: rgb(240,242,245);
+  margin:10px;
+>>>>>>> 77276a058c75466eacb829ea8b0641da27ccc75c
   padding: 10px;
   box-shadow: 0px 0px 8px -1px rgba(0, 0, 0, 0.3);
   text-align: center;
   display: flex;
   flex-direction: column;
+<<<<<<< HEAD
   justify-content: space-around;
 
 }
 
+=======
+  justify-content:space-around;
+}
+
+.popup {
+  width: 500px;
+}
+/* *************************** */
+>>>>>>> 77276a058c75466eacb829ea8b0641da27ccc75c

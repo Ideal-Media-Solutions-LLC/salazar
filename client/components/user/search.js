@@ -1,9 +1,10 @@
-
+import { useState, useEffect } from 'react';
 import { Button } from 'antd';
 import { Menu, Dropdown } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import { Select } from 'antd';
 import Card from './card.js';
+// import axios from 'axios';
 
 const { Option } = Select;
 function handleChange(value) {
@@ -17,12 +18,70 @@ const searchbarStyle = {
   marginRight: '20px',
 }
 
+
+const languagesList = [
+  { label: 'English', value: 'English' },
+  { label: 'Chinese', value: 'Chinese' },
+  { label: 'French', value: 'French' },
+  { label: 'German', value: 'German' },
+  { label: 'Italian', value: 'Italian' },
+  { label: 'Japanese', value: 'Japanese' },
+  { label: 'Korean', value: 'Korean' },
+  { label: 'Portuguese', value: 'Portuguese' },
+  { label: 'Russian', value: 'Russian' },
+  { label: 'Spanish', value: 'Spanish' },
+  { label: 'Swedish', value: 'Swedish' },
+]
+
+const levelList = [
+  { label: 'Entry', value: 'Entry' },
+  { label: 'Intermediate', value: 'Intermediate' },
+  { label: 'Advanced', value: 'Advanced' },
+  { label: 'Native', value: 'Native' },
+];
+
+
 export default function Search() {
   // const [username, setUserName] = useState('test');
+  const [users, setUsers] = useState([]);
   // let sharedState = {
   //   username, setUserName
   // }
+  const [modalSchedule, setModalSchedule] = useState(null);
+  useEffect(() => {
+    setUsers([
+      {
+        uid: 'userID1',
+        photo: '"https://picsum.photos/id/237/200/300"',
+        username: 'Test Ername',
+        languages: {
+          Chinese: 3,
+          English: 2,
+          French: 1
+        }
+      },
+      {
+        uid: 'userID2',
+        photo: '"https://picsum.photos/id/237/200/301"',
+        username: 'Mae Dupp',
+        languages: {
 
+          English: 1,
+          French: 3
+        }
+      },
+      {
+        uid: 'userID3',
+        photo: '"https://picsum.photos/id/237/200/302"',
+        username: 'Fae Kurr',
+        languages: {
+          Chinese: 2,
+          English: 3,
+
+        }
+      }
+    ])
+  },[])
   return (
     <div className=''>
       <div className='searchbar'>
@@ -38,22 +97,15 @@ export default function Search() {
             LabelProp="label"
           >
 
-            <Option value="china" label="China">
+            {languagesList.map((language, i) => (
+              <Option value={language.value} label={language.label}>
               <div className="demo-option-label-item">
-                <span role="img" aria-label="China">
-                  🇨🇳
-                </span>
-                Chinese (Simp)
+                {language.value}
               </div>
             </Option>
-            <Option value="usa" label="USA">
-              <div className="demo-option-label-item">
-                <span role="img" aria-label="USA">
-                  🇺🇸
-                </span>
-                English
-              </div>
-            </Option>
+            ))}
+
+
           </Select>
 
         </div>
@@ -69,17 +121,14 @@ export default function Search() {
             LabelProp="label"
           >
 
-            <Option value="Novice" label="Novice">
+            {levelList.map((level, i) => (
+              <Option value={level.value} label={level.label}>
               <div className="demo-option-label-item">
-                Novice
+                {level.value}
               </div>
             </Option>
-            <Option value="Intermediate" label="Intermediate">
-              <div className="demo-option-label-item">
-                Intermediate
-              </div>
-            </Option>
-            Advanced, Superior and Distinguished
+            ))}
+
           </Select>
 
         </div>
@@ -87,14 +136,12 @@ export default function Search() {
       </div>
 
       <div className='userlist'>
-        {/* map template function, to be updated when user data is added */
-        /* {xx.map((user, i) =>
-           <Card name={username} key={i} />
-        )} */}
-        <Card/>
+        {users.map((user, i) => {
+          return <Card user = {user} setModalSchedule = {setModalSchedule} key = {`usercard-${i}`}/>
+        })}
       </div>
 
-
+        {modalSchedule}
     </div>
 
   );

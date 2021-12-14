@@ -1,10 +1,20 @@
 import Head from 'next/head'
 import Image from 'next/image'
+import { useState } from 'react';
 import styles from '../styles/Home.module.css'
 import Link from 'next/link'
 
+import ScheduleCall from '../components/modals/ScheduleCall.js';
+import EditLanguage from '../components/modals/EditLanguage.js';
+
+import { Button } from 'antd';
+
+
 
 export default function Home() {
+  const [showScheduleCall, setShowScheduleCall] = useState(null);
+  const [showLanguageEdit, setShowLanguageEdit] = useState(null);
+
   return (
     <div className={styles.container}>
       <Head>
@@ -17,6 +27,13 @@ export default function Home() {
         <h1 className={styles.title}>
           User Interface
         </h1>
+        <Button onClick = {()=> {setShowScheduleCall( <ScheduleCall close = {setShowScheduleCall}/>)}}>Schedule A Call</Button>
+        <Button onClick = {()=> {setShowLanguageEdit(<EditLanguage close = {setShowLanguageEdit}/>)}}>Edit Language</Button>
+
+
+        {showScheduleCall}
+        {showLanguageEdit}
+
         <Link href = '/'>
 
           <a>
