@@ -51,14 +51,12 @@ const useStyles = makeStyles({
 const Chat = () => {
   const classes = useStyles();
 
-  const users = ['Alice', 'Makeda', 'Brett', 'Jinho', 'Chris', 'Xinyi', 'Carlos', 'Viola', 'Elton'];
-
   //first load - contact list + latest message
   // const firstLoadInfo = [{1:'Alice', 2:'Makeda', 3:'Brett', 4:'Jinho', 5:'Chris', 6:'Xinyi', 7:'Carlos', 8:'Viola', 9:'Elton'}, [{1: 'hello'}, {2: 'HEY'}, {2: 'how is it going?'}] ]
-  const firstLoadInfo = [{1:'Alice', 2:'Makeda', 3:'Brett', 4:'Jinho', 5:'Chris', 6:'Xinyi', 7:'Carlos', 8:'Viola', 9:'Elton'}]
+  // const firstLoadInfo = [{1:'Alice'}, {2:'Makeda'}, {3:'Brett'}, {4:'Jinho'}, {5:'Chris'}, {6:'Xinyi'}, {7:'Carlos'}, {8:'Viola'}, {9:'Elton'}]
 
   //set time interval to get contact list
-  const contact = [{1:'Alice', 2:'Makeda', 3:'Brett', 4:'Jinho', 5:'Chris', 6:'Xinyi', 7:'Carlos', 8:'Viola', 9:'Elton'}]
+  // const contact = [{1:'Alice'}, {2:'Makeda'}, {3:'Brett'}, {4:'Jinho'}, {5:'Chris'}, {6:'Xinyi'}, {7:'Carlos'}, {8:'Viola'}, {9:'Elton'}]
 
   //set time interval to get chats/every time a user click on a contact
   // const messages = [{1: 'hello'}, {2: 'HEY'}, {2: 'how is it going?'}];
@@ -66,17 +64,18 @@ const Chat = () => {
 
   const [language, setLanguage] = useState('');
   const [messages, setMessages] = useState([]);
-  const [contacts, setContacts] = useState({});
+  const [contacts, setContacts] = useState([]);
   const [receiverId, setReceiverId] = useState('');
   const [translations, setTranslations] = useState([]);
+  const [text, setText] = useState('');
 
   const getContacts =() => {
-    //axios call
-    setContacts({1:'Alice', 2:'Makeda', 3:'Brett', 4:'Jinho', 5:'Chris', 6:'Xinyi', 7:'Carlos', 8:'Viola', 9:'Elton'})
+    //axios call - send user id
+    setContacts([{1:'Alice'}, {2:'Makeda'}, {3:'Brett'}, {4:'Jinho'}, {5:'Chris'}, {6:'Xinyi'}, {7:'Carlos'}, {8:'Viola'}, {9:'Elton'}])
   }
 
   const getMessages =() => {
-    //axios call
+    //axios call - send both ids
     setMessages([{1: 'hello'}, {2: 'HEY'}, {2: 'how is it going?'}]);
   }
 
@@ -92,6 +91,18 @@ const Chat = () => {
     getMessages();
     alert(receiverId + " and " + sender_id);
 
+  }
+
+  const handleTextFieldChange = (event) => {
+    setText(event.target.value);
+
+  }
+
+  const handleMessageSubmit = () => {
+    //axios call
+
+    setMessages(messages.concat({1: text}))
+    setText('');
   }
 
   const handleTranslateButtonClick = (event) => {
@@ -134,7 +145,7 @@ const Chat = () => {
         <Grid container component={Paper} className={classes.chatSection}>
             <Grid item xs={3} className={classes.borderRight500}>
               <List>
-                 {Object.keys(contacts).map((id, i) => <Contact  handleContactClick={handleContactClick} name={contacts[id]} contactId={id} index={i}/> )}
+                 {contacts.map((contact, i) => <Contact  handleContactClick={handleContactClick} name={Object.values(contact)[0]} contactId={Object.keys(contact)[0]} index={i}/> )}
               </List>
             </Grid>
             <Grid item xs={9}>
@@ -144,10 +155,10 @@ const Chat = () => {
                 <Divider />
                 <Grid container style={{padding: '20px'}}>
                     <Grid item xs={11}>
-                        <TextField id="outlined-basic-email" label="Type Something" fullWidth />
+                        <TextField value={text} onChange={handleTextFieldChange} id="outlined-basic-email" label="Type Something" fullWidth />
                     </Grid>
                     <Grid item xs={1} align="right">
-                        <Fab color="primary" aria-label="add" ><SendIcon /></Fab>
+                        <Fab onClick={handleMessageSubmit} color="primary" aria-label="add" ><SendIcon /></Fab>
                     </Grid>
                 </Grid>
             </Grid>
