@@ -9,28 +9,6 @@ export default function Languages() {
 
   const { Option } = Select;
 
-  const languagesList = [
-    { label: 'English', value: 'English' },
-    { label: 'Chinese', value: 'Chinese' },
-    { label: 'French', value: 'French' },
-    { label: 'German', value: 'German' },
-    { label: 'Italian', value: 'Italian' },
-    { label: 'Japanese', value: 'Japanese' },
-    { label: 'Korean', value: 'Korean' },
-    { label: 'Portuguese', value: 'Portuguese' },
-    { label: 'Russian', value: 'Russian' },
-    { label: 'Spanish', value: 'Spanish' },
-    { label: 'Swedish', value: 'Swedish' },
-  ]
-
-  const levelList = [
-    { label: 'Entry', value: 'Entry' },
-    { label: 'Intermediate', value: 'Intermediate' },
-    { label: 'Advanced', value: 'Advanced' },
-    { label: 'Native', value: 'Native' },
-  ];
-
-
   return (
     <Form name="dynamic_form_nest_item" onFinish={onFinish} autoComplete="off">
       <Form.List name="chooselanguage" >
