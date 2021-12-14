@@ -4,11 +4,14 @@ import Sidebar from '../components/user/sidebar.js';
 import Search from '../components/user/search.js';
 import EventsList from '../components/user/EventsList.js';
 import Head from 'next/head';
+import Chat from '../components/textchat/Chat.js';
+
 import { Layout } from 'antd';
 import { Tabs } from 'antd';
-
 import { Menu } from 'antd';
 import { MailOutlined, AppstoreOutlined, SettingOutlined, UserAddOutlined, CommentOutlined, VideoCameraOutlined } from '@ant-design/icons';
+
+import { createContext, useContext } from 'react';
 
 
 
@@ -53,7 +56,7 @@ export default function User() {
               <Search/>
             </TabPane>
             <TabPane tab=<CommentOutlined style ={{fontSize: '20px', width: '10px'}}/> key="2">
-              Content of Tab Pane 2
+              <Chat />
             </TabPane>
             <TabPane tab=<VideoCameraOutlined style ={{fontSize: '20px', width: '10px'}}/> key="3">
               Content of Tab Pane 3
