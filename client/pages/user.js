@@ -5,10 +5,9 @@ import Search from '../components/user/search.js';
 
 import { Layout } from 'antd';
 import { Tabs } from 'antd';
+
 import { Menu } from 'antd';
 import { MailOutlined, AppstoreOutlined, SettingOutlined, UserAddOutlined, CommentOutlined, VideoCameraOutlined } from '@ant-design/icons';
-
-import { createContext, useContext } from 'react';
 
 
 
@@ -30,8 +29,8 @@ export default function User() {
         <div style={{position:'unset'}}>
           <Image
           src="/assets/logo1.png"
-          width={250}
-          height={60}
+          width={240}
+          height={70}
           layout='intrinsic'
 
         />

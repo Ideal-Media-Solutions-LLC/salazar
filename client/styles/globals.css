@@ -45,7 +45,7 @@ a {
 
 .header {
   background-color:transparent;
-  height: 80px;
+  height: 12vh;
   width: 100vw;
   padding: 10px;
   padding-left: 60px;
@@ -167,7 +167,7 @@ a {
 
 .card{
   width: 180px;
-  height: 250px;
+  height: 260px;
   border-radius: 30px;
   background-color: rgb(240,242,245);
   margin:10px;
