@@ -4,6 +4,8 @@ import styles from '../styles/Home.module.css'
 import Link from 'next/link'
 import { Layout, Menu, Breadcrumb } from 'antd';
 import Transcribe from '../components/videochat/transcribe';
+import VideoMeet from '../components/videochat/videomeet';
+import { useParams } from 'react-router-dom'
 
 const { Header, Content, Footer } = Layout;
 
@@ -21,9 +23,9 @@ export default function VideoChat() {
           Video Chat
         </h1>
         
+        <VideoMeet meetString={useParams().meetString}/>
         <Transcribe/>
-
-
+        
       </main>
 
       <footer className={styles.footer}>

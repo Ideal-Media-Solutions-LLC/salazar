@@ -2,11 +2,11 @@
 import React, { useState } from 'react';
 
 
-export default function VideoMeet({embedURL}) {
+export default function VideoMeet({meetString}) {
 
   return (
-    <div id="videoComponent">
-      <iframe id="jitsiMeetIframe" allow="camera; microphone; fullscreen; display-capture; autoplay" src={embedURL} ></iframe>
+    <div id="videoComponent" style={{width: '80wh', height: '50vh'}}>
+      <iframe id="jitsiMeetIframe" allow="camera; microphone; fullscreen; display-capture; autoplay" src={"https://meet.jit.si/" + meetString}  style={{width: '80vw', height: '50vh'}}></iframe>
       
     </div>
   )
