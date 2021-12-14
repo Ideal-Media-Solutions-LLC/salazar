@@ -8,7 +8,7 @@ export default function Transcribe() {
   //#region display 
   const [phraseDivText, setPhraseDiv] = useState("");
   const [statusDivText, setStatusDiv] = useState("");
-  const [startButtonEnabled, setStartButtonEnabled] = useState(false);
+  const [startButtonEnabled, setStartButtonEnabled] = useState(true);
   const [stopButtonEnabled, setStopButtonEnabled] = useState(false);
   const [enableButtonOnOff, setEnableButtonOnOff] = useState(true);
   //#endregion
@@ -106,7 +106,6 @@ export default function Transcribe() {
 
   //#endregion
 
- 
 
   //#region top level function
   function doRecognizeOnceAsync() {
@@ -318,7 +317,7 @@ export default function Transcribe() {
   //#endregion
 
   useEffect(()=> {
-    RequestAuthorizationToken();
+    //RequestAuthorizationToken();
     
   }, []);
 

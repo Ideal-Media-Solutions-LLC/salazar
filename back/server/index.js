@@ -6,12 +6,11 @@ const api_z = require('../api_z.js');
 //import { route } from 'express/lib/application';
 //import { writeLanguages } from '../helpers.js';
 const firefunctions = require('../helpers.js');
-const req = require('express/lib/request');
+//const req = require('express/lib/request');
 const { listEvents, createEvent } = require('../calendar.js');
 const { loadClient } = require('../googleCalApiClient.js');
 
 const app = express();
-
 app.use(express.json());
 
 app.get('/', (req, res) => {
@@ -137,12 +136,12 @@ app.post('/chat', async (req, res) => {
 
   //{reviever_ID: sender_ID: {msg}}
   if (getMessagesFromOther) {
-    db.collection('messages').doc(req.body.reciever_ID).update({
-      req.body.sender_ID: FieldValue.arrayUnion({
-        message: req.body.message,
-        Time: req.body.timestamp
-      })
-    }).then((suc, err) => {
+    let obj = {};
+    obj[req.body.sender_ID] = FieldValue.arrayUnion({
+      message: req.body.message,
+      Time: req.body.timestamp
+    });
+    db.collection('messages').doc(req.body.reciever_ID).update(obj).then((suc, err) => {
       if (err) {
         req.sendStatus(404);
       } else {
@@ -150,12 +149,12 @@ app.post('/chat', async (req, res) => {
       }
     })
   } else {
-    db.collection('messages').doc(req.body.reciever_ID).set({
-      req.body.sender_ID: [{
-        message: req.body.message,
-        time: req.body.timestamp
-      }]
-    }).then((suc, err) => {
+    let obj = {};
+    obj[req.body.sender_ID] = [{
+      message: req.body.message,
+      time: req.body.timestamp
+    }];
+    db.collection('messages').doc(req.body.reciever_ID).set(obj).then((suc, err) => {
       if (err) {
         res.sendStatus(404);
       } else {
@@ -167,7 +166,6 @@ app.post('/chat', async (req, res) => {
 });
 
 //azure translation
-const axios = require('axios');
 const { v4: uuidv4 } = require('uuid');
 
 var subscriptionKey = require('../Azure_api_config.js');
