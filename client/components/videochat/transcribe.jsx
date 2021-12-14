@@ -6,7 +6,7 @@ export default function Transcribe() {
   //#region states
   
   //#region display 
-  const [phraseDivText, setPhraseDiv] = useState("");
+  const [phraseDivText, _setPhraseDiv] = useState("");
   const [statusDivText, setStatusDiv] = useState("");
   const [startButtonEnabled, setStartButtonEnabled] = useState(false);
   const [stopButtonEnabled, setStopButtonEnabled] = useState(false);
@@ -27,6 +27,13 @@ export default function Transcribe() {
   const [languageTargetOptions, setLanguageTargetOptions] = useState("de-DE");
   const [soundContext, setSoundContext] = useState(null);
   const [capstream, setCapstream] = useState(null);
+
+  const phraseRef = React.useRef(phraseDivText);
+  const setPhraseDiv = function(newval) {
+    phraseRef.current = newval;
+    _setPhraseDiv(newval);
+  };
+
   //#endregion
 
   //#endregion
@@ -48,15 +55,19 @@ export default function Transcribe() {
     }
   } 
 
-  function resetUiForScenarioStart() {
-    setPhraseDiv("");
-    setStatusDiv("");
-  }
+  // function resetUiForScenarioStart() {
+  //   setPhraseDiv("");
+  //   setStatusDiv("");
+  // }
   //#endregion
 
   var authorizationEndpoint = "token.php";
 
   //#region event handlers
+  const onTextAreaChange = function(e) {
+    e.preventDefault();
+  }
+
   const onChangeLanguageTarget = function(e) {
     setLanguageTargetOptions(e.target.value.split("(")[1].substring(0, 5));
   }  
@@ -67,19 +78,19 @@ export default function Transcribe() {
 
   const onClickScenarioStartButton = function(e) {
     doContinuousTranslation();
-    
   }
 
   const onClickScenarioStopButton = function(e) {
-    
     reco.stopContinuousRecognitionAsync(
       function () {
         reco.close();
-        reco = undefined;
+        setReco(undefined);
+        //reco = undefined;
       },
       function (err) {
         reco.close();
-        reco = undefined;
+        setReco(undefined);
+        //reco = undefined;
       }
     );
   }
@@ -102,94 +113,21 @@ export default function Transcribe() {
 
   //#endregion
 
-  // const RequestAuthorizationToken = function() {
-  //   if (authorizationEndpoint) {
-  //     var a = new XMLHttpRequest();
-  //     a.open("GET", authorizationEndpoint);
-  //     a.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-  //     a.send("");
-  //     a.onload = function () {
-  //       var token = JSON.parse(atob(this.responseText.split(".")[1]));
-  //       setAuthorizationToken(this.responseText);
-  //       //key.disabled = true;
-  //       //key.value = "using authorization token (hit F5 to refresh)";
-  //       console.log("Got an authorization token: " + token);
-  //     }
-  //   }
-  // } 
-
   //#region top level function
-  function doRecognizeOnceAsync() {
-    resetUiForScenarioStart();
-
-    var audioConfig = getAudioConfig();
-    var speechConfig = getSpeechConfig(SpeechSDK.SpeechConfig);
-    if (!audioConfig || !speechConfig) return;
-
-    reco = new SpeechSDK.SpeechRecognizer(speechConfig, audioConfig);
-    applyCommonConfigurationTo(reco);
-
-    reco.recognized = undefined;
-  }
-
-  function doContinuousRecognition() {
-    resetUiForScenarioStart();
-
-    var audioConfig = getAudioConfig();
-    var speechConfig = getSpeechConfig(SpeechSDK.SpeechConfig);
-    if (!speechConfig) return;
-
-    reco = new SpeechSDK.SpeechRecognizer(speechConfig, audioConfig);
-    applyCommonConfigurationTo(reco);
-
-    reco.startContinuousRecognitionAsync();
-  }
-
-  function doRecognizeIntentOnceAsync() {
-    resetUiForScenarioStart();
-    var audioConfig = getAudioConfig();
-    var speechConfig = getSpeechConfig(SpeechSDK.SpeechConfig);
-    if (!audioConfig || !speechConfig) return;
-
-    if (!appId.value) {
-        alert('A language understanding appId is required for intent recognition.');
-        return;
-    }
-
-    reco = new SpeechSDK.IntentRecognizer(speechConfig, audioConfig);
-    var intentModel = SpeechSDK.LanguageUnderstandingModel.fromAppId(appId.value);
-    reco.addAllIntents(intentModel);
-
-    applyCommonConfigurationTo(reco);
-
-    reco.recognizeOnceAsync();
-  }
 
   function doContinuousTranslation() {
-    resetUiForScenarioStart();
+    //resetUiForScenarioStart();
     var audioConfig = getAudioConfig();
     var speechConfig = getSpeechConfig(SpeechSDK.SpeechTranslationConfig);
     if (!audioConfig || !speechConfig) return;
 
-    reco = new SpeechSDK.TranslationRecognizer(speechConfig, audioConfig);
-    applyCommonConfigurationTo(reco);
-
-    reco.synthesizing = function (s, e) {
-      var audioSize = e.result.audio === undefined ? 0 : e.result.audio.byteLength;
-
-      statusDiv.innerHTML += `(synthesizing) Reason: ${SpeechSDK.ResultReason[e.result.reason]}` + ` ${audioSize} bytes\r\n`;
-
-      if (e.result.audio && soundContext) {
-        var source = soundContext.createBufferSource();
-        soundContext.decodeAudioData(e.result.audio, function (newBuffer) {
-            source.buffer = newBuffer;
-            source.connect(soundContext.destination);
-            source.start(0);
-        });
-      }
-    };
-
-    reco.startContinuousRecognitionAsync();
+    let tempReco = new SpeechSDK.TranslationRecognizer(speechConfig, audioConfig);
+    //reco = new SpeechSDK.SpeechRecognizer(speechConfig, audioConfig);
+    applyCommonConfigurationTo(tempReco);
+    //applyCommonConfigurationTo(reco);
+    //reco.startContinuousRecognitionAsync();
+    tempReco.startContinuousRecognitionAsync();
+    setReco(tempReco);
   }
 
   //#endregion
@@ -221,11 +159,15 @@ export default function Transcribe() {
 
   function onRecognizing(sender, recognitionEventArgs) {
     var result = recognitionEventArgs.result;
-    setStatusDiv(statusDivText += `(recognizing) Reason: ${SpeechSDK.ResultReason[result.reason]}`);
+    setStatusDiv(statusDivText + `(recognizing) Reason: ${SpeechSDK.ResultReason[result.reason]}`);
         + ` Text: ${result.text}\r\n`;
     // Update the hypothesis line in the phrase/result view (only have one)
-    setPhraseDiv(phraseDivText.replace(/(.*)(^|[\r\n]+).*\[\.\.\.\][\r\n]+/, '$1$2')
-        + `${result.text} [...]\r\n`);
+    debugger;
+    //console.log("current: " + phraseDivText);
+    let temp = phraseRef.current.replace(/(.*)(^|[\r\n]+).*\[\.\.\.\][\r\n]+/, '$1$2') + `${result.text} [...]\r\n`;
+    //debugger;
+    //console.log("new: " + temp);
+    setPhraseDiv(temp);
     //phraseDiv.scrollTop = phraseDiv.scrollHeight;
   }
 
@@ -235,11 +177,11 @@ export default function Transcribe() {
   }
 
   function onRecognizedResult(result) {
-    phraseDiv.scrollTop = phraseDiv.scrollHeight;
+    //phraseDiv.scrollTop = phraseDiv.scrollHeight;
     let tempStatus = '';
     let tempPhrase = '';
     tempStatus = statusDivText + `(recognized)  Reason: ${SpeechSDK.ResultReason[result.reason]}`;
-    tempPhrase = phraseDivText.replace(/(.*)(^|[\r\n]+).*\[\.\.\.\][\r\n]+/, '$1$2');
+    tempPhrase = phraseRef.current.replace(/(.*)(^|[\r\n]+).*\[\.\.\.\][\r\n]+/, '$1$2')
     
     switch (result.reason) {
       case SpeechSDK.ResultReason.NoMatch:
@@ -267,7 +209,6 @@ export default function Transcribe() {
         if (intentJson) {
           tempPhrase += `${intentJson}\r\n`;
         }
-
         if (result.translations) {
           var resultJson = JSON.parse(result.json);
           resultJson['privTranslationPhrase']['Translation']['Translations'].forEach(
@@ -294,7 +235,7 @@ export default function Transcribe() {
   }
 
   function onCanceled (sender, cancellationEventArgs) {
-    window.console.log(e);
+    console.log(e);
     let temp = statusDivText;
     temp += "(cancel) Reason: " + SpeechSDK.CancellationReason[e.reason];
     if (e.reason === SpeechSDK.CancellationReason.Error) {
@@ -311,6 +252,7 @@ export default function Transcribe() {
     recognizer.canceled = onCanceled;
     recognizer.sessionStarted = onSessionStarted;
     recognizer.sessionStopped = onSessionStopped;
+    // setReco(recognizer);
   }
   //#endregion
 
@@ -394,13 +336,14 @@ export default function Transcribe() {
             <tr>
                 <td align="right">Results:</td>
                 <td align="left">
-                    <textarea id="phraseDiv" value={phraseDivText} readOnly={true}></textarea>
+                    {/* <textarea id="phraseDiv" style={{width: "250px", height: "250px"}} value={phraseDivText} onChange={onTextAreaChange}></textarea> */}
+                    <textarea id="phraseDiv" style={{width: "250px", height: "250px"}}  onChange={onTextAreaChange} value={phraseDivText} readOnly={true}></textarea>
                 </td>
             </tr>
             <tr >
                 <td align="right">Events:</td>
                 <td align="left">
-                    <textarea id="statusDiv" value={statusDivText} readOnly={true}>
+                    <textarea id="statusDiv" style={{width: "250px", height: "250px"}} value={statusDivText} onChange={onTextAreaChange}>
                     </textarea>
                 </td>
             </tr>
