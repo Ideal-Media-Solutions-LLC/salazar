@@ -8,9 +8,9 @@ import React, { useEffect, useState } from "react";
 
 export default function Sidebar() {
 
- const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(false);
 
- const showModal = () => {
+  const showModal = () => {
     setVisible(true);
   };
 
