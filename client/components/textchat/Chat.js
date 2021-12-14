@@ -83,7 +83,7 @@ const Chat = () => {
 
   const handleListItemClick = (contactId) => {
     setSelectedIndex(contactId)
-    // alert('be darker, ' + contactId + ',' + selectedIndex)
+    alert('be darker, ' + contactId + ',' + selectedIndex)
 
   };
 
