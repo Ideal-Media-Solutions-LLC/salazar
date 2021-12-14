@@ -199,7 +199,7 @@ async function postMessages(user_ID, other_ID) {
   }
 }
 
-async function getChatUsers(user_ID, other_ID) {
+async function getChatUsers(user_ID) {
   const getAffiliatedUUID = await db.collection('messages').doc(user_ID).get();
   var userID_displayName = [];
   for (var i = 0; i < getAffiliatedUUID.length; ++i) {
@@ -220,4 +220,5 @@ module.exports = {
   getusers,
   getMessages,
   postMessages,
+  getChatUsers,
 }
