@@ -80,6 +80,13 @@ app.get('/users', async (req, res) => {
   res.status(200).send(result);
 })
 
+app.post('/languages', async (req, res) => {
+  let data = req.body.languages;
+  let key = req.body.uid;
+  let result = await firebasefunctions.update(key, data);
+  res.send(201);
+})
+
 //#endregion
 
 
