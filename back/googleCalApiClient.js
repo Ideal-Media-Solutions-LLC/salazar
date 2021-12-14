@@ -1,6 +1,5 @@
 const { google } = require("googleapis");
 const fs = require('fs');
-// require('dotenv').config();
 
 const token = process.env.REFRESH_TOKEN;
 const client_id = process.env.CLIENT_ID;
