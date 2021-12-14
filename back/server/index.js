@@ -1,25 +1,18 @@
-require('dotenv').config();
 const express = require('express');
-const app = express();
 const axios = require('axios');
-app.use(express.json());
+require('dotenv').config();
 const port = require('../port.js');
 const api_z = require('../api_z.js');
-
+//import { route } from 'express/lib/application';
+//import { writeLanguages } from '../helpers.js';
+const firefunctions = require('../helpers.js');
+const req = require('express/lib/request');
 const { listEvents, createEvent } = require('../calendar.js');
 const { loadClient } = require('../googleCalApiClient.js');
 
-//import { route } from 'express/lib/application';
-//import { writeLanguages } from '../helpers.js';
-<<<<<<< HEAD
-const firefunctions = require('../helpers.js');
-const req = require('express/lib/request');
-const api_z = require('../api_z.js');
+const app = express();
 
-=======
-//const firefunctions = require('../helpers.js');
-const api_z = require('../api_z.js');
->>>>>>> video_bt
+app.use(express.json());
 
 app.get('/', (req, res) => {
   res.send('Hello World');
