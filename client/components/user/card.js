@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { Button } from 'antd';
-import { PhoneOutlined, MessageOutlined } from '@ant-design/icons';
+import { PhoneOutlined, MessageOutlined, CalendarOutlined } from '@ant-design/icons';
 
 
 export default function Card() {
@@ -29,7 +29,8 @@ export default function Card() {
 
       <div>
       <MessageOutlined style ={{fontSize: '20px', margin: '10px'}}/>
-      <PhoneOutlined style ={{fontSize: '20px', margin: '10px'}}/>
+      <CalendarOutlined style ={{fontSize: '20px', margin: '10px'}}/>
+
       </div>
 
     </div>
