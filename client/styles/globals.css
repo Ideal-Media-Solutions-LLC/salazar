@@ -39,16 +39,19 @@ a {
 }
 
 .innerlayout{
-  max-height: 1200px;
-  min-height: 600px;
-  height: 88vh;
+  /* max-height: 1200px; */
+  /* min-height: 600px; */
+  min-height: 88vh;
   background-color: transparent;
+  flex-wrap: wrap;
+  white-space: normal;
 
 }
 
 .header {
   background-color:transparent;
   height: 12vh;
+  max-height: 35hw;
   width: 100vw;
   padding: 1vh;
   padding-left: 50px;
@@ -60,17 +63,19 @@ a {
   background-size: contain;
   height: 10vh;
   width: auto;
+  /* margin:15px; */
 
 }
 
 .sider {
   background-color: #F0F2F5;
-  height: 100%;
-  flex: 0 0 20vw!important;
-  max-width: 300px!important;
-  min-width: 100px!important;
+  height: auto ;
+  flex: 0 0 95vw!important;
+  max-width: 355px!important;
+  min-width: 300px!important;
   border-radius:0px 50px 0px 50px;
   margin-left: 10px;
+  margin-bottom: 10px;
 
   }
 
@@ -78,8 +83,10 @@ a {
   background-color:transparent;
   padding-left: 15px;
   margin-right: 10px;
-  height: 100%;
+  min-width: 350px;
+  height: auto;
   border-radius:0px;
+  margin-bottom: 10px;
 }
 
 .footer {
@@ -132,7 +139,7 @@ a {
   border: solid 1px lightgray;
   max-height: 400px;
 
-  width: 90%;
+  width: 80%;
 
 }
 

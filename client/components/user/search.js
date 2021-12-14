@@ -106,6 +106,10 @@ export default function Search() {
            <Card name={username} key={i} />
         )} */}
         <Card/>
+        <Card/>
+        <Card/>
+        <Card/>
+        <Card/>
       </div>
 
 
