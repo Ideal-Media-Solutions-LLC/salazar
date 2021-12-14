@@ -49,13 +49,6 @@ function createEvent(schedule, callback, userToken) {
   const oAuth2Client = new google.auth.OAuth2(
       client_id, client_secret, redirect_uris[0]);
 
-<<<<<<< HEAD
-  const calendar = google.calendar({ version: 'v3'});
-  const startTime = '2021-12-13T19:00:00-07:00';
-  const endTime = '2021-12-13T19:30:00-07:00';
-  const peer = '1makedadavis@gmail.com';
-  const description = 'Trying out during our meeting';
-=======
   oAuth2Client.setCredentials(JSON.parse(process.env.USER_TOKEN));
 
   const calendar = google.calendar({version: 'v3', auth: oAuth2Client});
@@ -63,7 +56,6 @@ function createEvent(schedule, callback, userToken) {
   const endTime = schedule.endTime;
   const peer = schedule.peer;
   const description = schedule.description;
->>>>>>> temp
 
   var event = {
     'summary': 'Salazar has found you a language partner',
