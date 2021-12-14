@@ -2,6 +2,7 @@
 import Image from 'next/image';
 import Sidebar from '../components/user/sidebar.js';
 import Search from '../components/user/search.js';
+import Chat from '../components/textchat/Chat.js';
 
 import { Layout } from 'antd';
 import { Tabs } from 'antd';
@@ -48,7 +49,7 @@ export default function User() {
               <Search/>
             </TabPane>
             <TabPane tab=<CommentOutlined style ={{fontSize: '20px', width: '10px'}}/> key="2">
-              Content of Tab Pane 2
+              <Chat />
             </TabPane>
             <TabPane tab=<VideoCameraOutlined style ={{fontSize: '20px', width: '10px'}}/> key="3">
               Content of Tab Pane 3
