@@ -7,13 +7,13 @@ const sampleData = [
   {
     name: 'Carlos',
     link: 'https://calendar.google.com/calendar/u/0/r',
-    date : new Date('2021-12-14T08:30:00'),
+    date : new Date('2021-12-13T22:55:00'),
     summary : 'Hey can we practice our spanish together?'
   },
   {
     name: 'Alice',
     link: 'https://calendar.google.com/calendar/u/0/r',
-    date : new Date('2021-12-14T10:30:00'),
+    date : new Date('2021-12-13T23:55:00'),
     summary : 'Hey can you help me practice?'
   },
   {
@@ -69,9 +69,9 @@ const EventsList = function(props) {
     const hours = Math.floor((date.getTime() - new Date().getTime())/1000/60/60);
     const minutes = Math.floor((date.getTime() - new Date().getTime())/1000/60/60%1*60);
     if (days) {
-      return ` <${days}d`
+      return ` >${days}d`
     } else if (hours) {
-      return ` <${hours}h`
+      return ` >${hours}h`
     } else {
       return ` <${minutes}m`
     }
