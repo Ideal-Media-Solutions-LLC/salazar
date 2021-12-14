@@ -1,14 +1,16 @@
 import Image from 'next/image';
+import EventsList from './EventsList.js';
+
 import Languages from './languages.js';
-import { Button, Modal, Popover } from 'antd';
+import { Button, Modal, Popover, Typography } from 'antd';
 import React, { useEffect, useState } from "react";
 
 
 export default function Sidebar() {
 
- const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(false);
 
- const showModal = () => {
+  const showModal = () => {
     setVisible(true);
   };
 
@@ -61,9 +63,15 @@ export default function Sidebar() {
 
       </div>
 
-      <div className='calendar'>
-      calendar
-      </div>
+        {/* <div>
+          <div>Language1 + level</div>
+          <div>Language2 + level</div>
+        </div> */}
+
+        <div className='calendar'>
+          <Typography><h5>Scheduled Calls</h5></Typography>
+          <EventsList/>
+        </div>
 
 
 
