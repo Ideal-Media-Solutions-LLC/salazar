@@ -13,9 +13,10 @@ function handleChange(value) {
 
 const searchbarStyle = {
   width: 'auto',
-  minWidth: '150px',
+  minWidth: '130px',
   marginLeft: '10px',
   marginRight: '20px',
+  whiteSpace: 'normal'
 }
 
 

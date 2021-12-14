@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Collapse, CalendarOutlined } from 'antd';
+import { Button, Collapse, CalendarOutlined, DoubleLeftOutlined } from 'antd';
 import styles from '../../styles/EventsList.module.css';
+
 // import axios from 'axios'
 const { Panel } = Collapse;
 const sampleData = [
@@ -89,8 +90,10 @@ const EventsList = function(props) {
   return (
     <div>
       <div className = {styles.buttons}>
-        {page ? <Button onClick = {()=> {setPage(page-3)}}>Back</Button> : <Button  disabled onClick = {()=> {setPage(page-3)}}>Back</Button>}
-        {sampleData.length - page > page ? <Button onClick = {()=> {setPage(page+3)}}>More</Button> : <Button disabled>More</Button>}
+        {page ? <Button className = 'button' onClick = {()=> {setPage(page-3)}}>◁</Button> : <Button className = 'button'  disabled onClick = {()=> {setPage(page-3)}}>◁</Button>}
+        {/* {page ? <DoubleLeftOutlined className = 'button' onClick = {()=> {setPage(page-3)}}/>: <DoubleLeftOutlined className = 'button'  disabled onClick = {()=> {setPage(page-3)}}>} */}
+
+        {sampleData.length - page > page ? <Button className = 'button' onClick = {()=> {setPage(page+3)}}>▷</Button> : <Button className = 'button' disabled>▷</Button>}
       </div>
 
       <Collapse accordion>
