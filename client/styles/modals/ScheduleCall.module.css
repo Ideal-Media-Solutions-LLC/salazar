@@ -12,3 +12,14 @@
   flex-direction: column;
   display: flex;
 }
+.languageContainer {
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.language {
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  /* align-self: center; */
+}

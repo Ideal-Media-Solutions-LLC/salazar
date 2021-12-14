@@ -206,5 +206,9 @@ a {
 .popup {
   width: 500px;
 }
-
 /* *************************** */
+
+/* div.ant-collapse-header {
+  display: flex;
+  justify-content: space-between;
+} */
