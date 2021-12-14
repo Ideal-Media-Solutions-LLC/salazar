@@ -31,14 +31,17 @@ a {
   background-image: url("../public/assets/background.jpg");
   width: 100vw;
   max-width: 2000px;
-  background-repeat: repeat;
-  background-size: 150vw;
+  background-repeat: no-repeat;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 
 .innerlayout{
   max-height: 1200px;
   min-height: 600px;
-  height: 90vh;
+  height: 88vh;
   background-color: transparent;
 
 }
@@ -47,9 +50,17 @@ a {
   background-color:transparent;
   height: 12vh;
   width: 100vw;
-  padding: 10px;
-  padding-left: 60px;
+  padding: 1vh;
+  padding-left: 50px;
   text-align:left;
+}
+
+.logo {
+  background: url('../public/assets/logo1.png') no-repeat;
+  background-size: contain;
+  height: 10vh;
+  width: auto;
+
 }
 
 .sider {
@@ -104,6 +115,9 @@ a {
   background-color: transparent;
   color: black;
   border-color: lightgray;
+  white-space:normal;
+  height: auto;
+
 
 }
 

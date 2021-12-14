@@ -26,14 +26,14 @@ export default function User() {
 
     <Layout className='layout'>
       <Header className='header'>
-        <div style={{position:'unset'}}>
-          <Image
+        <div className='logo'>
+          {/* <Image
           src="/assets/logo1.png"
           width={240}
           height={70}
-          layout='intrinsic'
+          bject-fit='contain' */}
 
-        />
+          {/* /> */}
         </div>
 
       </Header>
