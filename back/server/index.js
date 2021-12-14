@@ -56,17 +56,6 @@ app.post('/auth', (req, res) => {
 
 //#region chat
 
-const { initializeApp, applicationDefault, cert } = require('firebase-admin/app');
-const { getFirestore, Timestamp, FieldValue } = require('firebase-admin/firestore');
-
-const serviceAccount = require('./path/to/serviceAccountKey.json');
-
-initializeApp({
-  credential: cert(serviceAccount)
-});
-
-const db = getFirestore();
-
 app.get('/chat', async (req, res) => {
   const getMessagesFromMe = await db.collection('messages').doc(req.query.sender_ID).where('user_id', '==', req.query.reciever_ID).get();
   const getMessagesFromOther = await db.collection('messages').doc(req.query.reciever_ID).where('user_id', '==', req.query.sender_ID).get();
