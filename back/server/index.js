@@ -29,7 +29,7 @@ app.get('/auth', async (req, res) => {
   }
 });
 
-app.post('/auth', (req, res) => {
+app.post('/auth', async (req, res) => {
   const data = req.body.info;
   /*
   data = {
@@ -45,9 +45,9 @@ app.post('/auth', (req, res) => {
     photoURL: ,
   }
   */
-  firefunctions.write(req.body.uid, data).then(() => {
-    res.send(201);
-  });
+  const usersWrite = await firefunctions.write(req.body.uid, data, 'Users');
+  const messageWrite = await firefunctions.write(req.body.uid, {}, 'Messages');
+  res.send(201);
 });
 
 app.get('/user', async (req, res) => {
@@ -225,13 +225,6 @@ app.post('/calendar/create', async (req, res) => {
 });
 
 //#endregion
-
-//#region users
-app.get('/users', (req, res) => {
-  res.send('Hello World');
-});
-//#endregion
-
 
 //#region video
 app.get('/video', (req, res) => {
