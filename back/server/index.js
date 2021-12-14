@@ -2,10 +2,10 @@ const express = require('express');
 const axios = require('axios');
 require('dotenv').config();
 const port = require('../port.js');
-const api_z = require('../api_z.js');
+//const api_z = require('../api_z.js');
 //import { route } from 'express/lib/application';
 //import { writeLanguages } from '../helpers.js';
-const firefunctions = require('../helpers.js');
+//const firefunctions = require('../helpers.js');
 //const req = require('express/lib/request');
 const { listEvents, createEvent } = require('../calendar.js');
 const { loadClient } = require('../googleCalApiClient.js');
@@ -139,7 +139,7 @@ app.get('chatUsers', async (req, res) => {
 //azure translation
 const { v4: uuidv4 } = require('uuid');
 
-var subscriptionKey = require('../Azure_api_config.js');
+//var subscriptionKey = require('../Azure_api_config.js');
 var endpoint = "https://api.cognitive.microsofttranslator.com";
 
 app.get('/chat/translation', async (req, res) => {
@@ -198,7 +198,7 @@ app.post('/calendar/create', async (req, res) => {
 
 //#region video
 app.get('/video/link', (req, res) => {
-  var length = 10;
+  var length = 20;
   var result           = '';
   var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   var charactersLength = characters.length;

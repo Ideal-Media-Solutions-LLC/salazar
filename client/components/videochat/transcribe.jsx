@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Script from 'next/script';
+import Quotes from './quotes.js';
 
 export default function Transcribe() {
 
@@ -33,6 +34,8 @@ export default function Transcribe() {
     phraseRef.current = newval;
     _setPhraseDiv(newval);
   };
+  const [keypress, setKeypress] = useState(0);
+  const keyRef = React.useRef(keypress);
 
   //#endregion
 
@@ -268,8 +271,24 @@ export default function Transcribe() {
     }
   }, [capstream]);
 
+
+  const handleKeyPress = function (e) {
+    let kcode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'KeyB', 'KeyA'];
+    console.log("code: " + e.code);
+    if (kcode[keyRef.current] == e.code) {
+      keyRef.current += 1;
+    } else {
+      keyRef.current = 0;
+    }
+    if (keyRef.current === 10) {
+      let randi = Math.floor(Math.random() * Quotes.length);
+      window.alert(Quotes[randi]);
+    }
+
+  }
+
   return (
-    <div id="transcriber">
+    <div id="transcriber" onKeyDown={handleKeyPress}>
       <div id="content">
         <table>
             <tr>
