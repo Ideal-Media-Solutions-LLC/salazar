@@ -30,35 +30,51 @@ a {
   background-image: url("../public/assets/background.jpg");
   width: 100vw;
   max-width: 2000px;
-  background-repeat: repeat;
-  background-size: 150vw;
+  background-repeat: no-repeat;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 
 .innerlayout{
-  max-height: 1200px;
-  min-height: 600px;
-  height: 90vh;
+  /* max-height: 1200px; */
+  /* min-height: 600px; */
+  min-height: 88vh;
   background-color: transparent;
+  flex-wrap: wrap;
+  white-space: normal;
 
 }
 
 .header {
   background-color:transparent;
-  height: 80px;
+  height: 12vh;
+  max-height: 35hw;
   width: 100vw;
-  padding: 10px;
-  padding-left: 60px;
+  padding: 1vh;
+  padding-left: 50px;
   text-align:left;
+}
+
+.logo {
+  background: url('../public/assets/logo1.png') no-repeat;
+  background-size: contain;
+  height: 10vh;
+  width: auto;
+  /* margin:15px; */
+
 }
 
 .sider {
   background-color: #F0F2F5;
-  height: 100%;
-  flex: 0 0 20vw!important;
-  max-width: 300px!important;
-  min-width: 100px!important;
+  height: auto ;
+  flex: 0 0 95vw!important;
+  max-width: 355px!important;
+  min-width: 300px!important;
   border-radius:0px 50px 0px 50px;
   margin-left: 10px;
+  margin-bottom: 10px;
 
   }
 
@@ -66,8 +82,10 @@ a {
   background-color:transparent;
   padding-left: 15px;
   margin-right: 10px;
-  height: 100%;
+  min-width: 350px;
+  height: auto;
   border-radius:0px;
+  margin-bottom: 10px;
 }
 
 .footer {
@@ -103,6 +121,9 @@ a {
   background-color: transparent;
   color: black;
   border-color: lightgray;
+  white-space:normal;
+  height: auto;
+
 
 }
 
@@ -113,11 +134,11 @@ a {
 }
 
 .calendar{
-  margin: 20px;
-  height: 255px;
-  width: 90%;
-
-
+  margin: 30px;
+  /* border: solid 1px lightgray; */
+  /* max-height: 400px; */
+  width: 80%;
+  /* height: 255px; */
 }
 
 
@@ -166,7 +187,7 @@ a {
 
 .card{
   width: 180px;
-  height: 250px;
+  height: 260px;
   border-radius: 30px;
   background-color: rgb(240,242,245);
   margin:10px;
