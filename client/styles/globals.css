@@ -20,13 +20,19 @@ a {
   box-sizing: border-box;
 }
 
-/* User */
+/* *************************** */
+/* *** User-interface Page *** */
+/* *************************** */
+
+/* ****** Layout ***** */
+/* ******************* */
+
 .layout{
   background-image: url("../public/assets/background.jpg");
   width: 100vw;
-  max-width: 1500px;
-  background-repeat: no-repeat;
-  background-size: 1500px;
+  max-width: 2000px;
+  background-repeat: repeat;
+  background-size: 150vw;
 }
 
 .innerlayout{
@@ -38,7 +44,6 @@ a {
 }
 
 .header {
-  /* background-color: #cbd18f; */
   background-color:transparent;
   height: 80px;
   width: 100vw;
@@ -51,7 +56,7 @@ a {
   background-color: #F0F2F5;
   height: 100%;
   flex: 0 0 20vw!important;
-  max-width: 250px!important;
+  max-width: 300px!important;
   min-width: 100px!important;
   border-radius:0px 50px 0px 50px;
   margin-left: 10px;
@@ -70,6 +75,9 @@ a {
   background-color:transparent;
 }
 
+
+/* *** Inside Sider *** */
+/* ******************** */
 .useinfo {
   text-align: center;
   padding-top: 20px;
@@ -78,7 +86,7 @@ a {
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: start;
   align-items:center;
 
 }
@@ -91,15 +99,31 @@ a {
 .button {
   margin: 10px;
   font-size: 14px;
+  width: auto;
+  text-align: center;
+  background-color: transparent;
+  color: black;
+  border-color: lightgray;
+
+}
+
+.button:hover {
+  background-color: lightgray;
+  color: black;
+  border: 0px;
 }
 
 .calendar{
   margin: 20px;
   border: solid 1px lightgray;
-  height: 200px;
+  max-height: 400px;
+
   width: 90%;
 
 }
+
+/* ***** Content ***** */
+/* ******************* */
 
 .tab{
   background-color: rgb(255,255,255, 0.8);
@@ -111,11 +135,13 @@ a {
   font-size: 8px;
 }
 
+/* ***** Search ***** */
+/* ******************* */
+
 .searchbar{
   width: cal(100%+25px);
   min-width: 200px;
   min-height: 40px;
-  /* margin-top: 5px; */
   margin-left: -24px;
   padding-right: 40px;
   padding-top: 5px;
@@ -135,10 +161,8 @@ a {
   margin-top: 20px;
   padding: 10px;
   overflow: scroll;
-  /* box-shadow: -5px 9px 10px -7px rgba(0,0,0,0.2); */
   display: flex;
   flex-wrap: wrap;
-
 }
 
 .card{
@@ -146,7 +170,6 @@ a {
   height: 250px;
   border-radius: 30px;
   background-color: rgb(240,242,245);
-  /* border: 1px solid grey; */
   margin:10px;
   padding: 10px;
   box-shadow: 0px 0px 8px -1px rgba(0,0,0,0.3);
@@ -154,6 +177,9 @@ a {
   display: flex;
   flex-direction: column;
   justify-content:space-around;
-
 }
 
+.popup {
+  width: 500px;
+}
+/* *************************** */
