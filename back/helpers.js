@@ -30,6 +30,7 @@ function googleSignIn(email, password) {
         displayName: user.displayName
       };
       const response = await setDoc(doc(db, 'info', user.uid), obj);
+      const empty = await setDoc(doc(db, 'Messages', user.uid), {});
       console.log('posted info');
       // ...
       // setPersistence(auth, browserSessionPersistence)
@@ -83,18 +84,14 @@ function logOut() {
 //   return currentUser;
 // }
 
-async function write(key, data) {
+async function write(key, data, collection) {
   //console.log(db);
-  let obj = {};
-  for (var i = 0; i < data.length; i++) {
-    obj[data[i][0]] = data[i][1];
-  }
-  const response = await setDoc(doc(db, path, email), obj);
+  const response = await setDoc(doc(db, collection, data.uid), data);
   console.log('write Languages');
 }
 
 async function get(key) {
-  const docRef = doc(db, 'info', key);
+  const docRef = doc(db, 'Users', key);
   const result = await getDoc(docRef);
   if (result.exists()) {
     //console.log(result.data(), 'get');
@@ -105,7 +102,7 @@ async function get(key) {
 }
 
 async function update(key) {
-  const docRef = doc(db, 'languages', key);
+  const docRef = doc(db, 'Users', key);
   //const increment = FieldValue.increment(1);
   await updateDoc(docRef, { Korean: increment(1)});
   console.log('incremented');
@@ -113,7 +110,7 @@ async function update(key) {
 
 async function getusers() {
   let result = [];
-  const querySnapshot = await getDocs(collection(db, "info"));
+  const querySnapshot = await getDocs(collection(db, "Users"));
   querySnapshot.forEach((doc) => {
     let obj = {};
     let user = doc.data();
@@ -130,6 +127,87 @@ async function getusers() {
   return result;
 }
 
+async function getMessages(user_ID, other_ID) {
+  const getMessagesFromMe = await db.collection('messages').doc(other_ID).where('user_id', '==', user_ID).get();
+  const getMessagesFromOther = await db.collection('messages').doc(user_ID).where('user_id', '==', other_ID).get();
+
+  var inOrderMsg = [];
+
+  var organize = function(indexMe, indexOther) {
+    if (getMessagesFromMe[indexMe] === undefined && getMessagesFromOther[indexOther] === undefined) {
+      return;
+    } else if (getMessagesFromMe[indexMe] === undefined) {
+      var obj = {};
+      obj[other_ID] = getMessagesFromOther[indexOther];
+      inOrderMsg.push(obj);
+      organize(indexMe, indexOther + 1);
+    } else if (getMessagesFromOther[indexOther] === undefined) {
+      var obj = {};
+      obj[user_ID] = getMessagesFromMe[indexMe];
+      inOrderMsg.push(obj);
+      organize(indexMe+1, indexOther);
+    } else if (getMessagesFromMe[indexMe].Time >= getMessagesFromOther[indexOther].Time) {
+      var obj = {};
+      obj[user_ID] = getMessagesFromMe[indexMe]
+      inOrderMsg.push(obj);
+      organize(indexMe+1, indexOther);
+    } else {
+      var obj = {};
+      obj[other_ID] = getMessagesFromOther[indexOther];
+      inOrderMsg.push(obj);
+      organize(indexMe, indexOther+1);
+    }
+  }
+
+  organize(0,0);
+  return inOrderMsg;
+}
+
+async function postMessages(user_ID, other_ID) {
+  const getMessagesFromOther = await db.collection('messages').doc(other_ID).where('user_id', '==', user_ID).get();
+
+  //{reviever_ID: sender_ID: {msg}}
+  if (getMessagesFromOther) {
+    db.collection('messages').doc(other_ID).update({
+      [user_ID]: FieldValue.arrayUnion({
+        message: req.body.message,
+        time: req.body.timestamp
+      })
+    }).then((suc, err) => {
+      if (err) {
+        return false;
+      } else {
+        return true;
+      }
+    })
+  } else {
+    db.collection('messages').doc(other_ID).set({
+      [user_ID]: [{
+        message: req.body.message,
+        time: req.body.timestamp
+      }]
+    }).then((suc, err) => {
+      if (err) {
+        return false;
+      } else {
+        return true;
+      }
+    })
+  }
+}
+
+async function getChatUsers(user_ID) {
+  const getAffiliatedUUID = await db.collection('messages').doc(user_ID).get();
+  var userID_displayName = [];
+  for (var i = 0; i < getAffiliatedUUID.length; ++i) {
+    const displayName = await db.collection(info).doc(getAffiliatedUUID[i]).get();
+    var obj = {};
+    obj[getAffiliatedUUID[i]] = displayName.username;
+    userID_displayName.push(obj);
+  }
+  return userID_displayName;
+}
+
 module.exports = {
   googleSignIn,
   logOut,
@@ -137,4 +215,7 @@ module.exports = {
   get,
   update,
   getusers,
+  getMessages,
+  postMessages,
+  getChatUsers,
 }
