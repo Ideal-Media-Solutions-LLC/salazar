@@ -68,6 +68,8 @@ const Chat = () => {
   const [receiverId, setReceiverId] = useState('');
   const [translations, setTranslations] = useState([]);
   const [text, setText] = useState('');
+  const [selectedIndex, setSelectedIndex] = useState('');
+
 
   const getContacts =() => {
     //axios call - send user id
@@ -79,6 +81,11 @@ const Chat = () => {
     setMessages([{1: 'hello'}, {2: 'HEY'}, {2: 'how is it going?'}]);
   }
 
+  const handleListItemClick = (contactId) => {
+    setSelectedIndex(contactId)
+    // alert('be darker, ' + contactId + ',' + selectedIndex)
+
+  };
 
   const handleSelect = (event) => {
     alert(event.target.value);
@@ -89,7 +96,7 @@ const Chat = () => {
   const handleContactClick = (receiverId, sender_id = '1') => {
     setReceiverId(receiverId);
     getMessages();
-    alert(receiverId + " and " + sender_id);
+    // alert(receiverId + " and " + sender_id);
 
   }
 
@@ -100,7 +107,6 @@ const Chat = () => {
 
   const handleMessageSubmit = () => {
     //axios call
-
     setMessages(messages.concat({1: text}))
     setText('');
   }
@@ -115,6 +121,8 @@ const Chat = () => {
   useEffect( () => {
     getContacts();
   }, [])
+
+
 
   return (
       <div>
@@ -145,7 +153,7 @@ const Chat = () => {
         <Grid container component={Paper} className={classes.chatSection}>
             <Grid item xs={3} className={classes.borderRight500}>
               <List>
-                 {contacts.map((contact, i) => <Contact  handleContactClick={handleContactClick} name={Object.values(contact)[0]} contactId={Object.keys(contact)[0]} index={i}/> )}
+                 {contacts.map((contact, i) => <Contact selectedIndex={selectedIndex} handleContactClick={handleContactClick} handleListItemClick={handleListItemClick} name={Object.values(contact)[0]} contactId={Object.keys(contact)[0]} index={i}/> )}
               </List>
             </Grid>
             <Grid item xs={9}>
