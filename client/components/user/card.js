@@ -6,9 +6,10 @@ import ScheduleCall from '../modals/ScheduleCall.js';
 export default function Card(props) {
   const {username, photo, languages, uid} = props.user;
   const skillLevel = {
-    1: 'Beginner',
+    1: 'Entry',
     2: 'Intermediate',
-    3: 'Fluent'
+    3: 'Advanced',
+    4: 'Native'
   }
   const listLanguages = function() {
     const elements = [];
