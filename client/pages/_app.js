@@ -4,8 +4,10 @@ import '../styles/signup.css'
 import { appWithTranslation } from 'next-i18next';
 import { AppWrapper } from '../components/context/State.js';
 
+import { AppProvider} from '../components/context/AppProvider.js'
+
 function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />
+  return    <AppProvider><Component {...pageProps} /></AppProvider>
 }
 
 export default appWithTranslation(MyApp);
