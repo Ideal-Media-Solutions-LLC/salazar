@@ -3,9 +3,6 @@ import Script from 'next/script';
 
 export default function Transcribe() {
 
-  //const [SpeechSDK, setSpeechSDK] = useState(null);
-  const [reported, setReported] = useState(null);
-
   //#region states
   
   //#region display 
@@ -32,6 +29,29 @@ export default function Transcribe() {
   const [capstream, setCapstream] = useState(null);
   //#endregion
 
+  //#endregion
+
+  //#region helper functions
+  const RequestAuthorizationToken = function() {
+    if (authorizationEndpoint) {
+      var a = new XMLHttpRequest();
+      a.open("GET", authorizationEndpoint);
+      a.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+      a.send("");
+      a.onload = function () {
+        var token = JSON.parse(atob(this.responseText.split(".")[1]));
+        setAuthorizationToken(this.responseText);
+        //key.disabled = true;
+        //key.value = "using authorization token (hit F5 to refresh)";
+        console.log("Got an authorization token: " + token);
+      }
+    }
+  } 
+
+  function resetUiForScenarioStart() {
+    setPhraseDiv("");
+    setStatusDiv("");
+  }
   //#endregion
 
   var authorizationEndpoint = "token.php";
@@ -86,21 +106,7 @@ export default function Transcribe() {
 
   //#endregion
 
-  const RequestAuthorizationToken = function() {
-    if (authorizationEndpoint) {
-      var a = new XMLHttpRequest();
-      a.open("GET", authorizationEndpoint);
-      a.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-      a.send("");
-      a.onload = function () {
-        var token = JSON.parse(atob(this.responseText.split(".")[1]));
-        setAuthorizationToken(this.responseText);
-        //key.disabled = true;
-        //key.value = "using authorization token (hit F5 to refresh)";
-        console.log("Got an authorization token: " + token);
-      }
-    }
-  } 
+ 
 
   const onClickScenarioStopButton = function(e) {
     
@@ -353,19 +359,16 @@ export default function Transcribe() {
   }
   //#endregion
 
-
-  function resetUiForScenarioStart() {
-    setPhraseDiv("");
-    setStatusDiv("");
-    //useDetailedResults = document.querySelector('input[name="formatOption"]:checked').value === "Detailed";
-  }
-
-  
   useEffect(()=> {
-    // RequestAuthorizationToken();
-    // getAudioConfig();
-    //setSpeechSDK(window.SpeechSDK);
+    RequestAuthorizationToken();
+    
   }, []);
+
+  useEffect(()=> {
+    if(capstream) {
+      setEnableButtonOnOff(false);
+    }
+  }, [capstream]);
 
 
 
@@ -395,15 +398,7 @@ export default function Transcribe() {
                     </select>
                 </td>
             </tr>
-            <tr>
-                <td align="right">Scenario:</td>
-                <td align="left">
-                    <select id="scenarioSelection" >
-                        {/* <option value="speechRecognizerContinuous">Continuous speech-to-text</option> */}
-                        <option value="translationRecognizerContinuous">Continuous translation</option>
-                    </select>
-                </td>
-            </tr>
+
             <tr id="translationOptionsRow">
                 <td align="right">Translation:</td>
                 <td>
