@@ -1,0 +1,14 @@
+.time {
+  margin: 10px;
+}
+.selectDate {
+  margin: 15px;
+}
+.form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.timeLabel {
+  flex-direction: column;
+  display: flex;
+}

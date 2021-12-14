@@ -2,7 +2,7 @@ const { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sig
 //const functions = require('firebase/auth');
 const { initializeApp } = require('firebase/app');
 const { getFirestore } = require("firebase/firestore");
-const { collection, addDoc, setDoc, getDoc, doc, onSnapshot, updateDoc, increment } = require("firebase/firestore");
+const { collection, addDoc, setDoc, getDoc, getDocs, doc, onSnapshot, updateDoc, increment } = require("firebase/firestore");
 //import React, {useState, useEffect} from 'react';
 const config = require('./config.js');
 const app = initializeApp(config);
@@ -30,6 +30,7 @@ function googleSignIn(email, password) {
         displayName: user.displayName
       };
       const response = await setDoc(doc(db, 'info', user.uid), obj);
+      const empty = await setDoc(doc(db, 'Messages', user.uid), {});
       console.log('posted info');
       // ...
       // setPersistence(auth, browserSessionPersistence)
@@ -83,18 +84,14 @@ function logOut() {
 //   return currentUser;
 // }
 
-async function write(key, data) {
+async function write(key, data, collection) {
   //console.log(db);
-  let obj = {};
-  for (var i = 0; i < data.length; i++) {
-    obj[data[i][0]] = data[i][1];
-  }
-  const response = await setDoc(doc(db, path, email), obj);
+  const response = await setDoc(doc(db, collection, data.uid), data);
   console.log('write Languages');
 }
 
 async function get(key) {
-  const docRef = doc(db, 'info', key);
+  const docRef = doc(db, 'Users', key);
   const result = await getDoc(docRef);
   if (result.exists()) {
     //console.log(result.data(), 'get');
@@ -105,10 +102,29 @@ async function get(key) {
 }
 
 async function update(key) {
-  const docRef = doc(db, 'languages', key);
+  const docRef = doc(db, 'Users', key);
   //const increment = FieldValue.increment(1);
   await updateDoc(docRef, { Korean: increment(1)});
   console.log('incremented');
+}
+
+async function getusers() {
+  let result = [];
+  const querySnapshot = await getDocs(collection(db, "Users"));
+  querySnapshot.forEach((doc) => {
+    let obj = {};
+    let user = doc.data();
+    //console.log(doc.id);
+    obj.uid = doc.id;
+    obj.username = user.username;
+    obj.photo = user.photo;
+    obj.displayName = user.displayName;
+    obj.languages = user.languages;
+    result.push(obj);
+    // doc.data() is never undefined for query doc snapshots
+    //console.log(doc.id, " => ", doc.data());
+  });
+  return result;
 }
 
 module.exports = {
@@ -117,4 +133,5 @@ module.exports = {
   write,
   get,
   update,
+  getusers,
 }

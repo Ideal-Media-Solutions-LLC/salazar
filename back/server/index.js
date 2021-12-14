@@ -10,6 +10,7 @@ const { loadClient } = require('../googleCalApiClient.js');
 //import { route } from 'express/lib/application';
 //import { writeLanguages } from '../helpers.js';
 const firefunctions = require('../helpers.js');
+const req = require('express/lib/request');
 
 
 app.get('/', (req, res) => {
@@ -26,12 +27,12 @@ app.get('/auth', async (req, res) => {
   } else {
     res.status(200).send(result);
   }
-  res.send('Hello World');
 });
 
-app.post('/auth', (req, res) => {
+app.post('/auth', async (req, res) => {
   const data = req.body.info;
-  /*data = {
+  /*
+  data = {
     displayName: ,
     languages: {
       Chinese: 2,
@@ -44,12 +45,40 @@ app.post('/auth', (req, res) => {
     photoURL: ,
   }
   */
-  firefunctions.write(req.body.uid, data).then(() => {
-    res.send(201);
-  });
+  const usersWrite = await firefunctions.write(req.body.uid, data, 'Users');
+  const messageWrite = await firefunctions.write(req.body.uid, {}, 'Messages');
+  res.send(201);
 });
 
+app.get('/user', async (req, res) => {
+  let result = {};
+  const response = await firebasefunctions.get(req.query.uid);
+  result.uid = req.query.uid;
+  result.username = response.username;
+  result.displayName = response.displayName;
+  result.photo = response.photo;
+  result.languages = response.languages;
+  res.status(200).send(result);
+});
 
+app.get('/users', async (req, res) => {
+  /*
+  [
+  {
+    uid:
+    username:
+    displayName:
+    photo:
+    languages: {
+      Chinese: 2,
+      Japanese: 2,
+    },
+  },
+  ]
+  */
+  const result = await firebasefunctions.getusers();
+  res.status(200).send(result);
+})
 
 //#endregion
 
@@ -71,28 +100,22 @@ app.get('/chat', async (req, res) => {
   const getMessagesFromMe = await db.collection('messages').doc(req.query.sender_ID).where('user_id', '==', req.query.reciever_ID).get();
   const getMessagesFromOther = await db.collection('messages').doc(req.query.reciever_ID).where('user_id', '==', req.query.sender_ID).get();
 
-  //array in ordered time.
-  //{A: [all msg B sent to A]
-  // B: [all msg A sent to B]}
-  //ordered by timestamp
-  //earliest to latest
-  //[{A:{msg content}},{B: {msg content}},{A: msg content}]
   var inOrderMsg = [];
 
   var organize = function(indexMe, indexOther) {
     if (getMessagesFromMe[indexMe] === undefined && getMessagesFromOther[indexOther] === undefined) {
       return;
     } else if (getMessagesFromMe[indexMe] === undefined) {
-      inOrderMsg.push(getMessagesFromOther[indexOther]);
+      inOrderMsg.push({req.query.sender_ID:getMessagesFromOther[indexOther]});
       organize(indexMe, indexOther + 1);
     } else if (getMessagesFromOther[indexOther] === undefined) {
-      inOrderMsg.push(getMessagesFromMe[indexMe]);
+      inOrderMsg.push({req.query.reciever_ID: getMessagesFromMe[indexMe]});
       organize(indexMe+1, indexOther);
     } else if (getMessagesFromMe[indexMe].Time >= getMessagesFromOther[indexOther].Time) {
-      inOrderMsg.push(getMessagesFromMe[indexMe]);
+      inOrderMsg.push({req.query.sender_ID: getMessagesFromMe[indexMe]});
       organize(indexMe+1, indexOther);
     } else {
-      inOrderMsg.push(getMessagesFromOther[indexOther]);
+      inOrderMsg.push({req.query.reciever_ID: getMessagesFromOther[indexOther]});
       organize(indexMe, indexOther+1);
     }
   }
@@ -196,13 +219,6 @@ app.post('/calendar/create', async (req, res) => {
 });
 
 //#endregion
-
-//#region users
-app.get('/users', (req, res) => {
-  res.send('Hello World');
-});
-//#endregion
-
 
 //#region video
 app.get('/video', (req, res) => {
