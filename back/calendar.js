@@ -2,25 +2,29 @@ const fs = require('fs');
 const readline = require('readline');
 const {google} = require('googleapis');
 
-/**
- * Lists the next 10 events on the user's primary calendar.
- * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
- */
+const client_id = process.env.CLIENT_ID;
+const client_secret = process.env.CLIENT_SECRET;
+const redirect_uris = ["urn:ietf:wg:oauth:2.0:oob","http://localhost"];
 
- let appAuth;
- // Load client secrets from a local file.
- fs.readFile('credentials.json', (err, content) => {
-   if (err) return console.log('Error loading client secret file:', err);
-   // Authorize a client with credentials, then call the Google Calendar API.
-   // authorize(JSON.parse(content), createEvent);
-   // authorize(JSON.parse(content), listEvents);
-   appAuth = JSON.parse(content);
- });
+// /**
+//  * Lists the next 10 events on the user's primary calendar.
+//  * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
+//  */
+
+//  let appAuth;
+//  // Load client secrets from a local file.
+//  fs.readFile('credentials.json', (err, content) => {
+//    if (err) return console.log('Error loading client secret file:', err);
+//    // Authorize a client with credentials, then call the Google Calendar API.
+//    // authorize(JSON.parse(content), createEvent);
+//    // authorize(JSON.parse(content), listEvents);
+//    appAuth = JSON.parse(content);
+//  });
 
 
 function listEvents(callback, userToken) {
 
-  const {client_secret, client_id, redirect_uris} = appAuth.installed;
+  //const {client_secret, client_id, redirect_uris} = appAuth.installed;
   const oAuth2Client = new google.auth.OAuth2(
       client_id, client_secret, redirect_uris[0]);
 
