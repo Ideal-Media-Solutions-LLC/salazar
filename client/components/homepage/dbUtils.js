@@ -26,10 +26,10 @@ export function handleSignInWithGoogle() {
         console.log('response.data>>', response.data);
         if (response.data) {
           //route
-          return Router.push('http://localhost:3002/signup')
+          return Router.push('/signup')
         } else {
           //route
-          return Router.push('http://localhost:3002/user')
+          return Router.push('/user')
         }
       })
       // readUserData(user.uid, () => Router.push('/userinterface'), () => Router.push('/signup'));
