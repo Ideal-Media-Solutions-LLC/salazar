@@ -19,6 +19,8 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Button from '@mui/material/Button';
 
+import moment from 'moment';
+
 import Message from './Message.js';
 import Contact from './Contact.js';
 import Languages from './Languages.js';
@@ -72,12 +74,13 @@ const Chat = () => {
 
 
   const getContacts =() => {
+    // get user id from context?
     //axios call - send user id
     setContacts([{1:'Alice'}, {2:'Makeda'}, {3:'Brett'}, {4:'Jinho'}, {5:'Chris'}, {6:'Xinyi'}, {7:'Carlos'}, {8:'Viola'}, {9:'Elton'}])
   }
 
-  const getMessages =() => {
-    //axios call - send both ids
+  const getMessages = (receiverId, senderId) => {
+    //axios call - send both receiverId and senderId
     setMessages([{1: 'hello'}, {2: 'HEY'}, {2: 'how is it going?'}]);
   }
 
@@ -93,9 +96,9 @@ const Chat = () => {
 
   };
 
-  const handleContactClick = (receiverId, sender_id = '1') => {
+  const handleContactClick = (receiverId, senderId = '1') => {
     setReceiverId(receiverId);
-    getMessages();
+    getMessages(receiverId, senderId);
     // alert(receiverId + " and " + sender_id);
 
   }
@@ -107,6 +110,12 @@ const Chat = () => {
 
   const handleMessageSubmit = () => {
     //axios call
+    var messageToSend = {
+      text: text,
+      timestamp: moment().format(),
+      //senderId : userId
+      receiverId: receiverId
+    }
     setMessages(messages.concat({1: text}))
     setText('');
   }
