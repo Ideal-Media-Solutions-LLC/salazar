@@ -2,7 +2,7 @@ const express = require('express');
 const axios = require('axios');
 require('dotenv').config();
 const port = require('../port.js');
-//const api_z = require('../api_z.js');
+const api_z = require('../api_z.js');
 //import { route } from 'express/lib/application';
 //import { writeLanguages } from '../helpers.js';
 //const firefunctions = require('../helpers.js');
@@ -208,7 +208,7 @@ app.get('/video/link', (req, res) => {
   res.send(result);
 });
 
-app.post('/video/token', (req, res) => {
+app.get('/video/token', (req, res) => {
   axios({
     method: 'post',
     url: 'https://eastus.api.cognitive.microsoft.com/sts/v1.0/issueToken',
@@ -217,7 +217,9 @@ app.post('/video/token', (req, res) => {
       'Ocp-Apim-Subscription-Key': api_z
     }
   }).then((response) => {
-    res.send(JSON.stringify(response.data))
+    res.set('Access-Control-Allow-Origin', '*');
+    //res.send(JSON.stringify(response.data))
+    res.send((response.data))
   })
   .catch((error => {
     console.log(error);

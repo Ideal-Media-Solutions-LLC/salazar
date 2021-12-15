@@ -19,10 +19,6 @@ export default function VideoChat() {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>
-          Video Chat
-        </h1>
-        
         <VideoMeet meetString={useParams().meetString}/>
         <Transcribe/>
         

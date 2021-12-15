@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Script from 'next/script';
 import Quotes from './quotes.js';
+import axios from 'axios';
 
 export default function Transcribe() {
 
@@ -12,11 +13,13 @@ export default function Transcribe() {
   const [startButtonEnabled, setStartButtonEnabled] = useState(false);
   const [stopButtonEnabled, setStopButtonEnabled] = useState(false);
   const [enableButtonOnOff, setEnableButtonOnOff] = useState(true);
+  const [scroll, setScroll] = useState(0);
   //#endregion
   
   //#region speech sdk states
   const [mySpeechSDK, setSpeechSDK] = useState(null);
-  const [key, setKey] = useState({value: "bfc14462bd234b74b9534588764f1786"});
+  //const [key, setKey] = useState({value: "bfc14462bd234b74b9534588764f1786"});
+  const [key, setKey] = useState({value: null});
   const [authorizationToken, setAuthorizationToken] = useState(null);
   const [appId, setAppId] = useState(null);
   const [languageOptions, setLanguageOptions] = useState("en-US");
@@ -36,6 +39,7 @@ export default function Transcribe() {
   };
   const [keypress, setKeypress] = useState(0);
   const keyRef = React.useRef(keypress);
+  const phraseTextAreaRef = React.useRef(null);
 
   //#endregion
 
@@ -44,17 +48,19 @@ export default function Transcribe() {
   //#region helper functions
   const RequestAuthorizationToken = function() {
     if (authorizationEndpoint) {
-      var a = new XMLHttpRequest();
-      a.open("GET", authorizationEndpoint);
-      a.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-      a.send("");
-      a.onload = function () {
-        var token = JSON.parse(atob(this.responseText.split(".")[1]));
-        setAuthorizationToken(this.responseText);
-        //key.disabled = true;
-        //key.value = "using authorization token (hit F5 to refresh)";
-        console.log("Got an authorization token: " + token);
-      }
+
+      axios({
+        method: 'get',
+        url: 'http://localhost:3001/video/token',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      }).then((response) => {
+        console.log(response.data);
+        setAuthorizationToken(response.data);
+      }).catch((error => {
+        console.log(error);
+      }));
     }
   } 
 
@@ -64,7 +70,7 @@ export default function Transcribe() {
   // }
   //#endregion
 
-  var authorizationEndpoint = "token.php";
+  var authorizationEndpoint = "http://localhost:3001/video/token";
 
   //#region event handlers
   const onTextAreaChange = function(e) {
@@ -102,6 +108,12 @@ export default function Transcribe() {
     getInputStream();
   }
 
+  const onScrollEvent = function(e) {
+    e.preventDefault();
+    console.log(e);
+    setScroll(e.target.scrollTop)
+  }
+
   function getInputStream() {
     navigator.mediaDevices.getDisplayMedia({
       video: true,
@@ -110,6 +122,8 @@ export default function Transcribe() {
       setCapstream(stream);
     });
   }
+
+
 
   //#endregion
 
@@ -164,12 +178,7 @@ export default function Transcribe() {
     var result = recognitionEventArgs.result;
     setStatusDiv(statusDivText + `(recognizing) Reason: ${SpeechSDK.ResultReason[result.reason]}`);
         + ` Text: ${result.text}\r\n`;
-    // Update the hypothesis line in the phrase/result view (only have one)
-    debugger;
-    //console.log("current: " + phraseDivText);
     let temp = phraseRef.current.replace(/(.*)(^|[\r\n]+).*\[\.\.\.\][\r\n]+/, '$1$2') + `${result.text} [...]\r\n`;
-    //debugger;
-    //console.log("new: " + temp);
     setPhraseDiv(temp);
     //phraseDiv.scrollTop = phraseDiv.scrollHeight;
   }
@@ -260,9 +269,13 @@ export default function Transcribe() {
   //#endregion
 
   useEffect(()=> {
-    //RequestAuthorizationToken();
+    RequestAuthorizationToken();
     
   }, []);
+
+  useEffect(()=> {
+    phraseTextAreaRef.current.scrollTop = 10000;
+  }, [phraseDivText]);
 
   useEffect(()=> {
     if(capstream) {
@@ -274,7 +287,6 @@ export default function Transcribe() {
 
   const handleKeyPress = function (e) {
     let kcode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'KeyB', 'KeyA'];
-    console.log("code: " + e.code);
     if (kcode[keyRef.current] == e.code) {
       keyRef.current += 1;
     } else {
@@ -356,10 +368,10 @@ export default function Transcribe() {
                 <td align="right">Results:</td>
                 <td align="left">
                     {/* <textarea id="phraseDiv" style={{width: "250px", height: "250px"}} value={phraseDivText} onChange={onTextAreaChange}></textarea> */}
-                    <textarea id="phraseDiv" style={{width: "250px", height: "250px"}}  onChange={onTextAreaChange} value={phraseDivText} readOnly={true}></textarea>
+                    <textarea id="phraseDiv" style={{width: "500px", height: "500px"}}  onChange={onTextAreaChange} ref={phraseTextAreaRef} value={phraseDivText} readOnly={true}></textarea>
                 </td>
             </tr>
-            <tr >
+            <tr style={{display:'none'}}>
                 <td align="right">Events:</td>
                 <td align="left">
                     <textarea id="statusDiv" style={{width: "250px", height: "250px"}} value={statusDivText} onChange={onTextAreaChange}>
