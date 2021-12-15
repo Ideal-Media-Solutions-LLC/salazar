@@ -6,13 +6,12 @@ require('dotenv').config();
 const port = require('../port.js');
 const api_z = require('../api_z.js');
 const firefunctions = require('../helpers.js');
-const req = require('express/lib/request');
 const { listEvents, createEvent } = require('../calendar.js');
 const { loadClient } = require('../googleCalApiClient.js');
 
 const app = express();
 app.use(express.json());
-app.use(cors);
+app.use(cors());
 
 app.get('/', (req, res) => {
   res.send('Hello World');
@@ -22,7 +21,6 @@ app.get('/', (req, res) => {
 //#region user auth
 
 app.get('/auth', async (req, res) => {
-  console.log('/auth');
   const result = await firefunctions.get(req.query.uid);
   if (result === null) {
     res.send(true);
