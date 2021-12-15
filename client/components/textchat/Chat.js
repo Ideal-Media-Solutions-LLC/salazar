@@ -20,6 +20,8 @@ import Select from '@mui/material/Select';
 import Button from '@mui/material/Button';
 
 import moment from 'moment';
+import axios from 'axios';
+import {useApp} from '../context/AppProvider.js';
 
 import Message from './Message.js';
 import Contact from './Contact.js';
@@ -72,16 +74,27 @@ const Chat = () => {
   const [text, setText] = useState('');
   const [selectedIndex, setSelectedIndex] = useState('');
 
+  const {user} = useApp();
+
 
   const getContacts =() => {
     // get user id from context?
     //axios call - send user id
-    setContacts([{1:'Alice'}, {2:'Makeda'}, {3:'Brett'}, {4:'Jinho'}, {5:'Chris'}, {6:'Xinyi'}, {7:'Carlos'}, {8:'Viola'}, {9:'Elton'}])
+    axios.get('http://localhost:3002/chatUsers', {params: {user_ID: user.uid}})
+    .then((response) => {
+      setContacts(response.data);
+    })
+
+    // setContacts([{1:'Alice'}, {2:'Makeda'}, {3:'Brett'}, {4:'Jinho'}, {5:'Chris'}, {6:'Xinyi'}, {7:'Carlos'}, {8:'Viola'}, {9:'Elton'}])
   }
 
   const getMessages = (receiverId, senderId) => {
     //axios call - send both receiverId and senderId
-    setMessages([{1: 'hello'}, {2: 'HEY'}, {2: 'how is it going?'}]);
+    axios.get('http://localhost:3002/chat', {params: {user_ID: senderId, other_ID: receiverId}})
+    .then((response) => {
+      setMessages(response.data);
+    })
+    // setMessages([{1: 'hello'}, {2: 'HEY'}, {2: 'how is it going?'}]);
   }
 
   const handleListItemClick = (contactId) => {
@@ -111,19 +124,28 @@ const Chat = () => {
   const handleMessageSubmit = () => {
     //axios call
     var messageToSend = {
-      text: text,
-      timestamp: moment().format(),
-      //senderId : userId
-      receiverId: receiverId
+      message: text,
+      time: moment().format(),
+      user_ID : user.uid,
+      other_ID: receiverId
     }
-    setMessages(messages.concat({1: text}))
+
+    axios.post('http://localhost:3002/chat', {messageToSend})
+    .then(() => {
+      getMessages(receiverId, user.uid);
+    })
+    // setMessages(messages.concat({1: text}))
     setText('');
   }
 
   const handleTranslateButtonClick = (event) => {
     alert(receiverId + " and " + language);
     //axios call
-    setTranslations(['你好', '嘿', '最近怎么样?']);
+    axios.get('http://localhost:3002/chat/translation', {params: {language: language, user_ID: user.uid, other_ID: receiverId}})
+    .then((response) => {
+      setTranslations(response.data);
+    })
+    // setTranslations(['你好', '嘿', '最近怎么样?']);
 
   }
 

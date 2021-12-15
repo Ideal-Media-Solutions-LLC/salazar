@@ -6,9 +6,16 @@ import { useTranslation, initReactI18next } from "react-i18next";
 import HttpApi from 'i18next-http-backend'
 import LanguageDetector from 'i18next-browser-languagedetector';
 import Languages from '../user/languages';
+import { useApp } from '../context/AppProvider.js';
 
-const SignUpForm = function () {
+const SignUpForm = function (props) {
+  const { user, curUser } = useApp();
+  //const user = props.value;
+  console.log(user, 'signupform');
+  console.log(curUser, 'curuser');
+  // useEffect((=> {
 
+  // }, []);
   const { t } = useTranslation();
 
   const options = [
@@ -16,8 +23,21 @@ const SignUpForm = function () {
     { label: "two", value: 2 }
   ];
 
-  const handleSubmit = function () {
-
+  const handleSubmit = function (e) {
+    e.preventDefault();
+    let obj = {
+      displayName: user.displayName,
+      languages: {
+        'Chinese': 2,
+        'Korean': 1,
+      },
+      email: user.email,
+      photo: user.photoURL,
+      username: 'eee'
+    }
+    axios.post('http://localhost:3001/auth', obj).then((result) => {
+      //route
+    });
   };
 
   return (

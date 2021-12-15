@@ -1,4 +1,4 @@
-const { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, browserSessionPersistence, setPersistence, onAuthStateChanged, signOut , signInWithRedirect, getRedirectResult} = require('firebase/auth');
+const { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, browserSessionPersistence, setPersistence, onAuthStateChanged, signOut, signInWithRedirect, getRedirectResult } = require('firebase/auth');
 //const functions = require('firebase/auth');
 const { initializeApp } = require('firebase/app');
 const { getFirestore } = require("firebase/firestore");
@@ -87,7 +87,7 @@ function logOut() {
 async function write(key, data, collection) {
   //console.log(db);
   const response = await setDoc(doc(db, collection, data.uid), data);
-  console.log('write Languages');
+  //console.log('write Languages');
 }
 
 async function get(key) {
@@ -135,7 +135,7 @@ async function getMessages(user_ID, other_ID) {
 
   var inOrderMsg = [];
 
-  var organize = function(indexMe, indexOther) {
+  var organize = function (indexMe, indexOther) {
     if (getMessagesFromMe[indexMe] === undefined && getMessagesFromOther[indexOther] === undefined) {
       return;
     } else if (getMessagesFromMe[indexMe] === undefined) {
@@ -147,33 +147,33 @@ async function getMessages(user_ID, other_ID) {
       var obj = {};
       obj[user_ID] = getMessagesFromMe[indexMe];
       inOrderMsg.push(obj);
-      organize(indexMe+1, indexOther);
+      organize(indexMe + 1, indexOther);
     } else if (getMessagesFromMe[indexMe].Time >= getMessagesFromOther[indexOther].Time) {
       var obj = {};
       obj[user_ID] = getMessagesFromMe[indexMe]
       inOrderMsg.push(obj);
-      organize(indexMe+1, indexOther);
+      organize(indexMe + 1, indexOther);
     } else {
       var obj = {};
       obj[other_ID] = getMessagesFromOther[indexOther];
       inOrderMsg.push(obj);
-      organize(indexMe, indexOther+1);
+      organize(indexMe, indexOther + 1);
     }
   }
 
-  organize(0,0);
+  organize(0, 0);
   return inOrderMsg;
 }
 
-async function postMessages(user_ID, other_ID) {
+async function postMessages(user_ID, other_ID, time, message) {
   const getMessagesFromOther = await db.collection('messages').doc(other_ID).where('user_id', '==', user_ID).get();
 
   //{reviever_ID: sender_ID: {msg}}
   if (getMessagesFromOther) {
     db.collection('messages').doc(other_ID).update({
       [user_ID]: FieldValue.arrayUnion({
-        message: req.body.message,
-        time: req.body.timestamp
+        message: message,
+        time: time
       })
     }).then((suc, err) => {
       if (err) {
@@ -185,8 +185,8 @@ async function postMessages(user_ID, other_ID) {
   } else {
     db.collection('messages').doc(other_ID).set({
       [user_ID]: [{
-        message: req.body.message,
-        time: req.body.timestamp
+        message: message,
+        time: time
       }]
     }).then((suc, err) => {
       if (err) {

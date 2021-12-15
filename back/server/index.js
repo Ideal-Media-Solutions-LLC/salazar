@@ -1,7 +1,10 @@
 require('dotenv').config();
 const express = require('express');
 const app = express();
+const cors = require('cors');
 app.use(express.json());
+app.use(cors());
+
 const port = require('../port.js');
 
 const { listEvents, createEvent } = require('../calendar.js');
@@ -21,11 +24,12 @@ app.get('/', (req, res) => {
 //#region user auth
 
 app.get('/auth', async (req, res) => {
+  console.log('/auth');
   const result = await firefunctions.get(req.query.uid);
   if (result === null) {
-    res.send(400);
+    res.send(true);
   } else {
-    res.status(200).send(result);
+    res.send(false);
   }
 });
 
@@ -52,7 +56,7 @@ app.post('/auth', async (req, res) => {
 
 app.get('/user', async (req, res) => {
   let result = {};
-  const response = await firebasefunctions.get(req.query.uid);
+  const response = await firefunctions.get(req.query.uid);
   result.uid = req.query.uid;
   result.username = response.username;
   result.displayName = response.displayName;
@@ -76,14 +80,14 @@ app.get('/users', async (req, res) => {
   },
   ]
   */
-  const result = await firebasefunctions.getusers();
+  const result = await firefunctions.getusers();
   res.status(200).send(result);
 })
 
 app.post('/languages', async (req, res) => {
   let data = req.body.languages;
   let key = req.body.uid;
-  let result = await firebasefunctions.update(key, data);
+  let result = await firefunctions.updateLanguages(key, data);
   res.send(201);
 })
 
@@ -102,7 +106,7 @@ app.get('/chat', async (req, res) => {
 });
 
 app.post('/chat', async (req, res) => {
-  var results = await firefunctions.postMessages(req.query.user_ID, req.query.other_ID);
+  var results = await firefunctions.postMessages(req.body.user_ID, req.body.other_ID, req.body.time, req.body.message);
   if (results) {
     res.send(201);
   } else {
@@ -138,17 +142,17 @@ app.get('/chat/translation', async (req, res) => {
       url: '/translate',
       method: 'post',
       headers: {
-          'Ocp-Apim-Subscription-Key': subscriptionKey.token,
-          'Ocp-Apim-Subscription-Region': location,
-          'Content-type': 'application/json',
-          'X-ClientTraceId': uuidv4().toString()
+        'Ocp-Apim-Subscription-Key': subscriptionKey.token,
+        'Ocp-Apim-Subscription-Region': location,
+        'Content-type': 'application/json',
+        'X-ClientTraceId': uuidv4().toString()
       },
       params: {
-          'api-version': '3.0',
-          'to': language
+        'api-version': '3.0',
+        'to': language
       },
       data: [{
-          'text': messages[i].message
+        'text': messages[i].message
       }],
       responseType: 'json'
     }).then((result) => {
@@ -162,7 +166,7 @@ app.get('/chat/translation', async (req, res) => {
 
 //#region calendar
 
-loadClient();
+// loadClient();
 
 app.get('/calendar/list', async (req, res) => {
 
