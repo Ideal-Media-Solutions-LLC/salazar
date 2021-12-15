@@ -1,12 +1,15 @@
 import Image from 'next/image';
 import EventsList from './EventsList.js';
-
 import Languages from './languages.js';
+
+import {AppContext } from '../context/AppProvider.js'
 import { Button, Modal, Popover, Typography } from 'antd';
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 
 
 export default function Sidebar() {
+
+  const appContext = useContext(AppContext);
 
   const [visible, setVisible] = useState(false);
 
@@ -19,16 +22,16 @@ export default function Sidebar() {
   };
 
   const user = {
-    uid:'',
-    username: 'Alice',
-    displayName: 'Alice',
+    uid:'test uid',
+    username: 'TestUsername',
+    displayName: 'TestDisplayname',
     photo:'/assets/profile.png',
     languages: {
       Chinese: 2,
       Japanese: 2,
       English: 4,
     },
-  };
+  }
 
 
   return (
