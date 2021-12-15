@@ -22,7 +22,7 @@ export function handleSignInWithGoogle() {
   signInWithPopup(auth, provider)
     .then((res) => {
       let user = res.user;
-      axios.get('http://localhost:3001/auth', { params: { uid: user.uid } }).then((response) => {
+      axios.get('http://localhost:3002/auth', { params: { uid: user.uid } }).then((response) => {
         console.log('response.data>>', response.data);
         if (response.data) {
           //route
