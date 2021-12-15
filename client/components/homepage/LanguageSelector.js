@@ -2,10 +2,13 @@ import { Form, Input, Button, Space, Select } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { useApp } from '../context/AppProvider.js';
 import { useState } from 'react';
+import { useTranslation } from "react-i18next";
+
 
 export default function LanguageSelector({ handleSubmit }) {
   const formName = 'chooselanguage';
   const { Option } = Select;
+  const { t } = useTranslation();
   const { languagesList, levelList, setSignUpPageLanguages } = useApp();
 
   const onValuesChange = (changedValues, allValues) => {
@@ -27,7 +30,7 @@ export default function LanguageSelector({ handleSubmit }) {
                   rules={[{ required: true, message: 'Missing language name' }]}
                   style={{ width: '130px' }}
                 >
-                  <Select placeholder="Language" options={languagesList} />
+                  <Select placeholder={t('home:language')} options={languagesList} />
                 </Form.Item>
 
                 <Form.Item
@@ -37,7 +40,7 @@ export default function LanguageSelector({ handleSubmit }) {
                   rules={[{ required: true, message: 'Missing level' }]}
                   style={{ width: '130px' }}
                 >
-                  <Select placeholder="Level" options={levelList} />
+                  <Select placeholder={t('home:level')} options={levelList} />
                 </Form.Item>
 
                 <MinusCircleOutlined onClick={() => remove(name)} />
@@ -45,7 +48,7 @@ export default function LanguageSelector({ handleSubmit }) {
             ))}
             <Form.Item>
               <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
-                Add Language
+                {t('home:add_language')}
               </Button>
             </Form.Item>
           </>

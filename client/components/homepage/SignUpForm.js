@@ -20,10 +20,7 @@ const SignUpForm = function (props) {
   // }, []);
   const { t } = useTranslation();
 
-  const options = [
-    { label: "one", value: 1 },
-    { label: "two", value: 2 }
-  ];
+
 
   const handleSubmit = function (e) {
     e.preventDefault();
@@ -52,14 +49,14 @@ const SignUpForm = function (props) {
 
   return (
     <form className='signup-container'>
-      <h2 className='signup'>{t('home:Sign_Up')}</h2>
+      <div className='signup'>{t('home:Welcome_to_Salazar')}</div>
 
-      <div className='user-photo'>
-        {t('home:user_photo')}
+      <div >
+        <img src={user.photoURL} className='user-photo' />
       </div>
 
       <div className="form-group">
-        <label>{t('home:user_name')}</label>
+        <label>{t('home:user_name')} </label>
         <input type="text" className="form-control" placeholder={t('home:first_name')} />
       </div>
 
@@ -69,7 +66,7 @@ const SignUpForm = function (props) {
       <LanguageSelector />
 
 
-      <button type="submit" className="btn btn-primary btn-block" onClick={handleSubmit}>{t('home:Sign_Up')}</button>
+      <button type="submit" className="btn btn-primary btn-block" onClick={handleSubmit}>{t('home:Register')}</button>
 
     </form>
   )
