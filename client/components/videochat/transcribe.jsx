@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Script from 'next/script';
 import Quotes from './quotes.js';
 import axios from 'axios';
+import port from '../../../back/port.js'
 
 export default function Transcribe() {
 
@@ -50,7 +51,7 @@ export default function Transcribe() {
 
       axios({
         method: 'get',
-        url: 'http://localhost:3001/video/token',
+        url: `http://localhost:${port}/video/token`,
         headers: {
           'Content-Type': 'application/json',
         }
@@ -69,7 +70,7 @@ export default function Transcribe() {
   // }
   //#endregion
 
-  var authorizationEndpoint = "http://localhost:3001/video/token";
+  var authorizationEndpoint = `http://localhost:${port}/video/token`;
 
   //#region event handlers
   const onTextAreaChange = function(e) {

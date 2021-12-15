@@ -12,6 +12,7 @@
 .vscode
 *.env
 Azure_api_config.js
+api_z.js
 
 # Module management
 node_modules/
