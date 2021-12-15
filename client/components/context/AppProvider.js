@@ -55,7 +55,7 @@ function AppProvider({ children }) {
   ]);
 
   return (
-    <AppContext.Provider value={curUser, setCurUser, languagesList, setLanguagesList, levelList, setLevelList, user}>
+    <AppContext.Provider value={{curUser, setCurUser, languagesList, setLanguagesList, levelList, setLevelList, user}}>
       {children}
     </AppContext.Provider>
   );

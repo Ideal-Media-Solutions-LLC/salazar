@@ -3,8 +3,9 @@ import { Switch, DatePicker, Button, Input, Modal, Select, Typography } from 'an
 const { Option } = Select;
 import styles from '../../styles/modals/ScheduleCall.module.css';
 // import axios from 'axios';
-
+import { useApp } from '../context/AppProvider.js';
 const ScheduleCall = function(props) {
+  const { stsTokenManager } = useApp().user;
   const [time, setTime ] = useState({hour: 0, minutes: 0});
   const [AmPm, setAmPm] = useState(0);
   const [day, setDay] = useState();
@@ -38,9 +39,7 @@ const ScheduleCall = function(props) {
       end: new Date(date.getTime()+3600000),
       message,
       toSpeak: language,
-
-
-
+      token: stsTokenManager
     }
 
   //   axios.post('calendar/events', data)
