@@ -4,6 +4,8 @@ import styles from '../styles/Home.module.css'
 import Link from 'next/link'
 import SignUpForm from '../components/homepage/SignUpForm'
 
+import { useApp } from '../components/context/AppProvider.js';
+
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation, initReactI18next } from "react-i18next";
 
@@ -17,6 +19,7 @@ export async function getStaticProps({ locale }) {
 
 
 export default function Home() {
+  const { user } = useApp();
   return (
     <div className="sign-up">
       <Head>
@@ -27,7 +30,7 @@ export default function Home() {
 
       <main className={styles.main}>
 
-        <SignUpForm />
+        <SignUpForm value={user} />
         <Link href='/'>
 
           <a>
