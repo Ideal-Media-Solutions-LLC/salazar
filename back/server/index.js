@@ -105,22 +105,9 @@ app.get('/chat', async (req, res) => {
 });
 
 app.post('/chat', async (req, res) => {
-  const getMessagesFromOther = await db.collection('messages').doc(req.body.reciever_ID).where('user_id', '==', req.query.sender_ID).get();
-
-  //{reviever_ID: sender_ID: {msg}}
-  if (getMessagesFromOther) {
-    let obj = {};
-    obj[req.body.sender_ID] = FieldValue.arrayUnion({
-      message: req.body.message,
-      Time: req.body.timestamp
-    });
-    db.collection('messages').doc(req.body.reciever_ID).update(obj).then((suc, err) => {
-      if (err) {
-        req.sendStatus(404);
-      } else {
-        req.sendStatus(201);
-      }
-    })
+  var results = await firefunctions.postMessages(req.body.user_ID, req.body.other_ID, req.body.time, req.body.message);
+  if (results) {
+    res.send(201);
   } else {
     let obj = {};
     obj[req.body.sender_ID] = [{

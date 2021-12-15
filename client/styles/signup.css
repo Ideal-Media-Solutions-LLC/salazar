@@ -1,11 +1,22 @@
 .signup-container {
-  border: solid;
+  border: none;
   padding: 30px;
+  background-color: snow;
+  border-radius: 20px;
+  /* opacity: 0.7; */
+}
 
+
+.sign-up {
+  background-image: url("../public/assets/background.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .signup {
   text-align: center;
+  font-size: x-large;
+  margin-bottom: 15px;
 }
 
 .user-photo {
@@ -19,7 +30,24 @@
   width: 100px;
   margin-left: 30%;
   margin-top: 5px;
+  margin-bottom: 20px;
 }
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-control {
+  /* border: none; */
+  border-color: antiquewhite;
+  /* border-radius: 10px; */
+}
+
+/* .btn:hover {
+  background-color: lightgray;
+  color: black;
+  border: 0px;
+} */
 
 .choice {
   display: flex;
