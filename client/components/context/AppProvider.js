@@ -48,14 +48,16 @@ function AppProvider({ children }) {
   ]);
 
   const [levelList, setLevelList] = useState([
-    { label: 'Entry', value: 'Entry' },
-    { label: 'Intermediate', value: 'Intermediate' },
-    { label: 'Advanced', value: 'Advanced' },
-    { label: 'Native', value: 'Native' },
+    { label: 'Entry', value: 1 },
+    { label: 'Intermediate', value: 2 },
+    { label: 'Advanced', value: 3 },
+    { label: 'Native', value: 4 },
   ]);
 
+  const [signUpPageLanguages, setSignUpPageLanguages] = useState([]);
+
   return (
-    <AppContext.Provider value={curUser, setCurUser, languagesList, setLanguagesList, levelList, setLevelList, user}>
+    <AppContext.Provider value={{ curUser, setCurUser, languagesList, setLanguagesList, levelList, setLevelList, user, signUpPageLanguages, setSignUpPageLanguages }}>
       {children}
     </AppContext.Provider>
   );
@@ -64,7 +66,6 @@ function AppProvider({ children }) {
 function useApp() {
   //console.log('yo');
   const result = useContext(AppContext);
-  console.log('here' + result);
   return result;
 }
 

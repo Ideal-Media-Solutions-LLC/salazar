@@ -15,6 +15,7 @@ import axios from 'axios';
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 const provider = new GoogleAuthProvider();
+provider.addScope(`https://www.googleapis.com/auth/calendar.events`);
 const db = getDatabase(app);
 
 export function handleSignInWithGoogle() {
