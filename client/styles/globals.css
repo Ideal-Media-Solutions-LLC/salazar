@@ -30,6 +30,7 @@ a {
   background-image: url("../public/assets/background.jpg");
   width: 100vw;
   max-width: 2000px;
+
   background-repeat: no-repeat;
   -webkit-background-size: cover;
   -moz-background-size: cover;
