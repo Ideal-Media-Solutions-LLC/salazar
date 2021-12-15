@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Collapse, CalendarOutlined, DoubleLeftOutlined } from 'antd';
 import styles from '../../styles/EventsList.module.css';
-
+import { useApp } from '../context/AppProvider.js';
 // import axios from 'axios'
 const { Panel } = Collapse;
 const sampleData = [
@@ -62,6 +62,7 @@ const sampleData = [
 
 ];
 const EventsList = function(props) {
+  const { stsTokenManager } = useApp().user;
   const [page, setPage] = useState(0);
   const [events, setEvents] = useState();
 
@@ -79,9 +80,12 @@ const EventsList = function(props) {
     console.log(`days: ${days}    hours: ${hours}    minutes: ${minutes}     date: ${date}     now: ${new Date()}`)
   }
   // useEffect(()=>{
-  //   axios.get('calendar/events')
+  //   axios.get('http://localhost:3001/calendar/events',{
+  //     token: stsTokenManager
+  //   })
   //     .then(results => {
-  //       setEvents(results);
+  //       console.log(results);
+  //       setEvents(results.data);
   //     })
   //     .catch(err => {
   //       console.log('Could not retrieve events from google calendar.')
