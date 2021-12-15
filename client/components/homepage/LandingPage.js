@@ -3,14 +3,14 @@ import { handleSignInWithGoogle, LogoutUser } from "./dbUtils";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Dropdown from 'react-dropdown';
 import { urlObjectKeys } from "next/dist/shared/lib/utils";
-import chat from '../../public/assets/logo.png';
+
 import { useTranslation, initReactI18next } from "react-i18next";
 import { createContext, useContext } from "react";
-import { useAppContext } from "../context/State";
+// import { useAppContext } from "../context/State";
 import LanguageDropdown from "./LanguageDropdown";
 
 export default function LandingPage() {
-  const { uid } = useAppContext();
+  // const { uid } = useAppContext();
   const { t } = useTranslation();
 
   const options = {
@@ -20,24 +20,23 @@ export default function LandingPage() {
   return (
     <div>
       <header>
-        <nav className="navbar navbar-expand-md navbar-dark fixed-top bg-light">
-          <a className="navbar-brand" href="#">{t('home:Salazar')}</a>
-          <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-            <span className="navbar-toggler-icon"></span>
-          </button>
+        <nav className="navbar navbar-expand-md navbar-dark fixed-top">
+          <img src={'assets/logo1.png'} className='homepage-logo' />
           <div className="collapse navbar-collapse" id="navbarCollapse">
           </div>
           <div className="dropdown">
             <LanguageDropdown />
           </div>
         </nav>
-        <main role="main">
+        <main role="main" className='main'>
 
-          <div id="myCarousel" className="carousel slide" data-ride="carousel">
+
+
+          <div id="myCarousel" className="carouse-slide" data-ride="carousel">
 
             <div className="carousel-inner">
               <div className="carousel-item active">
-                <img className="first-slide" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Hogwarts_model_studio_tour.jpg/1024px-Hogwarts_model_studio_tour.jpg" alt="First slide" />
+                <img className="homepage-img" src="https://media.tumblr.com/tumblr_lq1ukhcGnh1qje6lz.png" alt="First slide" />
                 <div className="container">
                   <div className="carousel-caption text-left">
                     <h1>{t('home:Salazar_School')}</h1>
@@ -112,7 +111,7 @@ export default function LandingPage() {
           <footer className="container">
             <p className="float-right"><a href="#">{t('home:Back_to_top')}</a></p>
             <p>&copy; 2021 Company, Inc. &middot; <a href="#">{t('home:Privacy')}</a> &middot; <a href="#">{t('home:Terms')}</a></p>
-                    </footer>
+          </footer>
         </main>
       </header>
     </div>

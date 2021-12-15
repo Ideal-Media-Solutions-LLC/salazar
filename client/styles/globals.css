@@ -1,9 +1,11 @@
 @import '~antd/dist/antd.css';
+
 html,
 body {
   padding: 0;
   margin: 0;
   /* background-image: url("../public/assets/background.jpg"); */
+  /* background-color: url('https://uploadfile.bizhizu.cn/2014/1220/20141220032430736.jpg'); */
   background-size: cover;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
@@ -26,7 +28,7 @@ a {
 /* ****** Layout ***** */
 /* ******************* */
 
-.layout{
+.layout {
   background-image: url("../public/assets/background.jpg");
   width: 100vw;
   max-width: 2000px;
@@ -37,7 +39,7 @@ a {
   background-size: cover;
 }
 
-.innerlayout{
+.innerlayout {
   /* max-height: 1200px; */
   /* min-height: 600px; */
   min-height: 88vh;
@@ -48,13 +50,13 @@ a {
 }
 
 .header {
-  background-color:transparent;
+  background-color: transparent;
   height: 12vh;
   max-height: 35hw;
   width: 100vw;
   padding: 1vh;
   padding-left: 50px;
-  text-align:left;
+  text-align: left;
 }
 
 .logo {
@@ -68,11 +70,11 @@ a {
 
 .sider {
   background-color: #F0F2F5;
-  height: auto ;
-  flex: 0 0 95vw!important;
-  max-width: 355px!important;
-  min-width: 300px!important;
-  border-radius:0px 50px 0px 50px;
+  height: auto;
+  flex: 0 0 95vw !important;
+  max-width: 355px !important;
+  min-width: 300px !important;
+  border-radius: 0px 50px 0px 50px;
   margin-left: 10px;
   margin-bottom: 10px;
 
@@ -84,7 +86,7 @@ a {
   margin-right: 10px;
   min-width: 350px;
   height: auto;
-  border-radius:0px;
+  border-radius: 0px;
   margin-bottom: 10px;
 }
 
@@ -106,7 +108,7 @@ a {
   justify-content: space-around;
   align-items: center;
   justify-content: start;
-  align-items:center;
+  align-items: center;
 
 }
 
@@ -123,7 +125,7 @@ a {
   background-color: transparent;
   color: black;
   border-color: lightgray;
-  white-space:normal;
+  white-space: normal;
   height: auto;
 
 
@@ -135,7 +137,7 @@ a {
   border: 0px;
 }
 
-.calendar{
+.calendar {
   margin: 30px;
   /* border: solid 1px lightgray; */
   /* max-height: 400px; */
@@ -160,7 +162,7 @@ a {
 /* ***** Search ***** */
 /* ******************* */
 
-.searchbar{
+.searchbar {
   width: cal(100%+25px);
   min-width: 200px;
   min-height: 40px;
@@ -191,14 +193,14 @@ a {
   width: 180px;
   height: 260px;
   border-radius: 30px;
-  background-color: rgb(240,242,245);
-  margin:10px;
+  background-color: rgb(240, 242, 245);
+  margin: 10px;
   padding: 10px;
   box-shadow: 0px 0px 8px -1px rgba(0, 0, 0, 0.3);
   text-align: center;
   display: flex;
   flex-direction: column;
-  justify-content:space-around;
+  justify-content: space-around;
 }
 
 .popup {
