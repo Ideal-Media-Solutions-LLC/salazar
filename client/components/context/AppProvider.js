@@ -1,23 +1,36 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { initializeApp } from 'firebase/app';
+
+import firebaseConfig from "../homepage/FirebaseConfig";
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth();
 
 const AppContext = createContext({});
 
 function AppProvider({ children }) {
-  const [username, setUserName] = useState('test');
-  let sharedState = {
-    username, setUserName
-  }
+  const [user, setUser] = useState({});
+  //const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, result => {
+      console.log('onauth', result);
+      setUser(result);
+      //setLoading(false)
+    })
+    return unsub;
+  }, [])
 
-  const [curUser, setCurUser] = useState( {
-    uid:'test uid',
+  const [curUser, setCurUser] = useState({
+    uid: 'test uid',
     username: 'TestUsername',
     displayName: 'TestDisplayname',
-    photo:'/assets/profile.png',
-    languages: {
-      Chinese: 2,
-      Japanese: 2,
-      English: 4,
-    },
+    photo: '/assets/profile.png',
+    languages: [
+      { lang: 'Chinese', langLevel: 2, langLevelLabel: 'Intermediate' },
+      { lang: 'Japanese', langLevel: 2, langLevelLabel: 'Intermediate' },
+      { lang: 'English', langLevel: 4, langLevelLabel: 'Native' },
+    ],
   });
 
   const [languagesList, setLanguagesList] = useState([
@@ -35,17 +48,24 @@ function AppProvider({ children }) {
   ]);
 
   const [levelList, setLevelList] = useState([
-    { label: 'Entry', value: 'Entry' },
-    { label: 'Intermediate', value: 'Intermediate' },
-    { label: 'Advanced', value: 'Advanced' },
-    { label: 'Native', value: 'Native' },
+    { label: 'Entry', value: '1' },
+    { label: 'Intermediate', value: '2' },
+    { label: 'Advanced', value: '3' },
+    { label: 'Native', value: '4' },
   ]);
 
   return (
-    <AppContext.Provider value={{curUser, setCurUser, languagesList, setLanguagesList, levelList, setLevelList}}>
+    <AppContext.Provider value={{curUser, setCurUser, languagesList, setLanguagesList, levelList, setLevelList, user}}>
       {children}
     </AppContext.Provider>
   );
 }
 
-export { AppContext, AppProvider };
+function useApp() {
+  //console.log('yo');
+  const result = useContext(AppContext);
+  console.log('here' + result);
+  return result;
+}
+
+export { AppContext, AppProvider, useApp };
