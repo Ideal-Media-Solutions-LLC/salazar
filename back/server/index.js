@@ -106,7 +106,7 @@ app.get('/chat', async (req, res) => {
 });
 
 app.post('/chat', async (req, res) => {
-  var results = await firefunctions.postMessages(req.query.user_ID, req.query.other_ID);
+  var results = await firefunctions.postMessages(req.body.user_ID, req.body.other_ID, req.body.time, req.body.message);
   if (results) {
     res.send(201);
   } else {
