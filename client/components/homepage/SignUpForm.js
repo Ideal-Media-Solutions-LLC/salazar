@@ -40,7 +40,7 @@ const SignUpForm = function (props) {
       },
       uid: user.uid
     }
-    axios.post('http://localhost:3001/auth', obj).then((result) => {
+    axios.post('http://localhost:3002/auth', obj).then((result) => {
       console.log('posted!!!')
       //route
       return Router.push('/user');
