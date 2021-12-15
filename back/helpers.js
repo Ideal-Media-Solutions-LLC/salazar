@@ -101,11 +101,13 @@ async function get(key) {
   }
 }
 
-async function update(key) {
-  const docRef = doc(db, 'Users', key);
-  //const increment = FieldValue.increment(1);
-  await updateDoc(docRef, { Korean: increment(1)});
-  console.log('incremented');
+async function updateLanguages(key, data) {
+  const updateRef = doc(db, "Users", key);
+
+  // Set the "capital" field of the city 'DC'
+  await updateDoc(updateRef, {
+    languages: data
+  });
 }
 
 async function getusers() {
@@ -213,7 +215,7 @@ module.exports = {
   logOut,
   write,
   get,
-  update,
+  updateLanguages,
   getusers,
   getMessages,
   postMessages,

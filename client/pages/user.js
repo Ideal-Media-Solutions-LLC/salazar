@@ -7,15 +7,13 @@ import EventsList from '../components/user/EventsList.js';
 import Head from 'next/head';
 import Chat from '../components/textchat/Chat.js';
 
-import { Layout } from 'antd';
-import { Tabs } from 'antd';
+import {AppContext } from '../components/context/AppProvider.js'
 
-import { Menu } from 'antd';
+import { Layout, Tabs, Menu  } from 'antd';
 import { MailOutlined, AppstoreOutlined, SettingOutlined, UserAddOutlined, CommentOutlined, VideoCameraOutlined } from '@ant-design/icons';
 
 import axios from 'axios';
 
-import { AppProvider, AppContext } from '../components/context/AppProvider.js'
 
 const { Header, Footer, Sider, Content } = Layout;
 
@@ -39,7 +37,7 @@ export default function User() {
   // }, []);
 
   return (
-    <AppProvider>
+
       <Layout className='layout'>
         <Head>
             <title>Salazar </title>
@@ -75,6 +73,6 @@ export default function User() {
         <Footer className='footer'>Footer</Footer>
 
       </Layout>
-    </AppProvider>
+
   )
 }
