@@ -4,6 +4,8 @@ import 'flag-icon-css/css/flag-icon.min.css';
 import i18next from 'i18next';
 import cookies from 'js-cookie';
 import Router from 'next/router';
+import { useTranslation } from "react-i18next";
+
 
 const languages = [
   {
@@ -81,6 +83,7 @@ export default function LanguageDropdown() {
 
 
   // const currentLanguage = languages.find((l) => l.code === currentLanguageCode);
+  const { t } = useTranslation();
 
   const handleChangeSystemLanguage = function (code) {
     cookies.set('i18next', code);
@@ -92,7 +95,7 @@ export default function LanguageDropdown() {
   return (
     <Dropdown>
       <Dropdown.Toggle variant="success" id="dropdown-basic">
-        <GlobeIcon />Choose a Language
+        <GlobeIcon /> {t('home:choose_lang')}
       </Dropdown.Toggle>
 
       <Dropdown.Menu>

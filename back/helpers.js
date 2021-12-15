@@ -86,8 +86,12 @@ function logOut() {
 
 async function write(key, data, collection) {
   //console.log(db);
-  const response = await setDoc(doc(db, collection, data.uid), data);
+  await setDoc(
+    doc(db, collection, key),
+    data
+  );
   //console.log('write Languages');
+  return true;
 }
 
 async function get(key) {
