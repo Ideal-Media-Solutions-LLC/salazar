@@ -22,14 +22,14 @@ export function handleSignInWithGoogle() {
   signInWithPopup(auth, provider)
     .then((res) => {
       let user = res.user;
-      axios.get('http://localhost:3001/auth', { params: { uid: user.uid } }).then((response) => {
+      axios.get('http://localhost:3002/auth', { params: { uid: user.uid } }).then((response) => {
         console.log('response.data>>', response.data);
         if (response.data) {
           //route
-          return Router.push('http://localhost:3002/signup')
+          return Router.push('/signup')
         } else {
           //route
-          return Router.push('http://localhost:3002/user')
+          return Router.push('/user')
         }
       })
       // readUserData(user.uid, () => Router.push('/userinterface'), () => Router.push('/signup'));
