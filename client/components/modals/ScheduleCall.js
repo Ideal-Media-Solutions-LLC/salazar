@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Switch, DatePicker, Button, Input, Modal, Select, Typography } from 'antd';
 const { Option } = Select;
 import styles from '../../styles/modals/ScheduleCall.module.css';
-// import axios from 'axios';
+import axios from 'axios';
 import { useApp } from '../context/AppProvider.js';
 const ScheduleCall = function(props) {
   const { stsTokenManager } = useApp().user;
@@ -33,25 +33,40 @@ const ScheduleCall = function(props) {
 
     const date = new Date(`${day}T${hour < 10 ? ('0'+String((hour))) : hour}:${time.minutes < 10 ? ('0'+String(time.minutes)) : time.minutes}:00`)
 
+
+
     const data = {
       toUser: props.user.uid,
       date,
-      end: new Date(date.getTime()+3600000),
+      end: new Date(date.getTime()+3600000).toISOString(),
       message,
       toSpeak: language,
       token: stsTokenManager
     }
 
-  //   axios.post('calendar/events', data)
-  //     .then(results => {
-  //       props.close(null);
-  //     })
-  //     .catch(err => {
-  //       console.log('Failed to send google calendar invitation.', err);
-  //     });
+    const timezone = data.date.getTimezoneOffset()/60;
+    data.date = data.date.toISOString();
+    let startTime, endTime;
+    if (timezone < 10) {
+      startTime = data.date.slice(0, data.date.length -5) + `-0${timezone}:00`;
+      endTime = data.end.slice(0, data.end.length -5) + `-0${timezone}:00`;
+    } else {
+      startTime = data.date.slice(0, data.date.length -5) + `-${timezone}:00`;
+      endTime = data.end.slice(0, data.end.length -5) + `-${timezone}:00`;
+    }
+
+    data.date = startTime;
+    data.end = endTime;
+    axios.post('http://localhost:3001/calendar/create', data)
+      .then(results => {
+        props.close(null);
+      })
+      .catch(err => {
+        console.log('Failed to send google calendar invitation.', err);
+      });
 
     console.log(data);
-    props.close(null);
+    // props.close(null);
    }
   }
 
@@ -60,7 +75,7 @@ const ScheduleCall = function(props) {
     visible = {true}
     cancelButtonProps = {{disabled: true}}
     onCancel = {()=> {props.close(null)}}
-    title = {`Schedule Call With ${props.user.username}`}
+    title = {`data Call With ${props.user.username}`}
     footer = {null}
     >
        <label className = {styles.languageContainer}>

@@ -7,6 +7,7 @@ import HttpApi from 'i18next-http-backend'
 import LanguageDetector from 'i18next-browser-languagedetector';
 import Languages from '../user/languages';
 import { useApp } from '../context/AppProvider.js';
+import axios from 'axios';
 
 const SignUpForm = function (props) {
   const { user, curUser } = useApp();

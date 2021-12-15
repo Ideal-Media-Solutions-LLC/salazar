@@ -177,7 +177,9 @@ app.get('/calendar/list', async (req, res) => {
 
 app.post('/calendar/create', async (req, res) => {
 
-  await createEvent((events) => {
+  console.log(req.body);
+
+  await createEvent(req.body, (events) => {
     res.send(events);
   })
 });

@@ -2,9 +2,9 @@ const fs = require('fs');
 const readline = require('readline');
 const {google} = require('googleapis');
 
-const client_id = process.env.CLIENT_ID;
-const client_secret = process.env.CLIENT_SECRET;
-const redirect_uris = ["urn:ietf:wg:oauth:2.0:oob","http://localhost"];
+const client_id = process.env.CLIENT_ID3;
+const client_secret = process.env.CLIENT_SECRET3;
+const redirect_uris = ["urn:ietf:wg:oauth:2.0:oob","http://localhost","https://salazar-1ee6b.firebaseapp.com/__/auth/handler"];
 
 // /**
 //  * Lists the next 10 events on the user's primary calendar.
@@ -49,20 +49,44 @@ function listEvents(callback, userToken) {
 
 function createEvent(schedule, callback, userToken) {
 
-  const {client_secret, client_id, redirect_uris} = appAuth.installed;
+  //const {client_secret, client_id, redirect_uris} = appAuth.installed;
   const oAuth2Client = new google.auth.OAuth2(
-      client_id, client_secret, redirect_uris[0]);
+      client_id, client_secret, redirect_uris[2]);
 
-  oAuth2Client.setCredentials(JSON.parse(process.env.USER_TOKEN));
+  oAuth2Client.setCredentials({
+    "access_token": schedule.token.accessToken,
+    "refresh_token": schedule.token.refreshToken,
+    "scope":"https://www.googleapis.com/auth/calendar.events",
+    "token_type":"Bearer",
+    "expiry_date": schedule.token.expirationTime
+  });
+
+  // oAuth2Client.setCredentials({
+  //   "access_token": "ya29.a0ARrdaM9ceFnU6X73_tgIwXnaXExATjqUJpya88lVuKf24U_CJE1NeRgdQCDJ9hP1cJdTa464wwzWD_nOQGReGSrnNhobSJr3UX_rHHoTUkcuc54B3EJfOILKqcV1sfswk9VKqdAGR2wiDWv1Z1Ujyn3de8W7",
+  //   "refresh_token": "1//06iv-Y7YqBRaICgYIARAAGAYSNwF-L9IrBYsgFsM_-Ym_Fti3gJawOcZ3VJQQ4mtDgamdexwJCMYJ9pCZH7bLpcFFVnT4wDAQqU8",
+  //   "scope":"https://www.googleapis.com/auth/calendar.events",
+  //   "token_type":"Bearer",
+  //   "expiry_date": 1639254574701
+  // });
+
+  // const calendar = google.calendar({version: 'v3', auth: oAuth2Client});
+  // const startTime = schedule.startTime;
+  // const endTime = schedule.endTime;
+  // const peer = 'cmorpv@gmail.com';
+  // const description = schedule.message;
+  // const language = schedule.toSpeak
 
   const calendar = google.calendar({version: 'v3', auth: oAuth2Client});
-  const startTime = schedule.startTime;
-  const endTime = schedule.endTime;
-  const peer = schedule.peer;
-  const description = schedule.description;
+
+
+  const startTime = schedule.date;
+  const endTime = schedule.end;
+  const peer = 'cmorpv@gmail.com';
+  const description = schedule.message;
+  const language = schedule.toSpeak
 
   var event = {
-    'summary': 'Salazar has found you a language partner',
+    'summary': `Salazar has found you a language partner to speak in ${language}`,
     'description': description,
     'start': {
       'dateTime': startTime,
@@ -91,6 +115,7 @@ function createEvent(schedule, callback, userToken) {
     },
     (err, event) => {
       if (err) {
+        console.log(oAuth2Client);
         console.log('There was an error contacting the Calendar service: ' + err);
         return;
       }
