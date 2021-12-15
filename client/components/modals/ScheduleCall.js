@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Switch, DatePicker, Button, Input, Modal } from 'antd';
+import { Switch, DatePicker, Button, Input, Modal, Select, Typography } from 'antd';
+const { Option } = Select;
 import styles from '../../styles/modals/ScheduleCall.module.css';
 // import axios from 'axios';
 
@@ -8,22 +9,37 @@ const ScheduleCall = function(props) {
   const [AmPm, setAmPm] = useState(0);
   const [day, setDay] = useState();
   const [message, setMessage] = useState('');
-
+  const [language, setLanguage] = useState();
 
   const onChange = function(date, dateString) {
     setDay(dateString);
   }
+  const languages = Object.keys(props.user.languages);
 
   const sendInvitation = function(e) {
    if (time.hour && time.minutes && day && message) {
     // If pm toggle selected adds 12 to hours
     let hour;
-    AmPm ? hour = Number(time.hour) + 12 : hour = time.hour;
+    if (time.hour === "12") {
+      if (AmPm) {
+        hour = 12
+      } else {
+        hour = 0;
+      }
+    } else {
+      AmPm ? hour = Number(time.hour) + 12 : hour = Number(time.hour);
+    }
+
+    const date = new Date(`${day}T${hour < 10 ? ('0'+String((hour))) : hour}:${time.minutes < 10 ? ('0'+String(time.minutes)) : time.minutes}:00`)
 
     const data = {
-      toUser: props.user,
-      date: new Date(`${day}T${hour < 10 ? ('0'+String(hour)) : hour}:${time.minutes < 10 ? ('0'+String(time.minutes)) : time.minutes}:00`),
-      message
+      toUser: props.user.uid,
+      date,
+      end: new Date(date.getTime()+3600000),
+      message,
+      toSpeak: language,
+
+
 
     }
 
@@ -45,11 +61,23 @@ const ScheduleCall = function(props) {
     visible = {true}
     cancelButtonProps = {{disabled: true}}
     onCancel = {()=> {props.close(null)}}
-    title = 'Schedule Call'
+    title = {`Schedule Call With ${props.user.username}`}
     footer = {null}
     >
+       <label className = {styles.languageContainer}>
+         <Typography><h5>I want to practice :</h5> </Typography>
+       <Select
+        onChange ={(value)=> {setLanguage(value)}}
+        className = {styles.language} placeholder = 'Language'>
+          {languages && languages.map(language => {
+            return <Option value = {language}>{language}</Option>
+          })}
+        </Select>
+       </label>
       <form className = {styles.form}>
+
         <div className = {styles.date}>
+
         <div className = 'time'>
           <label className = {styles.timeLabel}>
               <h3 style = {{'align-self': 'center'}}>Time</h3>
@@ -95,10 +123,12 @@ const ScheduleCall = function(props) {
           />
 
         </label>
+
         <Button style = {{'grid-column': '1/span2'}} type="primary" onClick={() => {sendInvitation()}}>
             Send Calendar Invite
           </Button>
       </form>
+
     </Modal>
   )
 }

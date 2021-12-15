@@ -36,7 +36,7 @@ export default function Card(props) {
       </div>
 
       <div>
-        {props.user.username}
+        {username}
       </div>
 
       <div>
@@ -45,7 +45,7 @@ export default function Card(props) {
 
       <div>
       <MessageOutlined style ={{fontSize: '20px', margin: '10px'}}/>
-      <CalendarOutlined onClick = {()=> {props.setModalSchedule( <ScheduleCall user = {uid} close = {props.setModalSchedule}/>)}} style ={{fontSize: '20px', margin: '10px'}}/>
+      <CalendarOutlined onClick = {()=> {props.setModalSchedule( <ScheduleCall user = {{uid, username, languages}} close = {props.setModalSchedule}/>)}} style ={{fontSize: '20px', margin: '10px'}}/>
       </div>
 
     </div>
