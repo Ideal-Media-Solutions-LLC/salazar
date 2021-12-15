@@ -36,12 +36,15 @@ export default function LandingPage() {
 
             <div className="carousel-inner">
               <div className="carousel-item active">
-                <img className="homepage-img" src="https://media.tumblr.com/tumblr_lq1ukhcGnh1qje6lz.png" alt="First slide" />
+                {/* <img className="homepage-img" src="../public/assets/background.jpg" alt="First slide" /> */}
                 <div className="container">
                   <div className="carousel-caption text-left">
                     <h1>{t('home:Salazar_School')}</h1>
-                    <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam.Donec id elit non mi porta gravida at eget metus.Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-                    <p><a className="btn btn-lg btn-primary" onClick={handleSignInWithGoogle} role="button">{t('home:start_your_journey')}</a></p>
+                    <p>{t('home:home_paragraph')}</p>
+                    <div>
+
+                      <div className="btn btn-lg btn-primary" onClick={handleSignInWithGoogle} role="button">{t('home:start_your_journey')}</div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -110,7 +113,7 @@ export default function LandingPage() {
           {/* <LanguageDropdown /> */}
           <footer className="container">
             <p className="float-right"><a href="#">{t('home:Back_to_top')}</a></p>
-            <p>&copy; 2021 Company, Inc. &middot; <a href="#">{t('home:Privacy')}</a> &middot; <a href="#">{t('home:Terms')}</a></p>
+            <p>&copy; 2021 {t('home:Group')}. &middot; <a href="#">{t('home:Privacy')}</a> &middot; <a href="#">{t('home:Terms')}</a></p>
           </footer>
         </main>
       </header>
