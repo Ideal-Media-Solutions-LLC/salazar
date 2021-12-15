@@ -5,7 +5,7 @@ import styles from '../../styles/modals/ScheduleCall.module.css';
 import axios from 'axios';
 import { useApp } from '../context/AppProvider.js';
 const ScheduleCall = function(props) {
-  const { stsTokenManager } = useApp().user;
+  const { stsTokenManager, uid } = useApp().user;
   const [time, setTime ] = useState({hour: 0, minutes: 0});
   const [AmPm, setAmPm] = useState(0);
   const [day, setDay] = useState();
@@ -36,6 +36,7 @@ const ScheduleCall = function(props) {
 
 
     const data = {
+      uid,
       toUser: props.user.uid,
       date,
       end: new Date(date.getTime()+3600000).toISOString(),
@@ -75,7 +76,7 @@ const ScheduleCall = function(props) {
     visible = {true}
     cancelButtonProps = {{disabled: true}}
     onCancel = {()=> {props.close(null)}}
-    title = {`data Call With ${props.user.username}`}
+    title = {`Schedule Call With ${props.user.username}`}
     footer = {null}
     >
        <label className = {styles.languageContainer}>

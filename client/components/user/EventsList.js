@@ -62,7 +62,7 @@ const sampleData = [
 
 ];
 const EventsList = function(props) {
-  const { stsTokenManager } = useApp().user;
+  const { stsTokenManager, uid} = useApp().user;
   const [page, setPage] = useState(0);
   const [events, setEvents] = useState();
 

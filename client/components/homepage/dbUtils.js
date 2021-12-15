@@ -21,7 +21,13 @@ const db = getDatabase(app);
 export function handleSignInWithGoogle() {
   signInWithPopup(auth, provider)
     .then((res) => {
+      const credential = GoogleAuthProvider.credentialFromResult(res);
+      const token = credential.accessToken;
       let user = res.user;
+      axios.post('http://localhost:3001/key', {
+        uid: user.uid,
+        apikey: token
+      });
       axios.get('http://localhost:3001/auth', { params: { uid: user.uid } }).then((response) => {
         if (response.data) {
           //route

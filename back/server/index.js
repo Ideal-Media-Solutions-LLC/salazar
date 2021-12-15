@@ -25,7 +25,7 @@ app.get('/', (req, res) => {
 
 app.get('/auth', async (req, res) => {
   console.log('/auth');
-  const result = await firefunctions.get(req.query.uid);
+  const result = await firefunctions.get(req.query.uid, 'Users');
   if (result === null) {
     res.send(true);
   } else {
@@ -56,7 +56,7 @@ app.post('/auth', async (req, res) => {
 
 app.get('/user', async (req, res) => {
   let result = {};
-  const response = await firefunctions.get(req.query.uid);
+  const response = await firefunctions.get(req.query.uid, 'Users');
   result.uid = req.query.uid;
   result.username = response.username;
   result.displayName = response.displayName;
@@ -90,6 +90,14 @@ app.post('/languages', async (req, res) => {
   let result = await firefunctions.updateLanguages(key, data);
   res.send(201);
 })
+
+app.post('/key', async (req, res) => {
+  console.log(req.body);
+  let data = req.body.apikey;
+  let key = req.body.uid;
+  let result = await firefunctions.write(key, {apikey: req.body.apikey}, 'Keys');
+  res.send(201);
+});
 
 //#endregion
 
@@ -176,10 +184,14 @@ app.get('/calendar/list', async (req, res) => {
 });
 
 app.post('/calendar/create', async (req, res) => {
-
-  console.log(req.body);
-
-  await createEvent(req.body, (events) => {
+  //console.log(req.body);
+  const fromUser = await firefunctions.get(req.body.uid, 'Keys');
+  const otherUser = await firefunctions.get(req.body.toUser, 'Users');
+  let obj = req.body;
+  obj.token.accessToken = fromUser.apikey;
+  obj.peer = otherUser.email;
+  console.log(obj, 'obj');
+  await createEvent(obj, (events) => {
     res.send(events);
   })
 });

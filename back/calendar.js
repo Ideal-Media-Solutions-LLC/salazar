@@ -81,7 +81,7 @@ function createEvent(schedule, callback, userToken) {
 
   const startTime = schedule.date;
   const endTime = schedule.end;
-  const peer = 'cmorpv@gmail.com';
+  const peer = schedule.peer;
   const description = schedule.message;
   const language = schedule.toSpeak
 

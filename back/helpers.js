@@ -86,12 +86,12 @@ function logOut() {
 
 async function write(key, data, collection) {
   //console.log(db);
-  const response = await setDoc(doc(db, collection, data.uid), data);
+  const response = await setDoc(doc(db, collection, key), data);
   //console.log('write Languages');
 }
 
-async function get(key) {
-  const docRef = doc(db, 'Users', key);
+async function get(key, collection) {
+  const docRef = doc(db, collection, key);
   const result = await getDoc(docRef);
   if (result.exists()) {
     //console.log(result.data(), 'get');
