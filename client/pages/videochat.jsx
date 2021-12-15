@@ -1,11 +1,13 @@
 import Head from 'next/head'
 import Image from 'next/image'
-import styles from '../styles/Home.module.css'
 import Link from 'next/link'
 import { Layout, Menu, Breadcrumb } from 'antd';
 import Transcribe from '../components/videochat/transcribe';
 import VideoMeet from '../components/videochat/videomeet';
 import { useParams } from 'react-router-dom'
+import styles from '../styles/Home.module.css'
+import {AppContext } from '../components/context/AppProvider.js'
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const { Header, Content, Footer } = Layout;
 
@@ -18,14 +20,13 @@ export default function VideoChat() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={styles.main}>
+      <main role="main" className='main'>
         <VideoMeet meetString={useParams().meetString}/>
         <Transcribe/>
         
       </main>
 
       <footer className={styles.footer}>
-        FOOTER
       </footer>
     </div>
   )

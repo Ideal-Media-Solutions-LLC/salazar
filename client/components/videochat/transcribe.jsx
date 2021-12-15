@@ -18,7 +18,6 @@ export default function Transcribe() {
   
   //#region speech sdk states
   const [mySpeechSDK, setSpeechSDK] = useState(null);
-  //const [key, setKey] = useState({value: "bfc14462bd234b74b9534588764f1786"});
   const [key, setKey] = useState({value: null});
   const [authorizationToken, setAuthorizationToken] = useState(null);
   const [appId, setAppId] = useState(null);
@@ -301,8 +300,8 @@ export default function Transcribe() {
 
   return (
     <div id="transcriber" onKeyDown={handleKeyPress}>
-      <div id="content">
-        <table>
+      <div id="content" className="transcription">
+        <table id="captionOptions">
             <tr>
               <td align="right"></td>
               <td align="left"><button id="enableTranslation" onClick={onClickEnableTranslation} style={{display: enableButtonOnOff ? 'block' : 'none' }} >Enable Translation</button></td>
