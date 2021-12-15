@@ -26,11 +26,11 @@ function AppProvider({ children }) {
     username: 'TestUsername',
     displayName: 'TestDisplayname',
     photo: '/assets/profile.png',
-    languages: {
-      Chinese: 2,
-      Japanese: 2,
-      English: 4,
-    },
+    languages: [
+      { lang: 'Chinese', langLevel: 2, langLevelLabel: 'Intermediate' },
+      { lang: 'Japanese', langLevel: 2, langLevelLabel: 'Intermediate' },
+      { lang: 'English', langLevel: 4, langLevelLabel: 'Native' },
+    ],
   });
 
   const [languagesList, setLanguagesList] = useState([
@@ -57,7 +57,7 @@ function AppProvider({ children }) {
   const [signUpPageLanguages, setSignUpPageLanguages] = useState([]);
 
   return (
-    <AppContext.Provider value={{ curUser, setCurUser, languagesList, setLanguagesList, levelList, setLevelList, user, signUpPageLanguages, setSignUpPageLanguages }}>
+    <AppContext.Provider value={{ curUser, setCurUser, languagesList, setLanguagesList, levelList, setLevelList, user, setUser, signUpPageLanguages, setSignUpPageLanguages }}>
       {children}
     </AppContext.Provider>
   );
