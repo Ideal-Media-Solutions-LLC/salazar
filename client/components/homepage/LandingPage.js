@@ -8,6 +8,7 @@ import { useTranslation, initReactI18next } from "react-i18next";
 import { createContext, useContext } from "react";
 // import { useAppContext } from "../context/State";
 import LanguageDropdown from "./LanguageDropdown";
+import Hamburger from "./Hamburger";
 
 export default function LandingPage() {
   // const { uid } = useAppContext();
@@ -18,17 +19,19 @@ export default function LandingPage() {
   }
 
   return (
-    <div style={{ width: '600px' }}>
-      <header>
-        <nav className="navbar navbar-expand-md navbar-dark fixed-top" style={{ backgroundColor: 'transparent', height: '12vh' }}>
+    <div>
+      <header className='nav-header'>
+        {/* <nav className="navbar navbar-expand-md navbar-dark fixed-top" style={{ backgroundColor: 'transparent', height: '12vh' }}>
           <img src={'assets/logo1.png'} className='homepage-logo' style={{ height: '10vh', left: '0px' }} />
           <div className="collapse navbar-collapse" id="navbarCollapse">
           </div>
           <div className="dropdown">
             <LanguageDropdown />
           </div>
-        </nav>
+        </nav> */}
+        <Hamburger />
       </header>
+
 
       <main role="main" className='main' >
 
@@ -74,7 +77,7 @@ export default function LandingPage() {
               <p className="lead">{t('home:chat_paragraph')}</p>
             </div>
             <div className="col-md-5">
-              <img className="featurette-image-chat" src={'assets/chat.png'} />
+              <img className="featurette-image img-fluid mx-auto" src='https://i2.wp.com/files.123freevectors.com/wp-content/original/157821-abstract-white-background-vector-illustration.jpg?w=800&q=95' />
             </div>
           </div>
 
@@ -86,7 +89,7 @@ export default function LandingPage() {
               <p className="lead">{t('home:video_paragraph')}</p>
             </div>
             <div className="col-md-5 order-md-1">
-              <img className="featurette-image img-fluid mx-auto" src="https://www.manpingou.com/uploads/allimg/180131/25-1P1311FP33Q.jpg" alt="Generic placeholder image" />
+              <img className="featurette-image img-fluid mx-auto" src="https://i2.wp.com/files.123freevectors.com/wp-content/original/157821-abstract-white-background-vector-illustration.jpg?w=800&q=95" alt="Generic placeholder image" />
             </div>
           </div>
 
@@ -98,7 +101,7 @@ export default function LandingPage() {
               <p className="lead">{t('home:anytime_paragraph')}</p>
             </div>
             <div className="col-md-5">
-              <img className="featurette-image img-fluid mx-auto" src="https://img95.699pic.com/xsj/15/15/eh.jpg!/fw/700/watermark/url/L3hzai93YXRlcl9kZXRhaWwyLnBuZw/align/southeast" alt="Generic placeholder image" />
+              <img className="featurette-image img-fluid mx-auto" src="https://i2.wp.com/files.123freevectors.com/wp-content/original/157821-abstract-white-background-vector-illustration.jpg?w=800&q=95" alt="Generic placeholder image" />
             </div>
           </div>
 
@@ -114,6 +117,7 @@ export default function LandingPage() {
         <footer className="container">
           <p className="float-right"><a href="#">{t('home:Back_to_top')}</a></p>
           <p>&copy; 2021 {t('home:Group')}. &middot; <a href="#">{t('home:Privacy')}</a> &middot; <a href="#">{t('home:Terms')}</a></p>
+          <div>   </div>
         </footer>
       </main>
 
