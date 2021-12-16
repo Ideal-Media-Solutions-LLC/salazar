@@ -3,6 +3,7 @@ import { Image, Button } from 'antd';
 import { CalendarOutlined, MessageOutlined } from '@ant-design/icons';
 import ScheduleCall from '../modals/ScheduleCall.js';
 import MessageUser from '../modals/MessageUser.js';
+import styles from '../../styles/card.module.css';
 export default function Card(props) {
   const {displayName, username, photo, languages, uid} = props.user;
 
@@ -40,7 +41,7 @@ export default function Card(props) {
         {displayName}
       </div>
 
-      <div>
+      <div className = {styles.languagesList}>
         {listLanguages()}
       </div>
 
