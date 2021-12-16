@@ -208,9 +208,9 @@ app.post('/calendar/create', async (req, res) => {
   const otherUser = await firefunctions.get(event.toUser, 'Users');
   // let obj = req.body;
   event.token.accessToken = fromUser.apikey;
-
+  console.log('OtherUser', otherUser)
   // event.peer = otherUser.email;
-  event.peer = 'cschillinger1994@gmail.com'
+  event.peer = otherUser.email;
   console.log(event, 'obj');
   await createEvent(event, (events) => {
     res.send(events);

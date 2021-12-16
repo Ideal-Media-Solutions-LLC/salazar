@@ -6,7 +6,7 @@ import axios from 'axios'
 const { Panel } = Collapse;
 
 const EventsList = function(props) {
-  const { stsTokenManager, uid} = useApp().user;
+  const { stsTokenManager, uid, displayName} = useApp().user;
   const [page, setPage] = useState(0);
   const [events, setEvents] = useState();
 
@@ -15,11 +15,13 @@ const EventsList = function(props) {
     const hours = Math.floor((date.getTime() - new Date().getTime())/1000/60/60);
     const minutes = Math.floor((date.getTime() - new Date().getTime())/1000/60/60%1*60);
     if (days) {
-      return ` >${days}d`
+      let result;
+      days > 0 ? result = ` aprox. ${days}d` : result = 'In progress';
+      return result;
     } else if (hours) {
-      return ` >${hours}h`
+      return ` aprox. ${hours}h`
     } else {
-      return ` <${minutes}m`
+      return ` aprox. ${minutes}m`
     }
     console.log(`days: ${days}    hours: ${hours}    minutes: ${minutes}     date: ${date}     now: ${new Date()}`)
   }
@@ -53,12 +55,12 @@ const EventsList = function(props) {
       {console.log(events)}
       {events && events.slice(page,(page * 2 || 3)).map((event, i) => {
         return (
-          <Panel header={`Call with ${event.description.split('---')[0]}.
-          \u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0
+          <Panel header={`Call with ${displayName === event.description.split('---')[0] ? event.description.split('---')[1] : event.description.split('---')[0]}.
+          \u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0
           ${timeTill(new Date(event.start.dateTime))}`} key={i}>
             <div className = {styles.Message}>
               <p>{`Conversation in ${event.summary.substring(53)}`}</p><br/>
-              <p>{event.description.split('---')[1]}</p>
+              <p>{event.description.split('---')[2]}</p>
               <a href={event.htmlLink}>{new Date(event.start.dateTime).toDateString()}</a>
             </div>
 

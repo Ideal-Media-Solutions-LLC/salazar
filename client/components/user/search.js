@@ -7,9 +7,7 @@ import Card from './card.js';
 import axios from 'axios';
 
 const { Option } = Select;
-function handleChange(value) {
-  console.log(`selected ${value}`);
-}
+
 
 const searchbarStyle = {
   width: 'auto',
@@ -35,64 +33,65 @@ const languagesList = [
 ]
 
 const levelList = [
-  { label: 'Entry', value: 'Entry' },
-  { label: 'Intermediate', value: 'Intermediate' },
-  { label: 'Advanced', value: 'Advanced' },
-  { label: 'Native', value: 'Native' },
+  { label: 'Entry', value: 1 },
+  { label: 'Intermediate', value: 2 },
+  { label: 'Advanced', value: 3 },
+  { label: 'Native', value: 4 },
 ];
+const filter = function(users, languages, skills) {
+  const filtered = users.filter(user => {
+    if (user.languages) {
+      let result = false;
+      languages.forEach(language => {
+          if (Object.keys(user.languages).includes(language)) {
+              if (skills.length > 0) {
+                  skills.forEach(skill => {
+                      user.languages[language] === skill ? result = true : result = false;
+                  })
+              } else {
+                  result = true
+              }
+          }
+      });
 
+      return result;
+    }
+
+  })
+  return filtered;
+}
 
 export default function Search() {
   // const [username, setUserName] = useState('test');
   const [users, setUsers] = useState([]);
-  const [showUsers, setShowUsers] = useState();
-  // let sharedState = {
-  //   username, setUserName
-  // }
+  const [showUsers, setShowUsers] = useState([]);
+  const [searchLanguages, setSearchLanguages] = useState([]);
+  const [searchLevel, setSearchLevel] = useState([]);
   const [modalSchedule, setModalSchedule] = useState(null);
+  const [disabled, setDisabled] = useState(true);
+  function handleChangeLanguage(value) {
+    setSearchLanguages(value);
+  }
+  function handleChangeLevel(value) {
+    setSearchLevel(value);
+  }
   useEffect(() => {
     axios.get('http://localhost:3001/users')
       .then(results => {
         console.log(results.data);
-        const hasUsername = results.data.filter(curUser => {
-          return curUser.username
-        })
-        setUsers(hasUsername);
-
+        setUsers(results.data);
+        setShowUsers(results.data);
       })
-    // setUsers([
-    //   {
-    //     uid: 'userID1',
-    //     photo: '"https://picsum.photos/id/237/200/300"',
-    //     username: 'Test Ername',
-    //     languages: {
-    //       Chinese: 3,
-    //       English: 2,
-    //       French: 1
-    //     }
-    //   },
-    //   {
-    //     uid: 'userID2',
-    //     photo: '"https://picsum.photos/id/237/200/301"',
-    //     username: 'Mae Dupp',
-    //     languages: {
-
-    //       English: 1,
-    //       French: 3
-    //     }
-    //   },
-    //   {
-    //     uid: 'userID3',
-    //     photo: '"https://picsum.photos/id/237/200/302"',
-    //     username: 'Fae Kurr',
-    //     languages: {
-    //       Chinese: 2,
-    //       English: 3,
-
-    //     }
-    //   }
-    // ])
   },[])
+  useEffect(()=> {
+    if (searchLanguages.length > 0) {
+      setDisabled(false);
+      setShowUsers(filter(users, searchLanguages, searchLevel));
+    } else {
+      setShowUsers(users);
+      setDisabled(true);
+    }
+  }, [searchLanguages, searchLevel])
   return (
     <div className=''>
       <div className='searchbar'>
@@ -104,7 +103,7 @@ export default function Search() {
             style={searchbarStyle}
             placeholder="select language  v"
             defaultValue={[]}
-            onChange={handleChange}
+            onChange={handleChangeLanguage}
             LabelProp="label"
           >
 
@@ -122,20 +121,21 @@ export default function Search() {
         </div>
 
 
-        <div>Levels:
+        <div hidden = {disabled}>Levels:
           <Select
             mode="multiple"
             style={searchbarStyle}
-            placeholder="select level  v"
+            placeholder= {disabled ? 'Select Language First' : "select level  v"}
+
             defaultValue={[]}
-            onChange={handleChange}
+            onChange={handleChangeLevel}
             LabelProp="label"
           >
 
             {levelList.map((level, i) => (
               <Option value={level.value} label={level.label}>
               <div className="demo-option-label-item">
-                {level.value}
+                {level.label}
               </div>
             </Option>
             ))}
@@ -147,7 +147,7 @@ export default function Search() {
       </div>
 
       <div className='userlist'>
-        {users.map((user, i) => {
+        {showUsers.map((user, i) => {
           return <Card user = {user} setModalSchedule = {setModalSchedule} key = {`usercard-${i}`}/>
         })}
       </div>

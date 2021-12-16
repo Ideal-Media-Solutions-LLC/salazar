@@ -2,8 +2,8 @@ const fs = require('fs');
 const readline = require('readline');
 const {google} = require('googleapis');
 
-const client_id = process.env.CLIENT_ID3;
-const client_secret = process.env.CLIENT_SECRET3;
+const client_id = process.env.CLIENT_ID;
+const client_secret = process.env.CLIENT_SECRET;
 const redirect_uris = ["urn:ietf:wg:oauth:2.0:oob","http://localhost","https://salazar-1ee6b.firebaseapp.com/__/auth/handler"];
 
 function listEvents( userToken, callback) {
@@ -49,7 +49,8 @@ function createEvent(schedule, callback, userToken) {
   const startTime = schedule.date;
   const endTime = schedule.end;
   const peer = schedule.peer;
-  const name = schedule.displayName;
+  const toName = schedule.toUserDisplayName;
+  const fromName = schedule.fromUserDisplayName;
   const description = schedule.message;
   const language = schedule.toSpeak
 
@@ -67,7 +68,7 @@ function createEvent(schedule, callback, userToken) {
 
   var event = {
     'summary': `Salazar has found you a language partner to speak in ${language}.`,
-    'description': `${name}---${description}`,
+    'description': `${fromName}---${toName}---${description}---${createVideoUrl()}`,
     'start': {
       'dateTime': startTime,
       //'timeZone': 'America/Los_Angeles',
