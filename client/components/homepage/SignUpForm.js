@@ -24,6 +24,7 @@ const SignUpForm = function (props) {
 
 
   const handleSubmit = function (e) {
+    console.log(e.target);
     e.preventDefault();
 
     let obj = {
@@ -61,13 +62,7 @@ const SignUpForm = function (props) {
         <label>{t('home:user_name')} </label>
         <input type="text" className="form-control" placeholder={t('home:first_name')} />
       </div>
-
-
-
-
       <LanguageSelector />
-
-
       <button type="submit" className="btn btn-primary btn-block" onClick={handleSubmit}>{t('home:Register')}</button>
 
     </form>
