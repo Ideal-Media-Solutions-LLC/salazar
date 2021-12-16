@@ -5,6 +5,7 @@ import { DownOutlined } from '@ant-design/icons';
 import { Select } from 'antd';
 import Card from './card.js';
 import axios from 'axios';
+import port from '../../../back/port.js';
 
 const { Option } = Select;
 
@@ -76,7 +77,7 @@ export default function Search() {
     setSearchLevel(value);
   }
   useEffect(() => {
-    axios.get('http://localhost:3001/users')
+    axios.get(`http://localhost:${port}/users`)
       .then(results => {
         console.log(results.data);
         setUsers(results.data);
