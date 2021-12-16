@@ -2,7 +2,8 @@
 import { Image, Button } from 'antd';
 import { CalendarOutlined, MessageOutlined } from '@ant-design/icons';
 import ScheduleCall from '../modals/ScheduleCall.js';
-
+import MessageUser from '../modals/MessageUser.js';
+import styles from '../../styles/card.module.css';
 export default function Card(props) {
   const {username, photo, languages, uid} = props.user;
   const skillLevel = {
@@ -39,16 +40,31 @@ export default function Card(props) {
         {username}
       </div>
 
-      <div>
+      <div className = {styles.languagesList}>
         {listLanguages()}
       </div>
 
       <div>
-      <MessageOutlined style ={{fontSize: '20px', margin: '10px'}}/>
-      <CalendarOutlined onClick = {()=> {props.setModalSchedule( <ScheduleCall user = {{uid, username, languages}} close = {props.setModalSchedule}/>)}} style ={{fontSize: '20px', margin: '10px'}}/>
+      <MessageOutlined
+      onClick = {()=>{
+        props.setModalMessage(<MessageUser user = {{uid, displayName}} close = {props.setModalMessage}/>)
+        }} style ={{fontSize: '20px', margin: '10px'}}/>
+      <CalendarOutlined onClick = {()=> {props.setModalSchedule( <ScheduleCall user = {{uid, displayName, languages}} close = {props.setModalSchedule}/>)}} style ={{fontSize: '20px', margin: '10px'}}/>
       </div>
 
     </div>
 
   );
 }
+
+
+
+/**
+ *
+ * Send
+ * axios /chat POST
+ *    user_ID: uid,
+ *    other_ID: toUid,
+ *    message: string
+ *
+ */

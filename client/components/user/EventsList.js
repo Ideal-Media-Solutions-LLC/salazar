@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Collapse, CalendarOutlined, DoubleLeftOutlined } from 'antd';
 import styles from '../../styles/EventsList.module.css';
-
-// import axios from 'axios'
+import { useApp } from '../context/AppProvider.js';
+import axios from 'axios'
+import port from '../../../back/port.js';
 const { Panel } = Collapse;
 const sampleData = [
   {
@@ -78,22 +79,30 @@ const EventsList = function(props) {
     }
     console.log(`days: ${days}    hours: ${hours}    minutes: ${minutes}     date: ${date}     now: ${new Date()}`)
   }
-  // useEffect(()=>{
-  //   axios.get('calendar/events')
-  //     .then(results => {
-  //       setEvents(results);
-  //     })
-  //     .catch(err => {
-  //       console.log('Could not retrieve events from google calendar.')
-  //     })
-  // },[])
+  useEffect(()=>{
+    if (uid) {
+      axios.get(`http://localhost:${port}/calendar/list`,{
+        params:{
+          token: stsTokenManager,
+          uid
+        }
+      })
+      .then(results => {
+        console.log(results.data, 'calendar events');
+        setEvents(results.data);
+      })
+      .catch(err => {
+        console.log('Could not retrieve events from google calendar.')
+      })
+    }
+  },[uid])
   return (
     <div>
       <div className = {styles.buttons}>
         {page ? <Button className = 'button' onClick = {()=> {setPage(page-3)}}>◁</Button> : <Button className = 'button'  disabled onClick = {()=> {setPage(page-3)}}>◁</Button>}
         {/* {page ? <DoubleLeftOutlined className = 'button' onClick = {()=> {setPage(page-3)}}/>: <DoubleLeftOutlined className = 'button'  disabled onClick = {()=> {setPage(page-3)}}>} */}
 
-        {sampleData.length - page > page ? <Button className = 'button' onClick = {()=> {setPage(page+3)}}>▷</Button> : <Button className = 'button' disabled>▷</Button>}
+        {events && events.length > 3 + page ? <Button className = 'button' onClick = {()=> {setPage(page+3)}}>▷</Button> : <Button className = 'button' disabled>▷</Button>}
       </div>
 
       <Collapse accordion>

@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import { Switch, DatePicker, Button, Input, Modal, Select, Typography } from 'antd';
 const { Option } = Select;
 import styles from '../../styles/modals/ScheduleCall.module.css';
-// import axios from 'axios';
+import axios from 'axios';
+import { useApp } from '../context/AppProvider.js';
+import port from '../../../back/port.js';
+
 
 const ScheduleCall = function(props) {
   const [time, setTime ] = useState({hour: 0, minutes: 0});
@@ -43,13 +46,15 @@ const ScheduleCall = function(props) {
 
     }
 
-  //   axios.post('calendar/events', data)
-  //     .then(results => {
-  //       props.close(null);
-  //     })
-  //     .catch(err => {
-  //       console.log('Failed to send google calendar invitation.', err);
-  //     });
+    data.date = startTime;
+    data.end = endTime;
+    axios.post(`http://localhost:${port}/calendar/create`, data)
+      .then(results => {
+        props.close(null);
+      })
+      .catch(err => {
+        console.log('Failed to send google calendar invitation.', err);
+      });
 
     console.log(data);
     props.close(null);
