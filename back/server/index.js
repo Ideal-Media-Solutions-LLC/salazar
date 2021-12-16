@@ -84,6 +84,15 @@ app.get('/users', async (req, res) => {
 })
 
 app.post('/languages', async (req, res) => {
+  /*
+    {
+      languages: {
+        'Chinese': 2,
+        'Russian': 1,
+      },
+      uid: <uid>
+    }
+  */
   let data = req.body.languages;
   let key = req.body.uid;
   let result = await firefunctions.updateLanguages(key, data);
