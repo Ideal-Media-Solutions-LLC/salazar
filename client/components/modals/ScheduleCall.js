@@ -37,12 +37,13 @@ const ScheduleCall = function(props) {
 
     const data = {
       uid,
-      toUser: props.user.uid,
+      toUser: "2kKh4qRp8hQNTD0R8UX29RrHirl2",//my uid temporary
       date,
       end: new Date(date.getTime()+3600000).toISOString(),
       message,
       toSpeak: language,
-      token: stsTokenManager
+      token: stsTokenManager,
+      displayName : props.user.username
     }
 
     const timezone = data.date.getTimezoneOffset()/60;

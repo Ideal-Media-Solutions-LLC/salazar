@@ -177,21 +177,32 @@ app.get('/chat/translation', async (req, res) => {
 // loadClient();
 
 app.get('/calendar/list', async (req, res) => {
-
-  await listEvents((events) => {
+  const { token, uid } = req.query;
+  let apiToken = JSON.parse(token);
+  const user = await firefunctions.get(uid, 'Keys');
+  apiToken = {
+    'access_token': user.apikey,
+    'refresh_token': apiToken.refreshToken,
+    'expiration_time': apiToken.expirationTime
+  }
+  console.log(apiToken);
+  await listEvents(apiToken, (events) => {
     res.send(events);
   })
 });
 
 app.post('/calendar/create', async (req, res) => {
-  //console.log(req.body);
-  const fromUser = await firefunctions.get(req.body.uid, 'Keys');
-  const otherUser = await firefunctions.get(req.body.toUser, 'Users');
-  let obj = req.body;
-  obj.token.accessToken = fromUser.apikey;
-  obj.peer = otherUser.email;
-  console.log(obj, 'obj');
-  await createEvent(obj, (events) => {
+  const event = req.body;
+  console.log(event)
+  const fromUser = await firefunctions.get(event.uid, 'Keys');
+  const otherUser = await firefunctions.get(event.toUser, 'Users');
+  // let obj = req.body;
+  event.token.accessToken = fromUser.apikey;
+
+  // event.peer = otherUser.email;
+  event.peer = 'cschillinger1994@gmail.com'
+  console.log(event, 'obj');
+  await createEvent(event, (events) => {
     res.send(events);
   })
 });
