@@ -44,21 +44,6 @@ function createEvent(schedule, callback, userToken) {
     "expiry_date": schedule.token.expirationTime
   });
 
-  // oAuth2Client.setCredentials({
-  //   "access_token": "ya29.a0ARrdaM9ceFnU6X73_tgIwXnaXExATjqUJpya88lVuKf24U_CJE1NeRgdQCDJ9hP1cJdTa464wwzWD_nOQGReGSrnNhobSJr3UX_rHHoTUkcuc54B3EJfOILKqcV1sfswk9VKqdAGR2wiDWv1Z1Ujyn3de8W7",
-  //   "refresh_token": "1//06iv-Y7YqBRaICgYIARAAGAYSNwF-L9IrBYsgFsM_-Ym_Fti3gJawOcZ3VJQQ4mtDgamdexwJCMYJ9pCZH7bLpcFFVnT4wDAQqU8",
-  //   "scope":"https://www.googleapis.com/auth/calendar.events",
-  //   "token_type":"Bearer",
-  //   "expiry_date": 1639254574701
-  // });
-
-  // const calendar = google.calendar({version: 'v3', auth: oAuth2Client});
-  // const startTime = schedule.startTime;
-  // const endTime = schedule.endTime;
-  // const peer = 'cmorpv@gmail.com';
-  // const description = schedule.message;
-  // const language = schedule.toSpeak
-
   const calendar = google.calendar({version: 'v3', auth: oAuth2Client});
 
   const startTime = schedule.date;
@@ -67,6 +52,18 @@ function createEvent(schedule, callback, userToken) {
   const name = schedule.displayName;
   const description = schedule.message;
   const language = schedule.toSpeak
+
+  function createVideoUrl() {
+    let baseUrl = "http://localhost:3000/videochat/";
+    var length = 20;
+    var result           = '';
+    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return baseUrl + result;
+  }
 
   var event = {
     'summary': `Salazar has found you a language partner to speak in ${language}.`,
