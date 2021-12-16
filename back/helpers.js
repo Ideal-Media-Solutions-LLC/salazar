@@ -5,7 +5,7 @@ const { getFirestore } = require("firebase/firestore");
 const { collection, addDoc, setDoc, getDoc, getDocs, doc, onSnapshot, updateDoc, increment } = require("firebase/firestore");
 //import React, {useState, useEffect} from 'react';
 const config = require('./config.js');
-const app = initializeApp(config);
+const app = initializeApp(config.firebaseConfig);
 const auth = getAuth();
 const provider = new GoogleAuthProvider();
 provider.addScope(`https://www.googleapis.com/auth/calendar.events`);

@@ -4,7 +4,7 @@ const cors = require('cors');
 const axios = require('axios');
 require('dotenv').config();
 const port = require('../port.js');
-const api_z = require('../api_z.js');
+const api_z = require('../config.js');
 //import { route } from 'express/lib/application';
 //import { writeLanguages } from '../helpers.js';
 const firefunctions = require('../helpers.js');
@@ -136,7 +136,7 @@ app.get('chatUsers', async (req, res) => {
 //azure translation
 const { v4: uuidv4 } = require('uuid');
 
-//var subscriptionKey = require('../Azure_api_config.js');
+var subscriptionKey = require('../config.js');
 var endpoint = "https://api.cognitive.microsofttranslator.com";
 
 app.get('/chat/translation', async (req, res) => {
@@ -151,7 +151,7 @@ app.get('/chat/translation', async (req, res) => {
       url: '/translate',
       method: 'post',
       headers: {
-        'Ocp-Apim-Subscription-Key': subscriptionKey.token,
+        'Ocp-Apim-Subscription-Key': subscriptionKey.translatorToken,
         'Ocp-Apim-Subscription-Region': location,
         'Content-type': 'application/json',
         'X-ClientTraceId': uuidv4().toString()
@@ -211,7 +211,7 @@ app.get('/video/token', (req, res) => {
     url: 'https://eastus.api.cognitive.microsoft.com/sts/v1.0/issueToken',
     headers: {
       'Content-Type': 'application/json',
-      'Ocp-Apim-Subscription-Key': api_z
+      'Ocp-Apim-Subscription-Key': api_z.videoToken
     }
   }).then((response) => {
     res.set('Access-Control-Allow-Origin', '*');
