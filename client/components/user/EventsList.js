@@ -19,12 +19,12 @@ const EventsList = function(props) {
     const minutes = Math.floor((date.getTime() - new Date().getTime())/1000/60/60%1*60);
     if (days) {
       let result;
-      days > 0 ? result = ` aprox. ${days}d` : result = 'In progress';
+      days > 0 ? result = ` approx. ${days}d` : result = 'In progress';
       return result;
     } else if (hours) {
-      return ` aprox. ${hours}h`
+      return ` approx. ${hours}h`
     } else {
-      return ` aprox. ${minutes}m`
+      return ` approx. ${minutes}m`
     }
     console.log(`days: ${days}    hours: ${hours}    minutes: ${minutes}     date: ${date}     now: ${new Date()}`)
   }
@@ -66,7 +66,7 @@ const EventsList = function(props) {
               <div className = {styles.Desription}>{event.description.split('---')[2]}</div>
               <div className = {styles.Footer}>
                 <a className = {styles.Date} href={event.htmlLink}>{new Date(event.start.dateTime).toDateString()}</a>
-                <a className = {styles.Camera} href={event.description.split('---')[3]}><VideoCameraOutlined style ={{fontSize: '20px', width: '10px'}}/></a>
+                <a className = {styles.Camera} target="_blank" href={event.description.split('---')[3]}><VideoCameraOutlined style ={{fontSize: '20px', width: '10px'}}/></a>
               </div>
             </div>
 
