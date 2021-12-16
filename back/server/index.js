@@ -117,7 +117,7 @@ app.get('/chat', async (req, res) => {
 app.post('/chat', async (req, res) => {
   var decompose = req.body.messageToSend;
   var results = await firefunctions.postMessages(decompose.user_ID, decompose.other_ID, decompose.message);
-  console.log(results);
+  // console.log(results);
   if (results) {
     res.send(201);
   } else {
