@@ -4,6 +4,7 @@ import styles from '../../styles/modals/MessageUser.module.css';
 import { useApp } from '../context/AppProvider.js';
 import { Input, Button, Modal } from 'antd';
 import { SendOutlined } from '@ant-design/icons';
+import port from '../../../back/port.js';
 const { TextArea } = Input;
 
 export default function MessageUser(props) {
@@ -17,7 +18,7 @@ export default function MessageUser(props) {
         other_ID: props.user.uid
       }
       console.log({messageToSend: data});
-      axios.post('http://localhost:3001/chat', {messageToSend: data})
+      axios.post(`http://localhost:${port}/chat`, {messageToSend: data})
         .then(result => {
           props.close(null);
         })

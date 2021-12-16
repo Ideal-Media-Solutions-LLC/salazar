@@ -4,6 +4,9 @@ const { Option } = Select;
 import styles from '../../styles/modals/ScheduleCall.module.css';
 import axios from 'axios';
 import { useApp } from '../context/AppProvider.js';
+import port from '../../../back/port.js';
+
+
 const ScheduleCall = function(props) {
   const { stsTokenManager, uid, displayName } = useApp().user;
   const [time, setTime ] = useState({hour: 0, minutes: 0});
@@ -67,7 +70,7 @@ const ScheduleCall = function(props) {
 
     data.date = startTime;
     data.end = endTime;
-    axios.post('http://localhost:3001/calendar/create', data)
+    axios.post(`http://localhost:${port}/calendar/create`, data)
       .then(results => {
         props.close(null);
       })
