@@ -86,8 +86,16 @@ function logOut() {
 
 async function write(key, data, collection) {
   //console.log(db);
+<<<<<<< HEAD
   const response = await setDoc(doc(db, collection, key), data);
+=======
+  await setDoc(
+    doc(db, collection, key),
+    data
+  );
+>>>>>>> main
   //console.log('write Languages');
+  return true;
 }
 
 async function get(key, collection) {
@@ -165,15 +173,15 @@ async function getMessages(user_ID, other_ID) {
   return inOrderMsg;
 }
 
-async function postMessages(user_ID, other_ID) {
+async function postMessages(user_ID, other_ID, time, message) {
   const getMessagesFromOther = await db.collection('messages').doc(other_ID).where('user_id', '==', user_ID).get();
 
   //{reviever_ID: sender_ID: {msg}}
   if (getMessagesFromOther) {
     db.collection('messages').doc(other_ID).update({
       [user_ID]: FieldValue.arrayUnion({
-        message: req.body.message,
-        time: req.body.timestamp
+        message: message,
+        time: time
       })
     }).then((suc, err) => {
       if (err) {
@@ -185,8 +193,8 @@ async function postMessages(user_ID, other_ID) {
   } else {
     db.collection('messages').doc(other_ID).set({
       [user_ID]: [{
-        message: req.body.message,
-        time: req.body.timestamp
+        message: message,
+        time: time
       }]
     }).then((suc, err) => {
       if (err) {

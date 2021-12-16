@@ -15,7 +15,11 @@ import axios from 'axios';
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 const provider = new GoogleAuthProvider();
+<<<<<<< HEAD
 provider.addScope("https://www.googleapis.com/auth/calendar")
+=======
+provider.addScope(`https://www.googleapis.com/auth/calendar.events`);
+>>>>>>> main
 const db = getDatabase(app);
 
 export function handleSignInWithGoogle() {
@@ -24,6 +28,7 @@ export function handleSignInWithGoogle() {
       const credential = GoogleAuthProvider.credentialFromResult(res);
       const token = credential.accessToken;
       let user = res.user;
+<<<<<<< HEAD
       axios.post('http://localhost:3001/key', {
         uid: user.uid,
         apikey: token
@@ -32,6 +37,12 @@ export function handleSignInWithGoogle() {
         if (response.data) {
           //route
 
+=======
+      axios.get('http://localhost:3002/auth', { params: { uid: user.uid } }).then((response) => {
+        console.log('response.data>>', response.data);
+        if (response.data) {
+          //route
+>>>>>>> main
           return Router.push('/signup')
         } else {
           //route
