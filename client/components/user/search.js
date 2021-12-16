@@ -6,6 +6,9 @@ import { Select } from 'antd';
 import Card from './card.js';
 import axios from 'axios';
 import { useApp } from '../context/AppProvider.js';
+import port from '../../../back/port.js';
+
+
 const { Option } = Select;
 
 
@@ -76,6 +79,7 @@ export default function Search() {
     setSearchLevel(value);
   }
   useEffect(() => {
+
     if (uid) {
       axios.get('http://localhost:3001/users', {
         params: {uid}
