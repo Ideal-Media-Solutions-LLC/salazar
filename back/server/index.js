@@ -80,7 +80,6 @@ app.get('/users', async (req, res) => {
   },
   ]
   */
-
   const result = await firefunctions.getusers(req.query.uid);
   res.status(200).send(result);
 })
