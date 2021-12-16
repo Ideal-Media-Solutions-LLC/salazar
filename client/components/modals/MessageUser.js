@@ -7,14 +7,23 @@ import { SendOutlined } from '@ant-design/icons';
 const { TextArea } = Input;
 
 export default function MessageUser(props) {
+  const { uid } = useApp().user;
   const [message, setMessage] = useState('');
   const sendMessage = function() {
     if (message) {
       const data = {
         message,
-
+        user_ID: uid,
+        other_ID: props.user.uid
       }
-      axios.post('http://localhost:3001/chat', data)
+      console.log({messageToSend: data});
+      axios.post('http://localhost:3001/chat', {messageToSend: data})
+        .then(result => {
+          props.close(null);
+        })
+        .catch(err => {
+          console.log(err);
+        })
     }
   }
   return (
