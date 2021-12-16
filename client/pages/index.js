@@ -30,23 +30,7 @@ export default function Home() {
         <link rel="icon" href="/assets/icon.png" />
       </Head>
 
-<<<<<<< HEAD
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to Salazar!
-        </h1>
-        <Link href = 'user'>
-
-          <a>
-            Go to User Interface
-          </a>
-
-        </Link>
-        </main>
-
-=======
       <LandingPage />
->>>>>>> a8112b0b797a2c57e87e3c0309d36f19a55587f1
       <footer className={styles.footer}>
         FOOTER
       </footer>
