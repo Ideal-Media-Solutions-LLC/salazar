@@ -68,6 +68,7 @@ export default function Search() {
   const [searchLanguages, setSearchLanguages] = useState([]);
   const [searchLevel, setSearchLevel] = useState([]);
   const [modalSchedule, setModalSchedule] = useState(null);
+  const [modalMessage, setModalMessage] = useState(null);
   const [disabled, setDisabled] = useState(true);
   function handleChangeLanguage(value) {
     setSearchLanguages(value);
@@ -153,11 +154,16 @@ export default function Search() {
 
       <div className='userlist'>
         {showUsers.map((user, i) => {
-          return <Card user = {user} setModalSchedule = {setModalSchedule} key = {`usercard-${i}`}/>
+          return <Card
+            user = {user}
+            setModalSchedule = {setModalSchedule}
+            setModalMessage = {setModalMessage}
+            key = {`usercard-${i}`}/>
         })}
       </div>
 
         {modalSchedule}
+        {modalMessage}
     </div>
 
   );

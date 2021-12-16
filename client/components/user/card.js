@@ -2,7 +2,7 @@
 import { Image, Button } from 'antd';
 import { CalendarOutlined, MessageOutlined } from '@ant-design/icons';
 import ScheduleCall from '../modals/ScheduleCall.js';
-
+import MessageUser from '../modals/MessageUser.js';
 export default function Card(props) {
   const {displayName, username, photo, languages, uid} = props.user;
 
@@ -45,7 +45,10 @@ export default function Card(props) {
       </div>
 
       <div>
-      <MessageOutlined style ={{fontSize: '20px', margin: '10px'}}/>
+      <MessageOutlined
+      onClick = {()=>{
+        props.setModalMessage(<MessageUser user = {{uid, displayName}} close = {props.setModalMessage}/>)
+        }} style ={{fontSize: '20px', margin: '10px'}}/>
       <CalendarOutlined onClick = {()=> {props.setModalSchedule( <ScheduleCall user = {{uid, displayName, languages}} close = {props.setModalSchedule}/>)}} style ={{fontSize: '20px', margin: '10px'}}/>
       </div>
 
