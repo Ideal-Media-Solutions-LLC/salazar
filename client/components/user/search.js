@@ -5,6 +5,9 @@ import { DownOutlined } from '@ant-design/icons';
 import { Select } from 'antd';
 import Card from './card.js';
 import axios from 'axios';
+import { useApp } from '../context/AppProvider.js';
+import port from '../../../back/port.js';
+
 
 const { Option } = Select;
 
@@ -46,7 +49,7 @@ const filter = function(users, languages, skills) {
           if (Object.keys(user.languages).includes(language)) {
               if (skills.length > 0) {
                   skills.forEach(skill => {
-                      user.languages[language] === skill ? result = true : result = false;
+                      user.languages[language] === skill ? result = true : null;
                   })
               } else {
                   result = true
@@ -62,12 +65,13 @@ const filter = function(users, languages, skills) {
 }
 
 export default function Search() {
-  // const [username, setUserName] = useState('test');
+  const { uid } = useApp().user;
   const [users, setUsers] = useState([]);
   const [showUsers, setShowUsers] = useState([]);
   const [searchLanguages, setSearchLanguages] = useState([]);
   const [searchLevel, setSearchLevel] = useState([]);
   const [modalSchedule, setModalSchedule] = useState(null);
+  const [modalMessage, setModalMessage] = useState(null);
   const [disabled, setDisabled] = useState(true);
   function handleChangeLanguage(value) {
     setSearchLanguages(value);
@@ -76,13 +80,19 @@ export default function Search() {
     setSearchLevel(value);
   }
   useEffect(() => {
-    axios.get('http://localhost:3001/users')
-      .then(results => {
-        console.log(results.data);
-        setUsers(results.data);
-        setShowUsers(results.data);
+
+    if (uid) {
+      axios.get('http://localhost:3001/users', {
+        params: {uid}
       })
-  },[])
+        .then(results => {
+          console.log(results.data);
+          setUsers(results.data);
+          setShowUsers(results.data);
+        })
+    }
+
+  },[uid])
   useEffect(()=> {
     if (searchLanguages.length > 0) {
       setDisabled(false);
@@ -148,11 +158,16 @@ export default function Search() {
 
       <div className='userlist'>
         {showUsers.map((user, i) => {
-          return <Card user = {user} setModalSchedule = {setModalSchedule} key = {`usercard-${i}`}/>
+          return <Card
+            user = {user}
+            setModalSchedule = {setModalSchedule}
+            setModalMessage = {setModalMessage}
+            key = {`usercard-${i}`}/>
         })}
       </div>
 
         {modalSchedule}
+        {modalMessage}
     </div>
 
   );

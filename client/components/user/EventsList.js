@@ -5,6 +5,7 @@ import { useApp } from '../context/AppProvider.js';
 import axios from 'axios'
 import { VideoCameraOutlined } from '@ant-design/icons';
 
+import port from '../../../back/port.js';
 const { Panel } = Collapse;
 
 const EventsList = function(props) {
@@ -29,7 +30,7 @@ const EventsList = function(props) {
   }
   useEffect(()=>{
     if (uid) {
-      axios.get('http://localhost:3001/calendar/list',{
+      axios.get(`http://localhost:${port}/calendar/list`,{
         params:{
           token: stsTokenManager,
           uid
@@ -50,7 +51,7 @@ const EventsList = function(props) {
         {page ? <Button className = 'button' onClick = {()=> {setPage(page-3)}}>◁</Button> : <Button className = 'button'  disabled onClick = {()=> {setPage(page-3)}}>◁</Button>}
         {/* {page ? <DoubleLeftOutlined className = 'button' onClick = {()=> {setPage(page-3)}}/>: <DoubleLeftOutlined className = 'button'  disabled onClick = {()=> {setPage(page-3)}}>} */}
 
-        {events && events.length - page > page ? <Button className = 'button' onClick = {()=> {setPage(page+3)}}>▷</Button> : <Button className = 'button' disabled>▷</Button>}
+        {events && events.length > 3 + page ? <Button className = 'button' onClick = {()=> {setPage(page+3)}}>▷</Button> : <Button className = 'button' disabled>▷</Button>}
       </div>
 
       <Collapse accordion>

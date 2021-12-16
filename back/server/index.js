@@ -80,7 +80,7 @@ app.get('/users', async (req, res) => {
   },
   ]
   */
-  const result = await firefunctions.getusers();
+  const result = await firefunctions.getusers(req.query.uid);
   res.status(200).send(result);
 })
 
@@ -106,7 +106,6 @@ app.post('/key', async (req, res) => {
 
 app.get('/chat', async (req, res) => {
   var result = await firefunctions.getMessages(req.query.user_ID, req.query.other_ID);
-  console.log(result);
   if (result === null) {
     res.send(400);
   } else {
@@ -147,6 +146,11 @@ app.get('/chat/translation', async (req, res) => {
   // const messages = [{Time: '4:30', message:'Hello there'}, {Time: '5:00', message: 'Wow. Ignore me. That is cool'}, {Time: '6:00', message: 'Baby come back'}];
   var translatedMessages = [];
   for (var i = 0; i < messages.length; ++i) {
+    var extract = messages[i];
+    var value = '';
+    for (var key in extract) {
+      value = key;
+    }
     await axios({
       baseURL: endpoint,
       url: '/translate',
@@ -162,13 +166,16 @@ app.get('/chat/translation', async (req, res) => {
         'to': language
       },
       data: [{
-        'text': messages[i].message
+        'text': extract[value]
       }],
       responseType: 'json'
     }).then((result) => {
       translatedMessages.push(result.data[0]['translations'][0]['text']);
+    }).catch(err => {
+      translatedMessages.push(extract[value]);
     });
   }
+  console.log(translatedMessages);
   res.send(translatedMessages);
 })
 
