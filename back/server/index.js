@@ -24,7 +24,8 @@ app.get('/', (req, res) => {
 //#region user auth
 
 app.get('/auth', async (req, res) => {
-  const result = await firefunctions.get(req.query.uid);
+  console.log('/auth');
+  const result = await firefunctions.get(req.query.uid, 'Users');
   if (result === null) {
     res.send(true);
   } else {
@@ -55,7 +56,7 @@ app.post('/auth', async (req, res) => {
 
 app.get('/user', async (req, res) => {
   let result = {};
-  const response = await firefunctions.get(req.query.uid);
+  const response = await firefunctions.get(req.query.uid, 'Users');
   result.uid = req.query.uid;
   result.username = response.username;
   result.displayName = response.displayName;
@@ -89,6 +90,14 @@ app.post('/languages', async (req, res) => {
   let result = await firefunctions.updateLanguages(key, data);
   res.send(201);
 })
+
+app.post('/key', async (req, res) => {
+  console.log(req.body);
+  let data = req.body.apikey;
+  let key = req.body.uid;
+  let result = await firefunctions.write(key, {apikey: req.body.apikey}, 'Keys');
+  res.send(201);
+});
 
 //#endregion
 
@@ -178,15 +187,32 @@ app.get('/chat/translation', async (req, res) => {
 // loadClient();
 
 app.get('/calendar/list', async (req, res) => {
-
-  await listEvents((events) => {
+  const { token, uid } = req.query;
+  let apiToken = JSON.parse(token);
+  const user = await firefunctions.get(uid, 'Keys');
+  apiToken = {
+    'access_token': user.apikey,
+    'refresh_token': apiToken.refreshToken,
+    'expiration_time': apiToken.expirationTime
+  }
+  console.log(apiToken);
+  await listEvents(apiToken, (events) => {
     res.send(events);
   })
 });
 
 app.post('/calendar/create', async (req, res) => {
-
-  await createEvent((events) => {
+  const event = req.body;
+  console.log(event)
+  const fromUser = await firefunctions.get(event.uid, 'Keys');
+  const otherUser = await firefunctions.get(event.toUser, 'Users');
+  // let obj = req.body;
+  event.token.accessToken = fromUser.apikey;
+  console.log('OtherUser', otherUser)
+  // event.peer = otherUser.email;
+  event.peer = otherUser.email;
+  console.log(event, 'obj');
+  await createEvent(event, (events) => {
     res.send(events);
   })
 });

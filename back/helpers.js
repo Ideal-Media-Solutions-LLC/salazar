@@ -94,8 +94,8 @@ async function write(key, data, collection) {
   return true;
 }
 
-async function get(key) {
-  const docRef = doc(db, 'Users', key);
+async function get(key, collection) {
+  const docRef = doc(db, collection, key);
   const result = await getDoc(docRef);
   if (result.exists()) {
     //console.log(result.data(), 'get');
