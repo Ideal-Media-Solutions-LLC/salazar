@@ -1,8 +1,8 @@
 const { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, browserSessionPersistence, setPersistence, onAuthStateChanged, signOut, signInWithRedirect, getRedirectResult } = require('firebase/auth');
 //const functions = require('firebase/auth');
 const { initializeApp } = require('firebase/app');
-const { getFirestore } = require("firebase/firestore");
-const { collection, addDoc, setDoc, getDoc, getDocs, doc, onSnapshot, updateDoc, increment } = require("firebase/firestore");
+const { getFirestore, Timestamp, FieldValue } = require("firebase/firestore");
+const { collection, addDoc, setDoc, getDoc, getDocs, doc, onSnapshot, updateDoc, increment, query, where } = require("firebase/firestore");
 //import React, {useState, useEffect} from 'react';
 const config = require('./config.js');
 const app = initializeApp(config);
@@ -134,8 +134,19 @@ async function getusers() {
 }
 
 async function getMessages(user_ID, other_ID) {
-  const getMessagesFromMe = await db.collection('messages').doc(other_ID).where('user_id', '==', user_ID).get();
-  const getMessagesFromOther = await db.collection('messages').doc(user_ID).where('user_id', '==', other_ID).get();
+
+  const allConvosMe = doc(db, 'Messages', other_ID);
+  const convosQ = await getDoc(allConvosMe);
+  const convos = convosQ.data();
+  const getMessagesFromMe = convos[user_ID];
+
+  const allConvosOther = doc(db, 'Messages', user_ID);
+  const convosR = await getDoc(allConvosOther);
+  const convosOther = convosR.data();
+  const getMessagesFromOther = convosOther[other_ID];
+
+  // const getMessagesFromMe = await db.collection('messages').doc(other_ID).where('user_id', '==', user_ID).get();
+  // const getMessagesFromOther = await db.collection('messages').doc(user_ID).where('user_id', '==', other_ID).get();
 
   var inOrderMsg = [];
 
@@ -203,14 +214,31 @@ async function postMessages(user_ID, other_ID, time, message) {
 }
 
 async function getChatUsers(user_ID) {
-  const getAffiliatedUUID = await db.collection('messages').doc(user_ID).get();
+  const userRef = doc(db, 'Messages', user_ID);
+  const result = await getDoc(userRef);
   var userID_displayName = [];
-  for (var i = 0; i < getAffiliatedUUID.length; ++i) {
-    const displayName = await db.collection(info).doc(getAffiliatedUUID[i]).get();
-    var obj = {};
-    obj[getAffiliatedUUID[i]] = displayName.username;
-    userID_displayName.push(obj);
+  if (result.exists()) {
+    var store = result.data();
+    for (var id in store) {
+      const userRef = doc(db, 'Users', id);
+      const userResult = await getDoc(userRef);
+      const temp = userResult.data();
+      var obj = {};
+      obj[id] = temp.displayName;
+      userID_displayName.push(obj);
+    }
+  } else {
+    console.log('looking in the wrong one');
   }
+
+  // for (var i = 0; i < getAffiliatedUUID.data.length; ++i) {
+  //   console.log('One Step got here');
+  //   const qUser = doc(db, 'Users', getAffiliatedUUID.data[i]);
+  //   const displayName = await getDoc(qUser);
+  //   var obj = {};
+  //   obj[getAffiliatedUUID.data[i]] = displayName.username;
+  //   userID_displayName.push(obj);
+  // }
   return userID_displayName;
 }
 

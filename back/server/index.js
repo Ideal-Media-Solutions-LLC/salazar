@@ -96,10 +96,11 @@ app.post('/languages', async (req, res) => {
 
 app.get('/chat', async (req, res) => {
   var result = await firefunctions.getMessages(req.query.user_ID, req.query.other_ID);
-  if (results === null) {
+  console.log(result);
+  if (result === null) {
     res.send(400);
   } else {
-    res.status(200).send(results);
+    res.status(200).send(result);
   }
 });
 
@@ -123,7 +124,7 @@ app.post('/chat', async (req, res) => {
   }
 });
 
-app.get('chatUsers', async (req, res) => {
+app.get('/chatUsers', async (req, res) => {
   var results = await firefunctions.getChatUsers(req.query.user_ID);
   if (results) {
     res.send(results);

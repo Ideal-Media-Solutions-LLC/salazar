@@ -82,6 +82,7 @@ const Chat = () => {
     //axios call - send user id
     axios.get('http://localhost:3002/chatUsers', {params: {user_ID: user.uid}})
     .then((response) => {
+      console.log(response.data);
       setContacts(response.data);
     })
 
@@ -92,6 +93,7 @@ const Chat = () => {
     //axios call - send both receiverId and senderId
     axios.get('http://localhost:3002/chat', {params: {user_ID: senderId, other_ID: receiverId}})
     .then((response) => {
+      console.log(response.data);
       setMessages(response.data);
     })
     // setMessages([{1: 'hello'}, {2: 'HEY'}, {2: 'how is it going?'}]);
@@ -109,7 +111,7 @@ const Chat = () => {
 
   };
 
-  const handleContactClick = (receiverId, senderId = '1') => {
+  const handleContactClick = (receiverId, senderId) => {
     setReceiverId(receiverId);
     getMessages(receiverId, senderId);
     // alert(receiverId + " and " + sender_id);
