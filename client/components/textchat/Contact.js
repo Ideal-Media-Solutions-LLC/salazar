@@ -4,11 +4,13 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
 import Divider from '@material-ui/core/Divider';
+import {useApp} from '../context/AppProvider.js';
 
 
 const Contact = (props) => {
 
   const {handleListItemClick, handleContactClick, selectedIndex} = props;
+  const {user} = useApp();
 
   var selected = false;
 
@@ -20,7 +22,7 @@ const Contact = (props) => {
 
   return (
     <ListItem button key={props.index} onClick={() => {
-      handleContactClick(props.contactId, '1');
+      handleContactClick(props.contactId, user.uid );
       handleListItemClick(props.contactId);
 
     }

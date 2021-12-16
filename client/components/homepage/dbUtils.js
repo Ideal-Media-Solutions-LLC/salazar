@@ -22,6 +22,8 @@ const db = getDatabase(app);
 export function handleSignInWithGoogle() {
   signInWithPopup(auth, provider)
     .then((res) => {
+      const credential = GoogleAuthProvider.credentialFromResult(res);
+      const token = credential.accessToken;
       let user = res.user;
       axios.post(`http://localhost:${port}/key`, {
         uid: user.uid,
@@ -30,6 +32,7 @@ export function handleSignInWithGoogle() {
       axios.get(`http://localhost:${port}/auth`, { params: { uid: user.uid } }).then((response) => {
         if (response.data) {
           //route
+
           return Router.push('/signup')
         } else {
           //route
@@ -61,15 +64,20 @@ export function handleSignInWithGoogle() {
 // }
 
 export function LogoutUser() {
-  console.log("Logout Btn Call");
-  signOut(auth)
-    .then(() => {
-      console.log("logout success!");
-      return Router.push('/')
+  // console.log("Logout Btn Call");
+  // signOut(auth)
+  //   .then(() => {
+  //     console.log("logout success!");
+  //     return Router.push('/')
+  //   })
+  //   .catch((e) => {
+  //     console.log(e);
+  //   });
+  Router.push('/').then(() => {
+    signOut(auth).then(() => {
+      console.log('loggedout');
     })
-    .catch((e) => {
-      console.log(e);
-    });
+  });
 }
 
 // function writeUserData(userId, name, email) {

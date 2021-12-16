@@ -8,12 +8,13 @@ import port from '../../../back/port.js';
 
 
 const ScheduleCall = function(props) {
+  const { stsTokenManager, uid, displayName } = useApp().user;
   const [time, setTime ] = useState({hour: 0, minutes: 0});
   const [AmPm, setAmPm] = useState(0);
   const [day, setDay] = useState();
   const [message, setMessage] = useState('');
   const [language, setLanguage] = useState();
-
+  console.log(props.user.displayName);
   const onChange = function(date, dateString) {
     setDay(dateString);
   }
@@ -32,18 +33,39 @@ const ScheduleCall = function(props) {
     } else {
       AmPm ? hour = Number(time.hour) + 12 : hour = Number(time.hour);
     }
+    const dateString = `${day}T${hour < 10 ? ('0'+String((hour))) : hour}:${time.minutes < 10 ? ('0'+String(time.minutes)) : time.minutes}:00`;
 
     const date = new Date(`${day}T${hour < 10 ? ('0'+String((hour))) : hour}:${time.minutes < 10 ? ('0'+String(time.minutes)) : time.minutes}:00`)
 
+    let endString = new Date(date.getTime()+3600000).toTimeString().slice(0,8);
+    console.log(endString, 'endString');
+    let endDate = day;
+    const dayOfMonth = Number(day.slice(9));
+    if (hour === 23) {
+      endDate = day.slice(0,9) + `${dayOfMonth + 1}`;
+    }
+
     const data = {
-      toUser: props.user.uid,
+      uid,
+      toUser: props.user.uid,//my uid temporary
       date,
-      end: new Date(date.getTime()+3600000),
+      end: new Date(date.getTime()+3600000).toTimeString(),
       message,
       toSpeak: language,
+      token: stsTokenManager,
+      toUserDisplayName : props.user.displayName,
+      fromUserDisplayName: displayName
+    }
 
+    const timezone = data.date.getTimezoneOffset()/60;
 
-
+    let startTime, endTime;
+    if (timezone < 10) {
+      startTime = dateString + `-0${timezone}:00`;
+      endTime = endDate + 'T' + endString + `-0${timezone}:00`;
+    } else {
+      startTime = dateString + `-${timezone}:00`;
+      endTime = endDate + 'T' + endString + `-${timezone}:00`;
     }
 
     data.date = startTime;
@@ -56,8 +78,8 @@ const ScheduleCall = function(props) {
         console.log('Failed to send google calendar invitation.', err);
       });
 
-    console.log(data);
-    props.close(null);
+
+  //   // props.close(null);
    }
   }
 
@@ -66,7 +88,7 @@ const ScheduleCall = function(props) {
     visible = {true}
     cancelButtonProps = {{disabled: true}}
     onCancel = {()=> {props.close(null)}}
-    title = {`Schedule Call With ${props.user.username}`}
+    title = {`Schedule Call With ${props.user.displayName}`}
     footer = {null}
     >
        <label className = {styles.languageContainer}>

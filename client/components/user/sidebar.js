@@ -1,7 +1,6 @@
 import Image from 'next/image';
 import EventsList from './EventsList.js';
 // import Languages from './languages.js';
-import axios from 'axios';
 
 import { Button, Modal, Popover, Typography } from 'antd';
 import React, { useEffect, useState, useContext } from "react";
@@ -43,18 +42,8 @@ export default function Sidebar() {
     for (const lang of languages) {
       newLanges[lang.lang] = lang.langLevel;
     }
-
-    const body = {'uid':appContext.user.uid, 'languages': newLanges};
-
-    axios({
-      method: 'post',
-      url: `http://localhost:3002/languages`,
-      data: body
-    })
-
-    appContext.setUser({...appContext.user, languages: newLanges});
-
-
+    appContext.setUser({ ...appContext.user, languages: newLanges });
+    console.log(appContext.user);
     setVisible(false);
   };
 
@@ -90,7 +79,19 @@ export default function Sidebar() {
     }, 200);
     console.log('synced', newLanges);
   }
+  // console.log('Current user:', user);
 
+  // const user = {
+  //   uid:'test uid',
+  //   username: 'TestUsername',
+  //   displayName: 'TestDisplayname',
+  //   photo:'/assets/profile.png',
+  //   languages: {
+  //     Chinese: 2,
+  //     Japanese: 2,
+  //     English: 4,
+  //   },
+  // }
 
   const onFinish = values => {
     console.log('Received values of form:', values);
