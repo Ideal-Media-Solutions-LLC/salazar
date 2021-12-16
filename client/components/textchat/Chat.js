@@ -27,6 +27,8 @@ import Message from './Message.js';
 import Contact from './Contact.js';
 import Languages from './Languages.js';
 
+import port from '../../../back/port.js';
+
 const useStyles = makeStyles({
   table: {
     minWidth: 650,
@@ -78,7 +80,7 @@ const Chat = () => {
 
 
   const getContacts =() => {
-    axios.get('http://localhost:3002/chatUsers', {params: {user_ID: user.uid}})
+    axios.get(`http://localhost:${port}/chatUsers`, {params: {user_ID: user.uid}})
     .then((response) => {
 
       setContacts(response.data);
@@ -88,7 +90,7 @@ const Chat = () => {
   }
 
   const getMessages = (receiverId, senderId) => {
-    axios.get('http://localhost:3002/chat', {params: {user_ID: senderId, other_ID: receiverId}})
+    axios.get(`http://localhost:${port}/chat`, {params: {user_ID: senderId, other_ID: receiverId}})
     .then((response) => {
       setMessages(response.data);
     })
@@ -121,9 +123,10 @@ const Chat = () => {
       other_ID: receiverId
     }
 
-    axios.post('http://localhost:3002/chat', {messageToSend})
+    console.log(messageToSend);
+
+    axios.post(`http://localhost:${port}/chat`, {messageToSend})
     .then((response) => {
-      console.log('posted');
       getMessages(receiverId, user.uid);
     })
     // setMessages(messages.concat({1: text}))
@@ -131,7 +134,8 @@ const Chat = () => {
   }
 
   const handleTranslateButtonClick = (event) => {
-    axios.get('http://localhost:3002/chat/translation', {params: {language: language, user_ID: user.uid, other_ID: receiverId}})
+
+    axios.get(`http://localhost:${port}/chat/translation`, {params: {language: language, user_ID: user.uid, other_ID: receiverId}})
     .then((response) => {
       setTranslations(response.data);
     })
