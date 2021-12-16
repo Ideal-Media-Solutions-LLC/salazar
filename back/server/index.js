@@ -24,12 +24,8 @@ app.get('/', (req, res) => {
 //#region user auth
 
 app.get('/auth', async (req, res) => {
-<<<<<<< HEAD
   console.log('/auth');
   const result = await firefunctions.get(req.query.uid, 'Users');
-=======
-  const result = await firefunctions.get(req.query.uid);
->>>>>>> main
   if (result === null) {
     res.send(true);
   } else {

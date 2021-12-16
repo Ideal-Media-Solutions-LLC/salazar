@@ -86,14 +86,10 @@ function logOut() {
 
 async function write(key, data, collection) {
   //console.log(db);
-<<<<<<< HEAD
-  const response = await setDoc(doc(db, collection, key), data);
-=======
   await setDoc(
     doc(db, collection, key),
     data
   );
->>>>>>> main
   //console.log('write Languages');
   return true;
 }

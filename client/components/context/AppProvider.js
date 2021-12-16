@@ -57,11 +57,7 @@ function AppProvider({ children }) {
   const [signUpPageLanguages, setSignUpPageLanguages] = useState([]);
 
   return (
-<<<<<<< HEAD
-    <AppContext.Provider value={{curUser, setCurUser, languagesList, setLanguagesList, levelList, setLevelList, user}}>
-=======
     <AppContext.Provider value={{ curUser, setCurUser, languagesList, setLanguagesList, levelList, setLevelList, user, setUser, signUpPageLanguages, setSignUpPageLanguages }}>
->>>>>>> main
       {children}
     </AppContext.Provider>
   );
