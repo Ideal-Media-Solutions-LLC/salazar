@@ -146,9 +146,6 @@ async function getMessages(user_ID, other_ID) {
   const convosOther = convosR.data();
   const getMessagesFromOther = convosOther[other_ID];
 
-  // const getMessagesFromMe = await db.collection('messages').doc(other_ID).where('user_id', '==', user_ID).get();
-  // const getMessagesFromOther = await db.collection('messages').doc(user_ID).where('user_id', '==', other_ID).get();
-
   var inOrderMsg = [];
 
   var organize = function (indexMe, indexOther) {
