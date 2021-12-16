@@ -53,3 +53,15 @@ export default function Card(props) {
 
   );
 }
+
+
+
+/**
+ *
+ * Send
+ * axios /chat POST
+ *    user_ID: uid,
+ *    other_ID: toUid,
+ *    message: string
+ *
+ */
