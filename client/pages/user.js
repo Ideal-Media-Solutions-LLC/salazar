@@ -26,6 +26,16 @@ const myLoader = ({ src, width, quality }) => {
 export default function User() {
   const appContext = useContext(AppContext);
 
+  // useEffect(() => {
+  //   axios.get(`URL`)
+  //   .then(res => {
+  //     appContext.setCurUser({});
+  //   })
+  //   .catch(err => {
+  //     console.log(err);
+  //   })
+  // }, []);
+
   return (
 
       <Layout className='layout'>
@@ -55,7 +65,7 @@ export default function User() {
 
           </Content>
         </Layout>
-        <Footer className='footer'>@ 2021 Salazar by Team Slytherins</Footer>
+        <Footer className='footer'>Footer</Footer>
 
       </Layout>
 

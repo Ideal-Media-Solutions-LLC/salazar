@@ -1,11 +1,11 @@
 const { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, browserSessionPersistence, setPersistence, onAuthStateChanged, signOut, signInWithRedirect, getRedirectResult } = require('firebase/auth');
 //const functions = require('firebase/auth');
 const { initializeApp } = require('firebase/app');
-const { getFirestore, Timestamp, FieldValue } = require("firebase/firestore");
-const { collection, addDoc, setDoc, getDoc, getDocs, doc, onSnapshot, updateDoc, increment, query, where } = require("firebase/firestore");
+const { getFirestore } = require("firebase/firestore");
+const { collection, addDoc, setDoc, getDoc, getDocs, doc, onSnapshot, updateDoc, increment } = require("firebase/firestore");
 //import React, {useState, useEffect} from 'react';
 const config = require('./config.js');
-const app = initializeApp(config.firebaseConfig);
+const app = initializeApp(config);
 const auth = getAuth();
 const provider = new GoogleAuthProvider();
 provider.addScope(`https://www.googleapis.com/auth/calendar.events`);
@@ -94,8 +94,8 @@ async function write(key, data, collection) {
   return true;
 }
 
-async function get(key, collection) {
-  const docRef = doc(db, collection, key);
+async function get(key) {
+  const docRef = doc(db, 'Users', key);
   const result = await getDoc(docRef);
   if (result.exists()) {
     //console.log(result.data(), 'get');
@@ -134,19 +134,8 @@ async function getusers() {
 }
 
 async function getMessages(user_ID, other_ID) {
-
-  const allConvosMe = doc(db, 'Messages', other_ID);
-  const convosQ = await getDoc(allConvosMe);
-  const convos = convosQ.data();
-  const getMessagesFromMe = convos[user_ID];
-
-  const allConvosOther = doc(db, 'Messages', user_ID);
-  const convosR = await getDoc(allConvosOther);
-  const convosOther = convosR.data();
-  const getMessagesFromOther = convosOther[other_ID];
-
-  // const getMessagesFromMe = await db.collection('messages').doc(other_ID).where('user_id', '==', user_ID).get();
-  // const getMessagesFromOther = await db.collection('messages').doc(user_ID).where('user_id', '==', other_ID).get();
+  const getMessagesFromMe = await db.collection('messages').doc(other_ID).where('user_id', '==', user_ID).get();
+  const getMessagesFromOther = await db.collection('messages').doc(user_ID).where('user_id', '==', other_ID).get();
 
   var inOrderMsg = [];
 
@@ -163,7 +152,7 @@ async function getMessages(user_ID, other_ID) {
       obj[user_ID] = getMessagesFromMe[indexMe];
       inOrderMsg.push(obj);
       organize(indexMe + 1, indexOther);
-    } else if (getMessagesFromMe[indexMe].time >= getMessagesFromOther[indexOther].time) {
+    } else if (getMessagesFromMe[indexMe].Time >= getMessagesFromOther[indexOther].Time) {
       var obj = {};
       obj[user_ID] = getMessagesFromMe[indexMe]
       inOrderMsg.push(obj);
@@ -175,84 +164,53 @@ async function getMessages(user_ID, other_ID) {
       organize(indexMe, indexOther + 1);
     }
   }
-  if (getMessagesFromMe === undefined && getMessagesFromOther === undefined) {
-    inOrderMsg = [];
-  } else if (getMessagesFromMe === undefined) {
-    for (var i = 0; i < getMessagesFromOther.length; ++i) {
-      var obj = {};
-      obj[other_ID] = getMessagesFromOther[i].message;
-      inOrderMsg.push(obj);
-    }
-  } else if (getMessagesFromOther === undefined) {
-    for (var i = 0; i < getMessagesFromMe.length; ++i) {
-      var obj = {};
-      obj[user_ID] = getMessagesFromMe[i].message;
-      inOrderMsg.push(obj);
-    }
-  } else {
-    organize(0, 0);
-  }
+
+  organize(0, 0);
   return inOrderMsg;
 }
 
-async function postMessages(user_ID, other_ID, message) {
-
-  console.log(user_ID + ' LOL ' + other_ID);
-  const q = doc(db, 'Messages', other_ID);
-  const qQ = await getDoc(q);
-  const store = qQ.data();
-  console.log(store);
-  const getMessagesFromOther = store[user_ID];
-  var time = Timestamp.now();
+async function postMessages(user_ID, other_ID, time, message) {
+  const getMessagesFromOther = await db.collection('messages').doc(other_ID).where('user_id', '==', user_ID).get();
 
   //{reviever_ID: sender_ID: {msg}}
   if (getMessagesFromOther) {
-    const docRef = doc(db, 'Messages', other_ID);
-    await updateDoc(docRef, {
+    db.collection('messages').doc(other_ID).update({
       [user_ID]: FieldValue.arrayUnion({
         message: message,
         time: time
       })
-    });
-    return true;
+    }).then((suc, err) => {
+      if (err) {
+        return false;
+      } else {
+        return true;
+      }
+    })
   } else {
-    const docRef = doc(db, 'Messages', other_ID);
-    await setDoc(docRef, {
+    db.collection('messages').doc(other_ID).set({
       [user_ID]: [{
         message: message,
         time: time
       }]
-    });
-    return true
+    }).then((suc, err) => {
+      if (err) {
+        return false;
+      } else {
+        return true;
+      }
+    })
   }
 }
 
 async function getChatUsers(user_ID) {
-  const userRef = doc(db, 'Messages', user_ID);
-  const result = await getDoc(userRef);
+  const getAffiliatedUUID = await db.collection('messages').doc(user_ID).get();
   var userID_displayName = [];
-  if (result.exists()) {
-    var store = result.data();
-    for (var id in store) {
-      const userRef = doc(db, 'Users', id);
-      const userResult = await getDoc(userRef);
-      const temp = userResult.data();
-      var obj = {};
-      obj[id] = temp.displayName;
-      userID_displayName.push(obj);
-    }
-  } else {
-    console.log('looking in the wrong one');
+  for (var i = 0; i < getAffiliatedUUID.length; ++i) {
+    const displayName = await db.collection(info).doc(getAffiliatedUUID[i]).get();
+    var obj = {};
+    obj[getAffiliatedUUID[i]] = displayName.username;
+    userID_displayName.push(obj);
   }
-
-  // for (var i = 0; i < getAffiliatedUUID.data.length; ++i) {
-  //   console.log('One Step got here');
-  //   const qUser = doc(db, 'Users', getAffiliatedUUID.data[i]);
-  //   const displayName = await getDoc(qUser);
-  //   var obj = {};
-  //   obj[getAffiliatedUUID.data[i]] = displayName.username;
-  //   userID_displayName.push(obj);
-  // }
   return userID_displayName;
 }
 

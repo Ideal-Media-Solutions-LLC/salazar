@@ -4,8 +4,7 @@ import { CalendarOutlined, MessageOutlined } from '@ant-design/icons';
 import ScheduleCall from '../modals/ScheduleCall.js';
 
 export default function Card(props) {
-  const {displayName, username, photo, languages, uid} = props.user;
-
+  const {username, photo, languages, uid} = props.user;
   const skillLevel = {
     1: 'Entry',
     2: 'Intermediate',
@@ -27,7 +26,7 @@ export default function Card(props) {
         <Image
             preview = {false}
             className='profilepic'
-            src={props.user.photo || "/assets/icon.png"}
+            src={props.user.image || "https://picsum.photos/id/237/200/300"}
             width={60}
             height={60}
             layout='intrinsic'
@@ -37,7 +36,7 @@ export default function Card(props) {
       </div>
 
       <div>
-        {displayName}
+        {username}
       </div>
 
       <div>
@@ -46,7 +45,7 @@ export default function Card(props) {
 
       <div>
       <MessageOutlined style ={{fontSize: '20px', margin: '10px'}}/>
-      <CalendarOutlined onClick = {()=> {props.setModalSchedule( <ScheduleCall user = {{uid, displayName, languages}} close = {props.setModalSchedule}/>)}} style ={{fontSize: '20px', margin: '10px'}}/>
+      <CalendarOutlined onClick = {()=> {props.setModalSchedule( <ScheduleCall user = {{uid, username, languages}} close = {props.setModalSchedule}/>)}} style ={{fontSize: '20px', margin: '10px'}}/>
       </div>
 
     </div>

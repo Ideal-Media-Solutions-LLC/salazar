@@ -82,7 +82,6 @@ const Chat = () => {
     //axios call - send user id
     axios.get('http://localhost:3002/chatUsers', {params: {user_ID: user.uid}})
     .then((response) => {
-      // console.log(response.data);
       setContacts(response.data);
     })
 
@@ -93,7 +92,6 @@ const Chat = () => {
     //axios call - send both receiverId and senderId
     axios.get('http://localhost:3002/chat', {params: {user_ID: senderId, other_ID: receiverId}})
     .then((response) => {
-      // console.log(response.data);
       setMessages(response.data);
     })
     // setMessages([{1: 'hello'}, {2: 'HEY'}, {2: 'how is it going?'}]);
@@ -101,7 +99,7 @@ const Chat = () => {
 
   const handleListItemClick = (contactId) => {
     setSelectedIndex(contactId)
-    // alert('be darker, ' + contactId + ',' + selectedIndex)
+    alert('be darker, ' + contactId + ',' + selectedIndex)
 
   };
 
@@ -111,7 +109,7 @@ const Chat = () => {
 
   };
 
-  const handleContactClick = (receiverId, senderId) => {
+  const handleContactClick = (receiverId, senderId = '1') => {
     setReceiverId(receiverId);
     getMessages(receiverId, senderId);
     // alert(receiverId + " and " + sender_id);
@@ -127,16 +125,13 @@ const Chat = () => {
     //axios call
     var messageToSend = {
       message: text,
-      // time: moment().format('MMMM Do YYYY, h:mm:ss a'),
+      time: moment().format(),
       user_ID : user.uid,
       other_ID: receiverId
     }
 
-    console.log(messageToSend);
-
     axios.post('http://localhost:3002/chat', {messageToSend})
-    .then((response) => {
-      console.log('posted');
+    .then(() => {
       getMessages(receiverId, user.uid);
     })
     // setMessages(messages.concat({1: text}))
@@ -164,13 +159,13 @@ const Chat = () => {
       <div>
         <Grid container>
             <Grid item xs={8} >
-                {/* <Typography variant="h4" className="header-message"
+                <Typography variant="h4" className="header-message"
                  style={{
                   color: '#21b6ae',
                   padding: "7px 5px"
                 }}
                 >
-                Chat</Typography> */}
+                Chat</Typography>
             </Grid>
             <Grid item xs={3} >
               <Languages language={language} handleSelect={handleSelect}/>
@@ -179,7 +174,7 @@ const Chat = () => {
             <Grid item xs={1} align="right">
                <Button variant="text" onClick={handleTranslateButtonClick}
                  style={{
-                   color: 'black',
+                   color: '#21b6ae',
                    padding: "15px 5px"
                  }}
                >

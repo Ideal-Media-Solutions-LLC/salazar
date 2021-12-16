@@ -107,11 +107,11 @@ export default function Sidebar() {
       <div>
         <img className='profilepic'
           src={user.photoURL}
-          width={100}
-          height={100}
+          width={80}
+          height={80}
         />
 
-        <div style={{fontWeight:'bold', fontSize:'16px', marginBottom: '10px'}}>{user.displayName}</div>
+        <div style={{fontWeight:'bold', fontSize:'16px'}}>{user.displayName}</div>
 
 
         <Button className='button' type="primary" onClick={showModal}>
@@ -179,12 +179,6 @@ export default function Sidebar() {
 
       </div>
       : null}
-
-
-      <Button className='button' type="primary" >
-          Log out
-      </Button>
-
       <div className='calendar'>
         <Typography><h5>Scheduled Calls</h5></Typography>
         <EventsList/>
