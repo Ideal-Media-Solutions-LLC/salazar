@@ -34,9 +34,10 @@ const SignUpForm = function (props) {
         }, {}),
         uid: user.uid,
         email: user.email,
-        photoURL: user.photoURL,
+        photo: user.photoURL,
         apikey: user.accessToken,
-        refreshToken: user.refreshToken
+        refreshToken: user.refreshToken,
+        //username: <enter username>
       },
       uid: user.uid
     }

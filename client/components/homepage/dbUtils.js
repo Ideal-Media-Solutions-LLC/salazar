@@ -67,6 +67,7 @@ export function LogoutUser() {
   signOut(auth)
     .then(() => {
       console.log("logout success!");
+      return Router.push('/')
     })
     .catch((e) => {
       console.log(e);
