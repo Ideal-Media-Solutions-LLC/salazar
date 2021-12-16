@@ -80,10 +80,9 @@ const Chat = () => {
 
 
   const getContacts =() => {
-    // get user id from context?
-    //axios call - send user id
     axios.get(`http://localhost:${port}/chatUsers`, {params: {user_ID: user.uid}})
     .then((response) => {
+
       setContacts(response.data);
     })
 
@@ -91,7 +90,6 @@ const Chat = () => {
   }
 
   const getMessages = (receiverId, senderId) => {
-    //axios call - send both receiverId and senderId
     axios.get(`http://localhost:${port}/chat`, {params: {user_ID: senderId, other_ID: receiverId}})
     .then((response) => {
       setMessages(response.data);
@@ -100,22 +98,17 @@ const Chat = () => {
   }
 
   const handleListItemClick = (contactId) => {
-    setSelectedIndex(contactId)
-    alert('be darker, ' + contactId + ',' + selectedIndex)
-
+    setSelectedIndex(contactId);
   };
 
   const handleSelect = (event) => {
-    alert(event.target.value);
     setLanguage(event.target.value);
-
   };
 
   const handleContactClick = (receiverId, senderId = '1') => {
     setReceiverId(receiverId);
     getMessages(receiverId, senderId);
-    // alert(receiverId + " and " + sender_id);
-
+    // setInterval(getMessages(receiverId, senderId), 1000);
   }
 
   const handleTextFieldChange = (event) => {
@@ -124,10 +117,8 @@ const Chat = () => {
   }
 
   const handleMessageSubmit = () => {
-    //axios call
     var messageToSend = {
       message: text,
-      time: moment().format(),
       user_ID : user.uid,
       other_ID: receiverId
     }
@@ -136,7 +127,6 @@ const Chat = () => {
 
     axios.post(`http://localhost:${port}/chat`, {messageToSend})
     .then((response) => {
-      console.log('posted');
       getMessages(receiverId, user.uid);
     })
     // setMessages(messages.concat({1: text}))
@@ -144,8 +134,7 @@ const Chat = () => {
   }
 
   const handleTranslateButtonClick = (event) => {
-    alert(receiverId + " and " + language);
-    //axios call
+
     axios.get(`http://localhost:${port}/chat/translation`, {params: {language: language, user_ID: user.uid, other_ID: receiverId}})
     .then((response) => {
       setTranslations(response.data);
@@ -156,8 +145,8 @@ const Chat = () => {
 
   useEffect( () => {
     getContacts();
-  }, [])
 
+  }, [])
 
 
   return (

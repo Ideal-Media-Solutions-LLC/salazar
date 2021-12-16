@@ -1,8 +1,8 @@
 const { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, browserSessionPersistence, setPersistence, onAuthStateChanged, signOut, signInWithRedirect, getRedirectResult } = require('firebase/auth');
 //const functions = require('firebase/auth');
 const { initializeApp } = require('firebase/app');
-const { getFirestore } = require("firebase/firestore");
-const { collection, addDoc, setDoc, getDoc, getDocs, doc, onSnapshot, updateDoc, increment } = require("firebase/firestore");
+const { getFirestore, Timestamp, FieldValue } = require("firebase/firestore");
+const { collection, addDoc, setDoc, getDoc, getDocs, doc, onSnapshot, updateDoc, increment, query, where, orderBy } = require("firebase/firestore");
 //import React, {useState, useEffect} from 'react';
 const config = require('./config.js');
 const app = initializeApp(config);
@@ -140,6 +140,20 @@ async function getMessages(user_ID, other_ID) {
   const getMessagesFromMe = await db.collection('messages').doc(other_ID).where('user_id', '==', user_ID).get();
   const getMessagesFromOther = await db.collection('messages').doc(user_ID).where('user_id', '==', other_ID).get();
 
+  const allConvosMe = doc(db, 'Messages', other_ID);
+  const convosQ = await getDoc(allConvosMe);
+  const convos = convosQ.data();
+  const getMessagesFromMe = convos[user_ID];
+
+
+  const allConvosOther = doc(db, 'Messages', user_ID);
+  const convosR = await getDoc(allConvosOther);
+  const convosOther = convosR.data();
+  const getMessagesFromOther = convosOther[other_ID];
+
+  // const getMessagesFromMe = await db.collection('messages').doc(other_ID).where('user_id', '==', user_ID).get();
+  // const getMessagesFromOther = await db.collection('messages').doc(user_ID).where('user_id', '==', other_ID).get();
+
   var inOrderMsg = [];
 
   var organize = function (indexMe, indexOther) {
@@ -147,61 +161,81 @@ async function getMessages(user_ID, other_ID) {
       return;
     } else if (getMessagesFromMe[indexMe] === undefined) {
       var obj = {};
-      obj[other_ID] = getMessagesFromOther[indexOther];
+      obj[other_ID] = getMessagesFromOther[indexOther].message;
       inOrderMsg.push(obj);
       organize(indexMe, indexOther + 1);
     } else if (getMessagesFromOther[indexOther] === undefined) {
       var obj = {};
-      obj[user_ID] = getMessagesFromMe[indexMe];
+      obj[user_ID] = getMessagesFromMe[indexMe].message;
       inOrderMsg.push(obj);
       organize(indexMe + 1, indexOther);
-    } else if (getMessagesFromMe[indexMe].Time >= getMessagesFromOther[indexOther].Time) {
+    } else if (getMessagesFromMe[indexMe].time.valueOf() <= getMessagesFromOther[indexOther].time.valueOf()) {
       var obj = {};
-      obj[user_ID] = getMessagesFromMe[indexMe]
+      obj[user_ID] = getMessagesFromMe[indexMe].message
       inOrderMsg.push(obj);
       organize(indexMe + 1, indexOther);
     } else {
       var obj = {};
-      obj[other_ID] = getMessagesFromOther[indexOther];
+      obj[other_ID] = getMessagesFromOther[indexOther].message;
       inOrderMsg.push(obj);
       organize(indexMe, indexOther + 1);
     }
   }
+  if (getMessagesFromMe === undefined && getMessagesFromOther === undefined) {
+    inOrderMsg = [];
+  } else if (getMessagesFromMe === undefined) {
+    for (var i = 0; i < getMessagesFromOther.length; ++i) {
+      var obj = {};
+      obj[other_ID] = getMessagesFromOther[i].message;
+      inOrderMsg.push(obj);
+    }
+  } else if (getMessagesFromOther === undefined) {
+    for (var i = 0; i < getMessagesFromMe.length; ++i) {
+      var obj = {};
+      obj[user_ID] = getMessagesFromMe[i].message;
+      inOrderMsg.push(obj);
+    }
+  } else {
+    organize(0, 0);
+  }
 
-  organize(0, 0);
   return inOrderMsg;
 }
 
 async function postMessages(user_ID, other_ID, time, message) {
   const getMessagesFromOther = await db.collection('messages').doc(other_ID).where('user_id', '==', user_ID).get();
 
+  const q = doc(db, 'Messages', other_ID);
+  const qQ = await getDoc(q);
+  const store = qQ.data();
+  const getMessagesFromOther = store[user_ID];
+  var time = Timestamp.now();
+
   //{reviever_ID: sender_ID: {msg}}
   if (getMessagesFromOther) {
-    db.collection('messages').doc(other_ID).update({
-      [user_ID]: FieldValue.arrayUnion({
-        message: message,
-        time: time
-      })
-    }).then((suc, err) => {
-      if (err) {
-        return false;
-      } else {
-        return true;
-      }
-    })
+    const doc = await getDoc(q);
+    const temp = doc.data();
+    const chatArr = temp[user_ID];
+    var obj = {
+      message: message,
+      time: time
+    };
+    chatArr.push(obj);
+    temp[user_ID] = chatArr;
+    await setDoc(q, temp);
+    return true;
   } else {
-    db.collection('messages').doc(other_ID).set({
-      [user_ID]: [{
-        message: message,
-        time: time
-      }]
-    }).then((suc, err) => {
-      if (err) {
-        return false;
-      } else {
-        return true;
-      }
-    })
+    const doc = await getDoc(q);
+    const temp = doc.data();
+    const chatArr = [];
+    var obj = {
+      message: message,
+      time: time
+    };
+    chatArr.push(obj);
+    temp[user_ID] = chatArr;
+    await setDoc(q, temp);
+    return true
   }
 }
 
