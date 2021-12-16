@@ -49,7 +49,7 @@ const filter = function(users, languages, skills) {
           if (Object.keys(user.languages).includes(language)) {
               if (skills.length > 0) {
                   skills.forEach(skill => {
-                      user.languages[language] === skill ? result = true : result = false;
+                      user.languages[language] === skill ? result = true : null;
                   })
               } else {
                   result = true
