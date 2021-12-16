@@ -50,6 +50,16 @@ export default function User() {
   //   })
   // }, []);
 
+  // useEffect(() => {
+  //   axios.get(`URL`)
+  //   .then(res => {
+  //     appContext.setCurUser({});
+  //   })
+  //   .catch(err => {
+  //     console.log(err);
+  //   })
+  // }, []);
+
   return (
 
     <Layout className='layout'>

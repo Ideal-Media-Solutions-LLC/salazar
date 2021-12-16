@@ -105,7 +105,7 @@ const Chat = () => {
     setLanguage(event.target.value);
   };
 
-  const handleContactClick = (receiverId, senderId) => {
+  const handleContactClick = (receiverId, senderId = '1') => {
     setReceiverId(receiverId);
     getMessages(receiverId, senderId);
     // setInterval(getMessages(receiverId, senderId), 1000);
@@ -153,13 +153,13 @@ const Chat = () => {
       <div>
         <Grid container>
             <Grid item xs={8} >
-                {/* <Typography variant="h4" className="header-message"
+                <Typography variant="h4" className="header-message"
                  style={{
                   color: '#21b6ae',
                   padding: "7px 5px"
                 }}
                 >
-                Chat</Typography> */}
+                Chat</Typography>
             </Grid>
             <Grid item xs={3} >
               <Languages language={language} handleSelect={handleSelect}/>
@@ -168,7 +168,7 @@ const Chat = () => {
             <Grid item xs={1} align="right">
                <Button variant="text" onClick={handleTranslateButtonClick}
                  style={{
-                   color: 'black',
+                   color: '#21b6ae',
                    padding: "15px 5px"
                  }}
                >

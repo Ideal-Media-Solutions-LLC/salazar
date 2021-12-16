@@ -15,6 +15,7 @@ const { loadClient } = require('../googleCalApiClient.js');
 const app = express();
 app.use(express.json());
 app.use(cors());
+
 app.get('/', (req, res) => {
   res.send('Hello World');
 });
@@ -23,8 +24,7 @@ app.get('/', (req, res) => {
 //#region user auth
 
 app.get('/auth', async (req, res) => {
-  console.log('/auth');
-  const result = await firefunctions.get(req.query.uid, 'Users');
+  const result = await firefunctions.get(req.query.uid);
   if (result === null) {
     res.send(true);
   } else {
@@ -56,7 +56,7 @@ app.post('/auth', async (req, res) => {
 
 app.get('/user', async (req, res) => {
   let result = {};
-  const response = await firefunctions.get(req.query.uid, 'Users');
+  const response = await firefunctions.get(req.query.uid);
   result.uid = req.query.uid;
   result.username = response.username;
   result.displayName = response.displayName;
@@ -85,19 +85,20 @@ app.get('/users', async (req, res) => {
 })
 
 app.post('/languages', async (req, res) => {
+  /*
+    {
+      languages: {
+        'Chinese': 2,
+        'Russian': 1,
+      },
+      uid: <uid>
+    }
+  */
   let data = req.body.languages;
   let key = req.body.uid;
   let result = await firefunctions.updateLanguages(key, data);
   res.send(201);
 })
-
-app.post('/key', async (req, res) => {
-  console.log(req.body);
-  let data = req.body.apikey;
-  let key = req.body.uid;
-  let result = await firefunctions.write(key, {apikey: req.body.apikey}, 'Keys');
-  res.send(201);
-});
 
 //#endregion
 
@@ -109,22 +110,31 @@ app.get('/chat', async (req, res) => {
   if (result === null) {
     res.send(400);
   } else {
-    res.status(200).send(result);
+    res.status(200).send(results);
   }
 });
 
 app.post('/chat', async (req, res) => {
-  var decompose = req.body.messageToSend;
-  var results = await firefunctions.postMessages(decompose.user_ID, decompose.other_ID, decompose.message);
-  // console.log(results);
+  var results = await firefunctions.postMessages(req.body.user_ID, req.body.other_ID, req.body.time, req.body.message);
   if (results) {
     res.send(201);
   } else {
-    res.send(404);
+    let obj = {};
+    obj[req.body.sender_ID] = [{
+      message: req.body.message,
+      time: req.body.timestamp
+    }];
+    db.collection('messages').doc(req.body.reciever_ID).set(obj).then((suc, err) => {
+      if (err) {
+        res.sendStatus(404);
+      } else {
+        res.sendStatus(201);
+      }
+    })
   }
 });
 
-app.get('/chatUsers', async (req, res) => {
+app.get('chatUsers', async (req, res) => {
   var results = await firefunctions.getChatUsers(req.query.user_ID);
   if (results) {
     res.send(results);
@@ -136,7 +146,7 @@ app.get('/chatUsers', async (req, res) => {
 //azure translation
 const { v4: uuidv4 } = require('uuid');
 
-var subscriptionKey = require('../config.js');
+//var subscriptionKey = require('../Azure_api_config.js');
 var endpoint = "https://api.cognitive.microsofttranslator.com";
 
 app.get('/chat/translation', async (req, res) => {
@@ -156,7 +166,7 @@ app.get('/chat/translation', async (req, res) => {
       url: '/translate',
       method: 'post',
       headers: {
-        'Ocp-Apim-Subscription-Key': subscriptionKey.translatorToken,
+        'Ocp-Apim-Subscription-Key': subscriptionKey.token,
         'Ocp-Apim-Subscription-Region': location,
         'Content-type': 'application/json',
         'X-ClientTraceId': uuidv4().toString()
@@ -186,32 +196,15 @@ app.get('/chat/translation', async (req, res) => {
 // loadClient();
 
 app.get('/calendar/list', async (req, res) => {
-  const { token, uid } = req.query;
-  let apiToken = JSON.parse(token);
-  const user = await firefunctions.get(uid, 'Keys');
-  apiToken = {
-    'access_token': user.apikey,
-    'refresh_token': apiToken.refreshToken,
-    'expiration_time': apiToken.expirationTime
-  }
-  console.log(apiToken);
-  await listEvents(apiToken, (events) => {
+
+  await listEvents((events) => {
     res.send(events);
   })
 });
 
 app.post('/calendar/create', async (req, res) => {
-  const event = req.body;
-  console.log(event)
-  const fromUser = await firefunctions.get(event.uid, 'Keys');
-  const otherUser = await firefunctions.get(event.toUser, 'Users');
-  // let obj = req.body;
-  event.token.accessToken = fromUser.apikey;
-  console.log('OtherUser', otherUser)
-  // event.peer = otherUser.email;
-  event.peer = otherUser.email;
-  console.log(event, 'obj');
-  await createEvent(event, (events) => {
+
+  await createEvent((events) => {
     res.send(events);
   })
 });
