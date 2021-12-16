@@ -380,7 +380,7 @@ export default function Transcribe() {
             </tr>
         </table>
       </div>
-      <Script src="microsoft.cognitiveservices.speech.sdk.bundle.js"/>
+      <Script src="../microsoft.cognitiveservices.speech.sdk.bundle.js"/>
     </div>
   )
 }
