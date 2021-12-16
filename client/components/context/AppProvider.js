@@ -3,6 +3,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { initializeApp } from 'firebase/app';
 import axios from 'axios';
 import firebaseConfig from "../homepage/FirebaseConfig";
+import port from '../../../back/port.js';
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
@@ -18,9 +19,8 @@ function AppProvider({ children }) {
       if (result === null) {
         setUser({});
       }
-      // setUser(result);
-      //setLoading(false)
-      axios.get(`http://localhost:3002/user?uid=${result.uid}`)
+
+      axios.get(`http://localhost:${port}/user?uid=${result.uid}`)
       .then(res => {
         // console.log('api response', res);
         setUser({...result, ...res.data});
