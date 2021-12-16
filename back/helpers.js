@@ -114,15 +114,12 @@ async function updateLanguages(key, data) {
   });
 }
 
-async function getusers(excludeID) {
+async function getusers() {
   let result = [];
   const querySnapshot = await getDocs(collection(db, "Users"));
   querySnapshot.forEach((doc) => {
     let obj = {};
     let user = doc.data();
-    if (excludeID === doc.id) {
-      return;
-    }
     //console.log(doc.id);
     obj.uid = doc.id;
     obj.username = user.username;

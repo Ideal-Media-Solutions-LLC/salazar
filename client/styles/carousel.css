@@ -15,117 +15,92 @@ body {
 /* CUSTOMIZE THE CAROUSEL
 -------------------------------------------------- */
 
-.main {
-  background-image: url('../public/assets/background.jpg');
+  .main {
+    /* background-image: url('../public/assets/background.jpg');
   background-size: cover;
-  Width: 100%;
-  /* max-width: 2000px; */
-  background-attachment: fixed;
+  background-repeat: no-repeat; */
+
+  background-image: url("../public/assets/background.jpg");
+  width: 100vw;
+  max-width: 2000px;
 
   background-repeat: no-repeat;
-  /* -webkit-background-size: cover;
+  -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
-  background-size: cover; */
-}
-
-.homepage-logo {
-  height: 40px;
-}
-
-.nav-header {
-  display: contents;
-  /* width: max-content; */
-
-}
-
-.navbar-expand-lg .navbar-collapse {
-  display: flex;
-  flex-basis: auto;
-  justify-content: end;
-}
-
-.navbar {
-  /* background-color: rgba(27, 104, 40, 1); */
-  background-image: url('../public/assets/background.jpg');
-  background-color: green;
-  background-repeat: no-repeat;
   background-size: cover;
-  position: fixed;
+  }
 
-}
+  .homepage-logo {
+    margin-left: 45%;
+    height: 40px;
+  }
 
-/* Since positioning the image, we need to help out the caption */
-.carousel-caption {
-  /* z-index: 10; */
-}
+  .navbar {
+    background-color: green;
+  }
 
-/* Declare heights because of positioning of img element */
-.carousel-item {
-  height: 32rem;
-  background-color: rgb(109, 177, 156);
-  opacity: 0.8;
-}
+  /* Since positioning the image, we need to help out the caption */
+  .carousel-caption {
+    z-index: 10;
+  }
 
-.carousel-item>img {
-  position: absolute;
-  top: 0;
-  left: 0;
-  min-width: 100%;
-  height: 32rem;
-}
+  /* Declare heights because of positioning of img element */
+  .carousel-item {
+    height: 32rem;
+    background-color: rgb(109, 177, 156);
+    opacity: 0.8;
+  }
+
+  .carousel-item>img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    min-width: 100%;
+    height: 32rem;
+  }
 
 
 
 
-/* Featurettes
+  /* Featurettes
 ------------------------- */
 
-.featurette-divider {
-  margin: 5rem 0;
-  /* Space out the Bootstrap <hr> more */
-}
+  .featurette-divider {
+    margin: 5rem 0;
+    /* Space out the Bootstrap <hr> more */
+  }
 
-/* Thin out the marketing headings */
-.featurette-heading {
-  font-weight: 300;
-  /* line-height: 1; */
-  letter-spacing: -.05rem;
-}
+  /* Thin out the marketing headings */
+  .featurette-heading {
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: -.05rem;
+  }
 
-.featurette-image-chat {
-  height: 600px;
-}
+  .featurette-image-chat {
+    height: 600px;
+  }
 
-.row {
-  background-color: snow;
-  background: rgba(247, 248, 248, 0.849);
-  border-radius: 15px;
-  padding: 20px;
-}
-
-.container{
-  padding-bottom: 15px;
-}
-/* RESPONSIVE CSS
+  /* RESPONSIVE CSS
 -------------------------------------------------- */
 
-@media (min-width: 40em) {
+  @media (min-width: 40em) {
 
-  /* Bump up size of carousel content */
-  .carousel-caption p {
-    margin-bottom: 1.25rem;
-    font-size: 1.25rem;
-    /* line-height: 1.4; */
+    /* Bump up size of carousel content */
+    .carousel-caption p {
+      margin-bottom: 1.25rem;
+      font-size: 1.25rem;
+      line-height: 1.4;
+    }
+
+    .featurette-heading {
+      font-size: 50px;
+    }
   }
 
-  .featurette-heading {
-    font-size: 50px;
+  @media (min-width: 62em) {
+    .featurette-heading {
+      margin-top: 7rem;
+    }
   }
-}
-
-@media (min-width: 62em) {
-  .featurette-heading {
-    margin-top: 5rem;
-  }
-}

@@ -31,7 +31,9 @@ export default function Home() {
       </Head>
 
       <LandingPage />
-
+      <footer className={styles.footer}>
+        FOOTER
+      </footer>
     </div >
   )
 }

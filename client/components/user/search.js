@@ -4,10 +4,7 @@ import { Menu, Dropdown } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import { Select } from 'antd';
 import Card from './card.js';
-import axios from 'axios';
-import { useApp } from '../context/AppProvider.js';
-import port from '../../../back/port.js';
-
+// import axios from 'axios';
 
 const { Option } = Select;
 
@@ -41,21 +38,6 @@ const levelList = [
   { label: 'Advanced', value: 3 },
   { label: 'Native', value: 4 },
 ];
-const filter = function(users, languages, skills) {
-  const filtered = users.filter(user => {
-    if (user.languages) {
-      let result = false;
-      languages.forEach(language => {
-          if (Object.keys(user.languages).includes(language)) {
-              if (skills.length > 0) {
-                  skills.forEach(skill => {
-                      user.languages[language] === skill ? result = true : null;
-                  })
-              } else {
-                  result = true
-              }
-          }
-      });
 
       return result;
     }
@@ -65,43 +47,46 @@ const filter = function(users, languages, skills) {
 }
 
 export default function Search() {
-  const { uid } = useApp().user;
+  // const [username, setUserName] = useState('test');
   const [users, setUsers] = useState([]);
   const [showUsers, setShowUsers] = useState([]);
   const [searchLanguages, setSearchLanguages] = useState([]);
   const [searchLevel, setSearchLevel] = useState([]);
   const [modalSchedule, setModalSchedule] = useState(null);
-  const [modalMessage, setModalMessage] = useState(null);
-  const [disabled, setDisabled] = useState(true);
-  function handleChangeLanguage(value) {
-    setSearchLanguages(value);
-  }
-  function handleChangeLevel(value) {
-    setSearchLevel(value);
-  }
   useEffect(() => {
+    setUsers([
+      {
+        uid: 'userID1',
+        photo: '"https://picsum.photos/id/237/200/300"',
+        username: 'Test Ername',
+        languages: {
+          Chinese: 3,
+          English: 2,
+          French: 1
+        }
+      },
+      {
+        uid: 'userID2',
+        photo: '"https://picsum.photos/id/237/200/301"',
+        username: 'Mae Dupp',
+        languages: {
 
-    if (uid) {
-      axios.get('http://localhost:3001/users', {
-        params: {uid}
-      })
-        .then(results => {
-          console.log(results.data);
-          setUsers(results.data);
-          setShowUsers(results.data);
-        })
-    }
+          English: 1,
+          French: 3
+        }
+      },
+      {
+        uid: 'userID3',
+        photo: '"https://picsum.photos/id/237/200/302"',
+        username: 'Fae Kurr',
+        languages: {
+          Chinese: 2,
+          English: 3,
 
-  },[uid])
-  useEffect(()=> {
-    if (searchLanguages.length > 0) {
-      setDisabled(false);
-      setShowUsers(filter(users, searchLanguages, searchLevel));
-    } else {
-      setShowUsers(users);
-      setDisabled(true);
-    }
-  }, [searchLanguages, searchLevel])
+        }
+      }
+    ])
+  },[])
   return (
     <div className=''>
       <div className='searchbar'>
@@ -157,17 +142,12 @@ export default function Search() {
       </div>
 
       <div className='userlist'>
-        {showUsers.map((user, i) => {
-          return <Card
-            user = {user}
-            setModalSchedule = {setModalSchedule}
-            setModalMessage = {setModalMessage}
-            key = {`usercard-${i}`}/>
+        {users.map((user, i) => {
+          return <Card user = {user} setModalSchedule = {setModalSchedule} key = {`usercard-${i}`}/>
         })}
       </div>
 
         {modalSchedule}
-        {modalMessage}
     </div>
 
   );
