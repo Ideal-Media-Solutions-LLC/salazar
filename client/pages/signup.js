@@ -17,7 +17,6 @@ export async function getStaticProps({ locale }) {
   }
 }
 
-
 export default function Home() {
   const { t } = useTranslation();
   const { user } = useApp();
@@ -39,8 +38,6 @@ export default function Home() {
           </a>
 
         </Link>
-
-
 
       </main>
     </div>
