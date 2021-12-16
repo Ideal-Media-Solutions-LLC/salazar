@@ -2,10 +2,10 @@ const { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sig
 //const functions = require('firebase/auth');
 const { initializeApp } = require('firebase/app');
 const { getFirestore, Timestamp, FieldValue } = require("firebase/firestore");
-const { collection, addDoc, setDoc, getDoc, getDocs, doc, onSnapshot, updateDoc, increment, query, where } = require("firebase/firestore");
+const { collection, addDoc, setDoc, getDoc, getDocs, doc, onSnapshot, updateDoc, increment, query, where, orderBy } = require("firebase/firestore");
 //import React, {useState, useEffect} from 'react';
 const config = require('./config.js');
-const app = initializeApp(config.firebaseConfig);
+const app = initializeApp(config);
 const auth = getAuth();
 const provider = new GoogleAuthProvider();
 provider.addScope(`https://www.googleapis.com/auth/calendar.events`);
@@ -94,8 +94,8 @@ async function write(key, data, collection) {
   return true;
 }
 
-async function get(key, collection) {
-  const docRef = doc(db, collection, key);
+async function get(key) {
+  const docRef = doc(db, 'Users', key);
   const result = await getDoc(docRef);
   if (result.exists()) {
     //console.log(result.data(), 'get');
@@ -114,12 +114,15 @@ async function updateLanguages(key, data) {
   });
 }
 
-async function getusers() {
+async function getusers(excludeID) {
   let result = [];
   const querySnapshot = await getDocs(collection(db, "Users"));
   querySnapshot.forEach((doc) => {
     let obj = {};
     let user = doc.data();
+    if (excludeID === doc.id) {
+      return;
+    }
     //console.log(doc.id);
     obj.uid = doc.id;
     obj.username = user.username;
@@ -134,11 +137,14 @@ async function getusers() {
 }
 
 async function getMessages(user_ID, other_ID) {
+  const getMessagesFromMe = await db.collection('messages').doc(other_ID).where('user_id', '==', user_ID).get();
+  const getMessagesFromOther = await db.collection('messages').doc(user_ID).where('user_id', '==', other_ID).get();
 
   const allConvosMe = doc(db, 'Messages', other_ID);
   const convosQ = await getDoc(allConvosMe);
   const convos = convosQ.data();
   const getMessagesFromMe = convos[user_ID];
+
 
   const allConvosOther = doc(db, 'Messages', user_ID);
   const convosR = await getDoc(allConvosOther);
@@ -155,22 +161,22 @@ async function getMessages(user_ID, other_ID) {
       return;
     } else if (getMessagesFromMe[indexMe] === undefined) {
       var obj = {};
-      obj[other_ID] = getMessagesFromOther[indexOther];
+      obj[other_ID] = getMessagesFromOther[indexOther].message;
       inOrderMsg.push(obj);
       organize(indexMe, indexOther + 1);
     } else if (getMessagesFromOther[indexOther] === undefined) {
       var obj = {};
-      obj[user_ID] = getMessagesFromMe[indexMe];
+      obj[user_ID] = getMessagesFromMe[indexMe].message;
       inOrderMsg.push(obj);
       organize(indexMe + 1, indexOther);
-    } else if (getMessagesFromMe[indexMe].time >= getMessagesFromOther[indexOther].time) {
+    } else if (getMessagesFromMe[indexMe].time.valueOf() <= getMessagesFromOther[indexOther].time.valueOf()) {
       var obj = {};
-      obj[user_ID] = getMessagesFromMe[indexMe]
+      obj[user_ID] = getMessagesFromMe[indexMe].message
       inOrderMsg.push(obj);
       organize(indexMe + 1, indexOther);
     } else {
       var obj = {};
-      obj[other_ID] = getMessagesFromOther[indexOther];
+      obj[other_ID] = getMessagesFromOther[indexOther].message;
       inOrderMsg.push(obj);
       organize(indexMe, indexOther + 1);
     }
@@ -192,67 +198,56 @@ async function getMessages(user_ID, other_ID) {
   } else {
     organize(0, 0);
   }
+
   return inOrderMsg;
 }
 
-async function postMessages(user_ID, other_ID, message) {
+async function postMessages(user_ID, other_ID, time, message) {
+  const getMessagesFromOther = await db.collection('messages').doc(other_ID).where('user_id', '==', user_ID).get();
 
-  console.log(user_ID + ' LOL ' + other_ID);
   const q = doc(db, 'Messages', other_ID);
   const qQ = await getDoc(q);
   const store = qQ.data();
-  console.log(store);
   const getMessagesFromOther = store[user_ID];
   var time = Timestamp.now();
 
   //{reviever_ID: sender_ID: {msg}}
   if (getMessagesFromOther) {
-    const docRef = doc(db, 'Messages', other_ID);
-    await updateDoc(docRef, {
-      [user_ID]: FieldValue.arrayUnion({
-        message: message,
-        time: time
-      })
-    });
+    const doc = await getDoc(q);
+    const temp = doc.data();
+    const chatArr = temp[user_ID];
+    var obj = {
+      message: message,
+      time: time
+    };
+    chatArr.push(obj);
+    temp[user_ID] = chatArr;
+    await setDoc(q, temp);
     return true;
   } else {
-    const docRef = doc(db, 'Messages', other_ID);
-    await setDoc(docRef, {
-      [user_ID]: [{
-        message: message,
-        time: time
-      }]
-    });
+    const doc = await getDoc(q);
+    const temp = doc.data();
+    const chatArr = [];
+    var obj = {
+      message: message,
+      time: time
+    };
+    chatArr.push(obj);
+    temp[user_ID] = chatArr;
+    await setDoc(q, temp);
     return true
   }
 }
 
 async function getChatUsers(user_ID) {
-  const userRef = doc(db, 'Messages', user_ID);
-  const result = await getDoc(userRef);
+  const getAffiliatedUUID = await db.collection('messages').doc(user_ID).get();
   var userID_displayName = [];
-  if (result.exists()) {
-    var store = result.data();
-    for (var id in store) {
-      const userRef = doc(db, 'Users', id);
-      const userResult = await getDoc(userRef);
-      const temp = userResult.data();
-      var obj = {};
-      obj[id] = temp.displayName;
-      userID_displayName.push(obj);
-    }
-  } else {
-    console.log('looking in the wrong one');
+  for (var i = 0; i < getAffiliatedUUID.length; ++i) {
+    const displayName = await db.collection(info).doc(getAffiliatedUUID[i]).get();
+    var obj = {};
+    obj[getAffiliatedUUID[i]] = displayName.username;
+    userID_displayName.push(obj);
   }
-
-  // for (var i = 0; i < getAffiliatedUUID.data.length; ++i) {
-  //   console.log('One Step got here');
-  //   const qUser = doc(db, 'Users', getAffiliatedUUID.data[i]);
-  //   const displayName = await getDoc(qUser);
-  //   var obj = {};
-  //   obj[getAffiliatedUUID.data[i]] = displayName.username;
-  //   userID_displayName.push(obj);
-  // }
   return userID_displayName;
 }
 

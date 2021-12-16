@@ -303,6 +303,7 @@ export default function Transcribe() {
     <div id="transcriber" onKeyDown={handleKeyPress}>
       <div id="content" className="transcription">
         <table id="captionOptions">
+          <tbody>
             <tr>
               <td align="right"></td>
               <td align="left"><button id="enableTranslation" onClick={onClickEnableTranslation} style={{display: enableButtonOnOff ? 'block' : 'none' }} >Enable Translation</button></td>
@@ -310,8 +311,8 @@ export default function Transcribe() {
             <tr>
                 <td align="right">Recognition language:</td>
                 <td align="left">
-                    <select id="languageOptions" onChange={onChangeLanguageInput}>
-                        <option value="en-US" selected="selected">English - US</option>
+                    <select id="languageOptions" onChange={onChangeLanguageInput} defaultValue="en-US">
+                        <option value="en-US">English - US</option>
                         <option value="zh-CN">Chinese - CN</option>
                         <option value="de-DE">German - DE</option>
                         <option value="es-ES">Spanish - ES</option>
@@ -330,8 +331,8 @@ export default function Transcribe() {
                 <td align="right">Translation:</td>
                 <td>
                     <label htmlFor="languageTargetOptions">Target language</label>
-                    <select id="languageTargetOptions" onChange={onChangeLanguageTarget}>
-                        <option value="Microsoft Server Speech Text to Speech Voice (de-DE, Hedda)" selected="selected">
+                    <select id="languageTargetOptions" onChange={onChangeLanguageTarget} defaultValue="Microsoft Server Speech Text to Speech Voice (de-DE, Hedda)">
+                        <option value="Microsoft Server Speech Text to Speech Voice (de-DE, Hedda)">
                             German - DE</option>
                         <option value="Microsoft Server Speech Text to Speech Voice (en-US, ZiraRUS)">English - US
                         </option>
@@ -378,9 +379,10 @@ export default function Transcribe() {
                     </textarea>
                 </td>
             </tr>
+            </tbody>
         </table>
       </div>
-      <Script src="microsoft.cognitiveservices.speech.sdk.bundle.js"/>
+      <Script src="../microsoft.cognitiveservices.speech.sdk.bundle.js"/>
     </div>
   )
 }

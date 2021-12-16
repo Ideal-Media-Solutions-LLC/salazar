@@ -3,13 +3,16 @@ import Grid from '@material-ui/core/Grid';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import {useApp} from '../context/AppProvider.js';
 
 const Message = (props) => {
 
   var user_id = Object.keys(props.message)[0];
   var text = Object.values(props.message)[0];
 
-  const loggedin_id = '1';
+  const {user} = useApp();
+
+  const loggedin_id = user.uid;
 
   var alignment = user_id === loggedin_id ? 'right' : 'left';
 
