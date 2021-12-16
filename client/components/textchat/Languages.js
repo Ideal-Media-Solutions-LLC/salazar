@@ -16,7 +16,7 @@ const Languages = (props) => {
                   label="language"
                   onChange={props.handleSelect}
       >
-          <MenuItem value='zh-Hans'>Chinese (Simplified)</MenuItem>
+          <MenuItem value='zh'>Chinese (Simplified)</MenuItem>
           <MenuItem value='en'>English</MenuItem>
           <MenuItem value='fr'>French</MenuItem>
           <MenuItem value='de'>German</MenuItem>
