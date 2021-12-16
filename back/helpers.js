@@ -116,6 +116,7 @@ async function updateLanguages(key, data) {
 
 async function getusers(excludeID) {
   let result = [];
+  console.log(excludeID, 'EXCLUDEDID');
   const querySnapshot = await getDocs(collection(db, "Users"));
   querySnapshot.forEach((doc) => {
     let obj = {};
