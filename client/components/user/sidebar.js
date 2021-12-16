@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import EventsList from './EventsList.js';
-// import Languages from './languages.js';
+import axios from 'axios';
+
 
 import { Button, Modal, Popover, Typography } from 'antd';
 import React, { useEffect, useState, useContext } from "react";
@@ -17,10 +18,11 @@ export default function Sidebar() {
   const appContext = useContext(AppContext);
 
   const [visible, setVisible] = useState(false);
-
   const [languages, setLanguages] = useState([]);
   const [langObj, setLangObj] = useState(appContext.user.languages || {});
 
+  const user = appContext.user;
+  console.log(user);
   const logOut = () => {
     LogoutUser();
   }
@@ -42,8 +44,21 @@ export default function Sidebar() {
     for (const lang of languages) {
       newLanges[lang.lang] = lang.langLevel;
     }
+<<<<<<< HEAD
     appContext.setUser({ ...appContext.user, languages: newLanges });
     console.log(appContext.user);
+=======
+
+    const body = {'uid':appContext.user.uid, 'languages': newLanges};
+
+    axios({
+      method: 'post',
+      url: `http://localhost:3002/languages`,
+      data: body
+    })
+
+    appContext.setUser({...appContext.user, languages: newLanges});
+>>>>>>> 936cb9abc1dc7d590b9797156fc2d1fe639d3e0f
     setVisible(false);
   };
 
@@ -62,9 +77,9 @@ export default function Sidebar() {
     console.log('newLanges', newLangs);
   }
 
-  const user = appContext.user;
   useEffect(() => {
-    if (user && user.languages && !languages) {
+    console.log('init languages', user.languages);
+    if (user && user.languages) {
       syncLanguages();
     }
   }, []);
@@ -99,7 +114,6 @@ export default function Sidebar() {
 
   const { Option } = Select;
   const { languagesList, levelList, curUser } = useContext(AppContext);
-  // const { languages } = curUser;
   const { curLangList, setCurLangList } = useState([]);
   const { langchange } = {};
 
@@ -107,7 +121,7 @@ export default function Sidebar() {
 
   return (
     <div className='useinfo'>
-      {console.log('langes', languages)}
+      {console.log('context languages', languages)}
       {user ?
         <div>
           <img className='profilepic'

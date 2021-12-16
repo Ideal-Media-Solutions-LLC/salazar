@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { initializeApp } from 'firebase/app';
-
+import axios from 'axios';
 import firebaseConfig from "../homepage/FirebaseConfig";
 
 const app = initializeApp(firebaseConfig);
@@ -18,23 +18,20 @@ function AppProvider({ children }) {
       if (result === null) {
         setUser({});
       }
-      setUser(result);
+      // setUser(result);
       //setLoading(false)
+      axios.get(`http://localhost:3002/user?uid=${result.uid}`)
+      .then(res => {
+        // console.log('api response', res);
+        setUser({...result, ...res.data});
+      })
+      .catch(error => {
+        console.log(error);
+      })
     })
     return unsub;
   }, [])
 
-  const [curUser, setCurUser] = useState({
-    uid: 'test uid',
-    username: 'TestUsername',
-    displayName: 'TestDisplayname',
-    photo: '/assets/profile.png',
-    languages: [
-      { lang: 'Chinese', langLevel: 2, langLevelLabel: 'Intermediate' },
-      { lang: 'Japanese', langLevel: 2, langLevelLabel: 'Intermediate' },
-      { lang: 'English', langLevel: 4, langLevelLabel: 'Native' },
-    ],
-  });
 
   const [languagesList, setLanguagesList] = useState([
     { label: 'English', value: 'English' },
@@ -60,7 +57,7 @@ function AppProvider({ children }) {
   const [signUpPageLanguages, setSignUpPageLanguages] = useState([]);
 
   return (
-    <AppContext.Provider value={{ curUser, setCurUser, languagesList, setLanguagesList, levelList, setLevelList, user, setUser, signUpPageLanguages, setSignUpPageLanguages }}>
+    <AppContext.Provider value={{ languagesList, setLanguagesList, levelList, setLevelList, user, setUser, signUpPageLanguages, setSignUpPageLanguages }}>
       {children}
     </AppContext.Provider>
   );
