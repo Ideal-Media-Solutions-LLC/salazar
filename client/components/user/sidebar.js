@@ -44,10 +44,6 @@ export default function Sidebar() {
     for (const lang of languages) {
       newLanges[lang.lang] = lang.langLevel;
     }
-<<<<<<< HEAD
-    appContext.setUser({ ...appContext.user, languages: newLanges });
-    console.log(appContext.user);
-=======
 
     const body = {'uid':appContext.user.uid, 'languages': newLanges};
 
@@ -58,7 +54,6 @@ export default function Sidebar() {
     })
 
     appContext.setUser({...appContext.user, languages: newLanges});
->>>>>>> 936cb9abc1dc7d590b9797156fc2d1fe639d3e0f
     setVisible(false);
   };
 
