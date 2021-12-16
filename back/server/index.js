@@ -15,7 +15,6 @@ const { loadClient } = require('../googleCalApiClient.js');
 const app = express();
 app.use(express.json());
 app.use(cors());
-
 app.get('/', (req, res) => {
   res.send('Hello World');
 });
@@ -106,34 +105,26 @@ app.post('/key', async (req, res) => {
 
 app.get('/chat', async (req, res) => {
   var result = await firefunctions.getMessages(req.query.user_ID, req.query.other_ID);
-  if (results === null) {
+  console.log(result);
+  if (result === null) {
     res.send(400);
   } else {
-    res.status(200).send(results);
+    res.status(200).send(result);
   }
 });
 
 app.post('/chat', async (req, res) => {
-  var results = await firefunctions.postMessages(req.body.user_ID, req.body.other_ID, req.body.time, req.body.message);
+  var decompose = req.body.messageToSend;
+  var results = await firefunctions.postMessages(decompose.user_ID, decompose.other_ID, decompose.message);
+  console.log(results);
   if (results) {
     res.send(201);
   } else {
-    let obj = {};
-    obj[req.body.sender_ID] = [{
-      message: req.body.message,
-      time: req.body.timestamp
-    }];
-    db.collection('messages').doc(req.body.reciever_ID).set(obj).then((suc, err) => {
-      if (err) {
-        res.sendStatus(404);
-      } else {
-        res.sendStatus(201);
-      }
-    })
+    res.send(404);
   }
 });
 
-app.get('chatUsers', async (req, res) => {
+app.get('/chatUsers', async (req, res) => {
   var results = await firefunctions.getChatUsers(req.query.user_ID);
   if (results) {
     res.send(results);
