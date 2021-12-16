@@ -1,68 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Collapse, CalendarOutlined, DoubleLeftOutlined } from 'antd';
+import { Button, Collapse, CalendarOutlined, DoubleLeftOutlined, Typography } from 'antd';
 import styles from '../../styles/EventsList.module.css';
 import { useApp } from '../context/AppProvider.js';
 import axios from 'axios'
 import port from '../../../back/port.js';
 const { Panel } = Collapse;
-const sampleData = [
-  {
-    name: 'Carlos',
-    link: 'https://calendar.google.com/calendar/u/0/r',
-    date : new Date('2021-12-13T22:55:00'),
-    summary : 'Hey can we practice our spanish together?'
-  },
-  {
-    name: 'Alice',
-    link: 'https://calendar.google.com/calendar/u/0/r',
-    date : new Date('2021-12-13T23:55:00'),
-    summary : 'Hey can you help me practice?'
-  },
-  {
-    name: 'Jinho',
-    link: 'https://calendar.google.com/calendar/u/0/r',
-    date : new Date('2021-12-15T14:30:00'),
-    summary : 'Want to teach me some korean?'
-  },
-  {
-    name: 'Jinho',
-    link: 'https://calendar.google.com/calendar/u/0/r',
-    date : new Date('2021-12-13T14:30:00'),
-    summary : 'Want to teach me some korean?'
-  },
-  {
-    name: 'Alice',
-    link: 'https://calendar.google.com/calendar/u/0/r',
-    date : new Date('2021-12-12T10:30:00'),
-    summary : 'Hey can you help me practice?'
-  },
-  {
-    name: 'Carlos',
-    link: 'https://calendar.google.com/calendar/u/0/r',
-    date : new Date('2021-12-12T08:30:00'),
-    summary : 'Hey can we practice our spanish together?'
-  },
-  {
-    name: 'Alice',
-    link: 'https://calendar.google.com/calendar/u/0/r',
-    date : new Date('2021-12-12T08:30:00'),
-    summary : 'Hey can we practice our spanish together?'
-  },
-  {
-    name: 'Jinho',
-    link: 'https://calendar.google.com/calendar/u/0/r',
-    date : new Date('2021-12-13T14:30:00'),
-    summary : 'Want to teach me some korean?'
-  },
-  {
-    name: 'Carlos',
-    link: 'https://calendar.google.com/calendar/u/0/r',
-    date : new Date('2021-12-12T10:30:00'),
-    summary : 'Hey can you help me practice?'
-  },
 
-];
 const EventsList = function(props) {
+  const { stsTokenManager, uid, displayName} = useApp().user;
   const [page, setPage] = useState(0);
   const [events, setEvents] = useState();
 
@@ -71,11 +16,13 @@ const EventsList = function(props) {
     const hours = Math.floor((date.getTime() - new Date().getTime())/1000/60/60);
     const minutes = Math.floor((date.getTime() - new Date().getTime())/1000/60/60%1*60);
     if (days) {
-      return ` >${days}d`
+      let result;
+      days > 0 ? result = ` aprox. ${days}d` : result = 'In progress';
+      return result;
     } else if (hours) {
-      return ` >${hours}h`
+      return ` aprox. ${hours}h`
     } else {
-      return ` <${minutes}m`
+      return ` aprox. ${minutes}m`
     }
     console.log(`days: ${days}    hours: ${hours}    minutes: ${minutes}     date: ${date}     now: ${new Date()}`)
   }
@@ -106,14 +53,19 @@ const EventsList = function(props) {
       </div>
 
       <Collapse accordion>
-
-      {sampleData.slice(page,(page * 2 || 3)).map((event, i) => {
+      {console.log(events)}
+      {events && events.slice(page,(page * 2 || 3)).map((event, i) => {
         return (
-          <Panel header={`Call with ${event.name}.
-          \u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0
-          ${timeTill(event.date)}`} key={i}>
-            <p>{event.summary}</p>
-            <a href={event.link}>{event.date.toDateString()}</a>
+          <Panel header={`Call with ${displayName === event.description.split('---')[0] ? event.description.split('---')[1] : event.description.split('---')[0]}.
+          \u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0
+          ${timeTill(new Date(event.start.dateTime))}`} key={i}>
+            <div className = {styles.Message}>
+              <p>{`Conversation in ${event.summary.substring(53)}`}</p><br/>
+              <p>{event.description.split('---')[2]}</p>
+              <a href={event.htmlLink}>{new Date(event.start.dateTime).toDateString()}</a>
+            </div>
+
+
          </Panel>
         )
       })}
