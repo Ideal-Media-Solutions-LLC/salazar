@@ -10,9 +10,7 @@ import port from '../../../back/port.js';
 
 
 const { Option } = Select;
-function handleChange(value) {
-  console.log(`selected ${value}`);
-}
+
 
 const searchbarStyle = {
   width: 'auto',
@@ -38,10 +36,10 @@ const languagesList = [
 ]
 
 const levelList = [
-  { label: 'Entry', value: 'Entry' },
-  { label: 'Intermediate', value: 'Intermediate' },
-  { label: 'Advanced', value: 'Advanced' },
-  { label: 'Native', value: 'Native' },
+  { label: 'Entry', value: 1 },
+  { label: 'Intermediate', value: 2 },
+  { label: 'Advanced', value: 3 },
+  { label: 'Native', value: 4 },
 ];
 const filter = function(users, languages, skills) {
   const filtered = users.filter(user => {
@@ -59,13 +57,19 @@ const filter = function(users, languages, skills) {
           }
       });
 
+      return result;
+    }
+
+  })
+  return filtered;
+}
 
 export default function Search() {
   const { uid } = useApp().user;
   const [users, setUsers] = useState([]);
-  // let sharedState = {
-  //   username, setUserName
-  // }
+  const [showUsers, setShowUsers] = useState([]);
+  const [searchLanguages, setSearchLanguages] = useState([]);
+  const [searchLevel, setSearchLevel] = useState([]);
   const [modalSchedule, setModalSchedule] = useState(null);
   const [modalMessage, setModalMessage] = useState(null);
   const [disabled, setDisabled] = useState(true);
@@ -109,7 +113,7 @@ export default function Search() {
             style={searchbarStyle}
             placeholder="select language  v"
             defaultValue={[]}
-            onChange={handleChange}
+            onChange={handleChangeLanguage}
             LabelProp="label"
           >
 
@@ -127,20 +131,21 @@ export default function Search() {
         </div>
 
 
-        <div>Levels:
+        <div hidden = {disabled}>Levels:
           <Select
             mode="multiple"
             style={searchbarStyle}
-            placeholder="select level  v"
+            placeholder= {disabled ? 'Select Language First' : "select level  v"}
+
             defaultValue={[]}
-            onChange={handleChange}
+            onChange={handleChangeLevel}
             LabelProp="label"
           >
 
             {levelList.map((level, i) => (
               <Option value={level.value} label={level.label}>
               <div className="demo-option-label-item">
-                {level.value}
+                {level.label}
               </div>
             </Option>
             ))}
