@@ -15,10 +15,20 @@ body {
 /* CUSTOMIZE THE CAROUSEL
 -------------------------------------------------- */
 
-.main {
-  background-image: url('../public/assets/background.jpg');
-background-size: cover;
-background-repeat: no-repeat;
+  .main {
+    /* background-image: url('../public/assets/background.jpg');
+  background-size: cover;
+  background-repeat: no-repeat; */
+
+  background-image: url("../public/assets/background.jpg");
+  width: 100vw;
+  max-width: 2000px;
+
+  background-repeat: no-repeat;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
   }
 
   .homepage-logo {
