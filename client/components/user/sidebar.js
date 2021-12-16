@@ -11,7 +11,7 @@ import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { useApp, AppContext } from '../context/AppProvider.js';
 import { LogoutUser } from '../homepage/dbUtils.js'
 
-
+import port from '../../../back/port.js';
 
 export default function Sidebar() {
 
@@ -49,7 +49,7 @@ export default function Sidebar() {
 
     axios({
       method: 'post',
-      url: `http://localhost:3002/languages`,
+      url: `http://localhost:${port}/languages`,
       data: body
     })
 
