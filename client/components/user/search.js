@@ -5,7 +5,9 @@ import { DownOutlined } from '@ant-design/icons';
 import { Select } from 'antd';
 import Card from './card.js';
 import axios from 'axios';
+import { useApp } from '../context/AppProvider.js';
 import port from '../../../back/port.js';
+
 
 const { Option } = Select;
 
@@ -63,7 +65,7 @@ const filter = function(users, languages, skills) {
 }
 
 export default function Search() {
-  // const [username, setUserName] = useState('test');
+  const { uid } = useApp().user;
   const [users, setUsers] = useState([]);
   const [showUsers, setShowUsers] = useState([]);
   const [searchLanguages, setSearchLanguages] = useState([]);
@@ -77,13 +79,19 @@ export default function Search() {
     setSearchLevel(value);
   }
   useEffect(() => {
-    axios.get(`http://localhost:${port}/users`)
-      .then(results => {
-        console.log(results.data);
-        setUsers(results.data);
-        setShowUsers(results.data);
+
+    if (uid) {
+      axios.get('http://localhost:3001/users', {
+        params: {uid}
       })
-  },[])
+        .then(results => {
+          console.log(results.data);
+          setUsers(results.data);
+          setShowUsers(results.data);
+        })
+    }
+
+  },[uid])
   useEffect(()=> {
     if (searchLanguages.length > 0) {
       setDisabled(false);
