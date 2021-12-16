@@ -17,17 +17,17 @@ function AppProvider({ children }) {
       console.log('onauth', result);
       if (result === null) {
         setUser({});
+      } else {
+
+        axios.get(`http://localhost:3002/user?uid=${result.uid}`)
+        .then(res => {
+          // console.log('api response', res);
+          setUser({...result, ...res.data});
+        })
+        .catch(error => {
+          console.log(error);
+        })
       }
-      // setUser(result);
-      //setLoading(false)
-      axios.get(`http://localhost:3002/user?uid=${result.uid}`)
-      .then(res => {
-        // console.log('api response', res);
-        setUser({...result, ...res.data});
-      })
-      .catch(error => {
-        console.log(error);
-      })
     })
     return unsub;
   }, [])
