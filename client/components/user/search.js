@@ -4,7 +4,7 @@ import { Menu, Dropdown } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import { Select } from 'antd';
 import Card from './card.js';
-// import axios from 'axios';
+import axios from 'axios';
 
 const { Option } = Select;
 function handleChange(value) {
@@ -45,43 +45,48 @@ const levelList = [
 export default function Search() {
   // const [username, setUserName] = useState('test');
   const [users, setUsers] = useState([]);
+  const [showUsers, setShowUsers] = useState();
   // let sharedState = {
   //   username, setUserName
   // }
   const [modalSchedule, setModalSchedule] = useState(null);
   useEffect(() => {
-    setUsers([
-      {
-        uid: 'userID1',
-        photo: '"https://picsum.photos/id/237/200/300"',
-        username: 'Test Ername',
-        languages: {
-          Chinese: 3,
-          English: 2,
-          French: 1
-        }
-      },
-      {
-        uid: 'userID2',
-        photo: '"https://picsum.photos/id/237/200/301"',
-        username: 'Mae Dupp',
-        languages: {
+    axios.get('http://localhost:3001/users')
+      .then(results => {
+        console.log(results.data);
+      })
+    // setUsers([
+    //   {
+    //     uid: 'userID1',
+    //     photo: '"https://picsum.photos/id/237/200/300"',
+    //     username: 'Test Ername',
+    //     languages: {
+    //       Chinese: 3,
+    //       English: 2,
+    //       French: 1
+    //     }
+    //   },
+    //   {
+    //     uid: 'userID2',
+    //     photo: '"https://picsum.photos/id/237/200/301"',
+    //     username: 'Mae Dupp',
+    //     languages: {
 
-          English: 1,
-          French: 3
-        }
-      },
-      {
-        uid: 'userID3',
-        photo: '"https://picsum.photos/id/237/200/302"',
-        username: 'Fae Kurr',
-        languages: {
-          Chinese: 2,
-          English: 3,
+    //       English: 1,
+    //       French: 3
+    //     }
+    //   },
+    //   {
+    //     uid: 'userID3',
+    //     photo: '"https://picsum.photos/id/237/200/302"',
+    //     username: 'Fae Kurr',
+    //     languages: {
+    //       Chinese: 2,
+    //       English: 3,
 
-        }
-      }
-    ])
+    //     }
+    //   }
+    // ])
   },[])
   return (
     <div className=''>
