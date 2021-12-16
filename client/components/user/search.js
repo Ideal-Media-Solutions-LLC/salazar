@@ -54,6 +54,13 @@ export default function Search() {
     axios.get('http://localhost:3001/users')
       .then(results => {
         console.log(results.data);
+        results.data.filter(curUser => {
+          return curUser.username
+        })
+        setUsers(results.data, () => {
+          setShowUsers
+        })
+
       })
     // setUsers([
     //   {
