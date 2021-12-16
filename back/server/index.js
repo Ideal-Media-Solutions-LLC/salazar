@@ -45,7 +45,8 @@ app.post('/auth', async (req, res) => {
     email: ,
     apikey: ,
     refreshtoken: ,
-    photoURL: ,
+    photo: ,
+    username: ,
   }
   */
   const usersWrite = await firefunctions.write(req.body.uid, data, 'Users');
