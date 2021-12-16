@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Collapse, CalendarOutlined, DoubleLeftOutlined, Typography, icons } from 'antd';
+import { Button, Collapse, CalendarOutlined, DoubleLeftOutlined, Typography } from 'antd';
 import styles from '../../styles/EventsList.module.css';
 import { useApp } from '../context/AppProvider.js';
 import axios from 'axios'
-import { VideoCameraOutlined } from '@ant-design/icons';
-
 import port from '../../../back/port.js';
 const { Panel } = Collapse;
 
@@ -62,14 +60,10 @@ const EventsList = function(props) {
           \u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0
           ${timeTill(new Date(event.start.dateTime))}`} key={i}>
             <div className = {styles.Message}>
-              <div className = {styles.Summary}>{`Conversation in ${event.summary.substring(53)}`}</div>
-              <div className = {styles.Desription}>{event.description.split('---')[2]}</div>
-              <div className = {styles.Footer}>
-                <a className = {styles.Date} href={event.htmlLink}>{new Date(event.start.dateTime).toDateString()}</a>
-                <a className = {styles.Camera} href={event.description.split('---')[3]}><VideoCameraOutlined style ={{fontSize: '20px', width: '10px'}}/></a>
-              </div>
+              <p>{`Conversation in ${event.summary.substring(53)}`}</p><br/>
+              <p>{event.description.split('---')[2]}</p>
+              <a href={event.htmlLink}>{new Date(event.start.dateTime).toDateString()}</a>
             </div>
-
 
 
          </Panel>

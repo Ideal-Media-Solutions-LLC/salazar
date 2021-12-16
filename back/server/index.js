@@ -211,8 +211,7 @@ app.post('/calendar/create', async (req, res) => {
   // event.peer = otherUser.email;
   event.peer = otherUser.email;
   console.log(event, 'obj');
-  await createEvent(event, async (events) => {
-    await firefunctions.postMessages(event.uid, event.toUser, `Hey! Checkout your calendar: ${event.message}`);
+  await createEvent(event, (events) => {
     res.send(events);
   })
 });
