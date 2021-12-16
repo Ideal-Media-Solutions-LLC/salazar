@@ -9,7 +9,6 @@ import { useApp } from '../context/AppProvider.js';
 import axios from 'axios';
 import Router from 'next/router';
 import LanguageSelector from './LanguageSelector';
-import port from '../../../back/port.js';
 
 const SignUpForm = function (props) {
   const { user, curUser, signUpPageLanguages } = useApp();
@@ -35,14 +34,13 @@ const SignUpForm = function (props) {
         }, {}),
         uid: user.uid,
         email: user.email,
-        photo: user.photoURL,
+        photoURL: user.photoURL,
         apikey: user.accessToken,
-        refreshToken: user.refreshToken,
-        //username: <enter username>
+        refreshToken: user.refreshToken
       },
       uid: user.uid
     }
-    axios.post(`http://localhost:${port}/auth`, obj).then((result) => {
+    axios.post('http://localhost:3002/auth', obj).then((result) => {
       console.log('posted!!!')
       //route
       return Router.push('/user');

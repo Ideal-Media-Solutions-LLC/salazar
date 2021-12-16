@@ -45,8 +45,7 @@ app.post('/auth', async (req, res) => {
     email: ,
     apikey: ,
     refreshtoken: ,
-    photo: ,
-    username: ,
+    photoURL: ,
   }
   */
   const usersWrite = await firefunctions.write(req.body.uid, data, 'Users');
@@ -80,7 +79,7 @@ app.get('/users', async (req, res) => {
   },
   ]
   */
-  const result = await firefunctions.getusers(req.query.uid);
+  const result = await firefunctions.getusers();
   res.status(200).send(result);
 })
 

@@ -27,8 +27,6 @@ import Message from './Message.js';
 import Contact from './Contact.js';
 import Languages from './Languages.js';
 
-import port from '../../../back/port.js';
-
 const useStyles = makeStyles({
   table: {
     minWidth: 650,
