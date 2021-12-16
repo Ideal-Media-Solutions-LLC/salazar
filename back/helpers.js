@@ -163,7 +163,7 @@ async function getMessages(user_ID, other_ID) {
       obj[user_ID] = getMessagesFromMe[indexMe];
       inOrderMsg.push(obj);
       organize(indexMe + 1, indexOther);
-    } else if (getMessagesFromMe[indexMe].Time >= getMessagesFromOther[indexOther].Time) {
+    } else if (getMessagesFromMe[indexMe].time >= getMessagesFromOther[indexOther].time) {
       var obj = {};
       obj[user_ID] = getMessagesFromMe[indexMe]
       inOrderMsg.push(obj);
@@ -175,41 +175,55 @@ async function getMessages(user_ID, other_ID) {
       organize(indexMe, indexOther + 1);
     }
   }
-
-  organize(0, 0);
+  if (getMessagesFromMe === undefined && getMessagesFromOther === undefined) {
+    inOrderMsg = [];
+  } else if (getMessagesFromMe === undefined) {
+    for (var i = 0; i < getMessagesFromOther.length; ++i) {
+      var obj = {};
+      obj[other_ID] = getMessagesFromOther[i].message;
+      inOrderMsg.push(obj);
+    }
+  } else if (getMessagesFromOther === undefined) {
+    for (var i = 0; i < getMessagesFromMe.length; ++i) {
+      var obj = {};
+      obj[user_ID] = getMessagesFromMe[i].message;
+      inOrderMsg.push(obj);
+    }
+  } else {
+    organize(0, 0);
+  }
   return inOrderMsg;
 }
 
-async function postMessages(user_ID, other_ID, time, message) {
-  const getMessagesFromOther = await db.collection('messages').doc(other_ID).where('user_id', '==', user_ID).get();
+async function postMessages(user_ID, other_ID, message) {
+
+  console.log(user_ID + ' LOL ' + other_ID);
+  const q = doc(db, 'Messages', other_ID);
+  const qQ = await getDoc(q);
+  const store = qQ.data();
+  console.log(store);
+  const getMessagesFromOther = store[user_ID];
+  var time = Timestamp.now();
 
   //{reviever_ID: sender_ID: {msg}}
   if (getMessagesFromOther) {
-    db.collection('messages').doc(other_ID).update({
+    const docRef = doc(db, 'Messages', other_ID);
+    await updateDoc(docRef, {
       [user_ID]: FieldValue.arrayUnion({
         message: message,
         time: time
       })
-    }).then((suc, err) => {
-      if (err) {
-        return false;
-      } else {
-        return true;
-      }
-    })
+    });
+    return true;
   } else {
-    db.collection('messages').doc(other_ID).set({
+    const docRef = doc(db, 'Messages', other_ID);
+    await setDoc(docRef, {
       [user_ID]: [{
         message: message,
         time: time
       }]
-    }).then((suc, err) => {
-      if (err) {
-        return false;
-      } else {
-        return true;
-      }
-    })
+    });
+    return true
   }
 }
 

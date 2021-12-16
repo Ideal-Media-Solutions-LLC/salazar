@@ -105,22 +105,13 @@ app.get('/chat', async (req, res) => {
 });
 
 app.post('/chat', async (req, res) => {
-  var results = await firefunctions.postMessages(req.body.user_ID, req.body.other_ID, req.body.time, req.body.message);
+  var decompose = req.body.messageToSend;
+  var results = await firefunctions.postMessages(decompose.user_ID, decompose.other_ID, decompose.message);
+  console.log(results);
   if (results) {
     res.send(201);
   } else {
-    let obj = {};
-    obj[req.body.sender_ID] = [{
-      message: req.body.message,
-      time: req.body.timestamp
-    }];
-    db.collection('messages').doc(req.body.reciever_ID).set(obj).then((suc, err) => {
-      if (err) {
-        res.sendStatus(404);
-      } else {
-        res.sendStatus(201);
-      }
-    })
+    res.send(404);
   }
 });
 
