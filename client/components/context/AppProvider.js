@@ -15,9 +15,6 @@ function AppProvider({ children }) {
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, result => {
       console.log('onauth', result);
-      if (result === null) {
-        setUser({});
-      }
       setUser(result);
       //setLoading(false)
     })

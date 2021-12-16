@@ -11,7 +11,6 @@ import { getDatabase, ref, set, child, get } from "firebase/database";
 import firebaseConfig from "./FirebaseConfig";
 import Router from 'next/router';
 import axios from 'axios';
-import port from '../../../back/port.js';
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
@@ -25,11 +24,8 @@ export function handleSignInWithGoogle() {
       const credential = GoogleAuthProvider.credentialFromResult(res);
       const token = credential.accessToken;
       let user = res.user;
-      axios.post(`http://localhost:${port}/key`, {
-        uid: user.uid,
-        apikey: token
-      });
-      axios.get(`http://localhost:${port}/auth`, { params: { uid: user.uid } }).then((response) => {
+      axios.get('http://localhost:3002/auth', { params: { uid: user.uid } }).then((response) => {
+        console.log('response.data>>', response.data);
         if (response.data) {
           //route
 
@@ -68,7 +64,6 @@ export function LogoutUser() {
   signOut(auth)
     .then(() => {
       console.log("logout success!");
-      return Router.push('/')
     })
     .catch((e) => {
       console.log(e);
