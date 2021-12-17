@@ -55,8 +55,8 @@ body {
 
 }
 
-.navbar-nav .dropdown-menu {
-  position: none;
+.dropdown-menu {
+  position: absolute !important;
 }
 
 /* Since positioning the image, we need to help out the caption */
