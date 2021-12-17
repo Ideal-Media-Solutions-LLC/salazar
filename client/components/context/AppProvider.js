@@ -21,13 +21,14 @@ function AppProvider({ children }) {
       if (result === null) {
         setUser({});
       } else {
-        axios.get(`http://localhost:3002/user?uid=${result.uid}`)
-        .then(res => {
-          setUser({...result, ...res.data});
-        })
-        .catch(error => {
-          console.log(error);
-        })
+        setUser(result);
+        // axios.get(`http://localhost:3002/user?uid=${result.uid}`)
+        // .then(res => {
+        //   setUser({...result, ...res.data});
+        // })
+        // .catch(error => {
+        //   console.log(error);
+        // })
       }
       return unsub;
     })
