@@ -64,15 +64,20 @@ export function handleSignInWithGoogle() {
 // }
 
 export function LogoutUser() {
-  console.log("Logout Btn Call");
-  signOut(auth)
-    .then(() => {
-      console.log("logout success!");
-      return Router.push('/')
+  // console.log("Logout Btn Call");
+  // signOut(auth)
+  //   .then(() => {
+  //     console.log("logout success!");
+  //     return Router.push('/')
+  //   })
+  //   .catch((e) => {
+  //     console.log(e);
+  //   });
+  Router.push('/').then(() => {
+    signOut(auth).then(() => {
+      console.log('loggedout');
     })
-    .catch((e) => {
-      console.log(e);
-    });
+  });
 }
 
 // function writeUserData(userId, name, email) {

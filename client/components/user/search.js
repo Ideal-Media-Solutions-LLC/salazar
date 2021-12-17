@@ -8,7 +8,6 @@ import axios from 'axios';
 import { useApp } from '../context/AppProvider.js';
 import port from '../../../back/port.js';
 
-
 const { Option } = Select;
 
 
@@ -82,7 +81,7 @@ export default function Search() {
   useEffect(() => {
 
     if (uid) {
-      axios.get('http://localhost:3001/users', {
+      axios.get(`http://localhost:${port}/users`, {
         params: {uid}
       })
         .then(results => {
