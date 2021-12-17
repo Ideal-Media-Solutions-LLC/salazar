@@ -194,7 +194,7 @@ app.get('/calendar/list', async (req, res) => {
     'refresh_token': apiToken.refreshToken,
     'expiration_time': apiToken.expirationTime
   }
-  console.log(apiToken);
+  //console.log(apiToken);
   await listEvents(apiToken, (events) => {
     res.send(events);
   })
@@ -202,15 +202,15 @@ app.get('/calendar/list', async (req, res) => {
 
 app.post('/calendar/create', async (req, res) => {
   const event = req.body;
-  console.log(event)
+  //console.log(event)
   const fromUser = await firefunctions.get(event.uid, 'Keys');
   const otherUser = await firefunctions.get(event.toUser, 'Users');
   // let obj = req.body;
   event.token.accessToken = fromUser.apikey;
-  console.log('OtherUser', otherUser)
+  //console.log('OtherUser', otherUser)
   // event.peer = otherUser.email;
   event.peer = otherUser.email;
-  console.log(event, 'obj');
+  //console.log(event, 'obj');
   await createEvent(event, async (events) => {
     await firefunctions.postMessages(event.uid, event.toUser, `Hey! Checkout your calendar: ${event.message}`);
     res.send(events);
