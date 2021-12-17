@@ -295,6 +295,7 @@ export default function Transcribe() {
     if (keyRef.current === 10) {
       let randi = Math.floor(Math.random() * Quotes.length);
       window.alert(Quotes[randi]);
+      keyRef.current = 0;
     }
 
   }
