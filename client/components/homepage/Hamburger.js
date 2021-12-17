@@ -1,9 +1,6 @@
 import React from "react";
-// import "./styles.css";
 import { Nav, Navbar, NavDropdown } from "react-bootstrap";
 import LanguageDropdown from "./LanguageDropdown";
-
-// import { ReactComponent as Logo } from "./logo.svg";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -22,10 +19,7 @@ export default function Hamburger() {
       <Navbar.Collapse id="responsive-navbar-nav">
         <Nav >
 
-          {/* <NavDropdown title="Dropdown" id="collasible-nav-dropdown"> */}
-
           <LanguageDropdown />
-          {/* </NavDropdown> */}
         </Nav>
 
       </Navbar.Collapse>

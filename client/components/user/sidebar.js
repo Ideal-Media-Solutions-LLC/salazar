@@ -10,6 +10,8 @@ import { Form, Input, Space, Select } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { useApp, AppContext } from '../context/AppProvider.js';
 import { LogoutUser } from '../homepage/dbUtils.js'
+import { useTranslation } from "react-i18next";
+
 
 import port from '../../../back/port.js';
 
@@ -20,6 +22,8 @@ export default function Sidebar() {
   const [visible, setVisible] = useState(false);
   const [languages, setLanguages] = useState([]);
   const [langObj, setLangObj] = useState(appContext.user.languages || {});
+  const { t } = useTranslation();
+
 
   const user = appContext.user;
   console.log(user);
@@ -117,7 +121,7 @@ export default function Sidebar() {
 
 
           <Button className='button' type="primary" onClick={showModal}>
-            Set Language
+            {t('home:language')}
           </Button>
 
           <Popover
@@ -158,7 +162,7 @@ export default function Sidebar() {
                           ))}
                           <Form.Item>
                             <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
-                              Add Language
+                              {t('home:add_language')}
                             </Button>
                           </Form.Item>
 
@@ -184,11 +188,11 @@ export default function Sidebar() {
 
 
       <Button className='button' type="primary" onClick={logOut} >
-        Log out
+        {t('home:log_out')}
       </Button>
 
       <div className='calendar'>
-        <Typography><h5>Scheduled Calls</h5></Typography>
+        <Typography><h5>{t('home:schedule')}</h5></Typography>
         <EventsList />
       </div>
 
