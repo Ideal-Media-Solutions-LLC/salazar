@@ -34,22 +34,22 @@ export default function Card(props) {
             layout='intrinsic'
             alt = 'profile-picture'
         />
-
-      </div>
-
-      <div >
+        <div style={{fontWeight:'bold'}}>
         {displayName}
+        </div>
+
       </div>
 
       <div className = {styles.languagesList}>
         {listLanguages()}
       </div>
 
-      <div>
+      <div style={{marginBottom:'10px'}}>
       <MessageOutlined
       onClick = {()=>{
         props.setModalMessage(<MessageUser user = {{uid, displayName}} close = {props.setModalMessage}/>)
         }} className='buttonS' style={{marginRight:'40px'}}/>
+
       <CalendarOutlined onClick = {()=> {props.setModalSchedule( <ScheduleCall user = {{uid, displayName, languages}} close = {props.setModalSchedule}/>)}} className='buttonS'/>
       </div>
 

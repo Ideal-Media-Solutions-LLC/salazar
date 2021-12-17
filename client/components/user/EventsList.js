@@ -47,9 +47,11 @@ const EventsList = function(props) {
   },[uid])
   return (
     <div>
+
       <div className = {styles.buttons}>
         {page ? <Button className = 'buttonS' onClick = {()=> {setPage(page-3)}}>◁</Button> : <Button className = 'buttonS'  disabled onClick = {()=> {setPage(page-3)}}>◁</Button>}
 
+        <Typography style={{fontWeight:'bold'}}>Scheduled Calls</Typography>
 
         {events && events.length > 3 + page ? <Button className = 'buttonS' onClick = {()=> {setPage(page+3)}}>▷</Button> : <Button className = 'buttonS' disabled>▷</Button>}
       </div>

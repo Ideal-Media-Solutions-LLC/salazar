@@ -14,7 +14,6 @@ import { LogoutUser } from '../homepage/dbUtils.js'
 import port from '../../../back/port.js';
 
 export default function Sidebar() {
-
   const appContext = useContext(AppContext);
 
   const [visible, setVisible] = useState(false);
@@ -67,7 +66,6 @@ export default function Sidebar() {
     const newLangs = languages.slice(0);
     newLangs.splice(key, 1, Object.assign(languages[key] || {}, { langLevel: e, langLevelLabel: levelList[e - 1].label }));
     setLanguages(newLangs);
-
   }
 
   useEffect(() => {
@@ -86,17 +84,13 @@ export default function Sidebar() {
     }, 200);
   }
 
-
   const onFinish = values => {
-
   };
 
   const { Option } = Select;
   const { languagesList, levelList, curUser } = useContext(AppContext);
   const { curLangList, setCurLangList } = useState([]);
   const { langchange } = {};
-
-
 
   return (
     <div className='useinfo'>
@@ -109,7 +103,6 @@ export default function Sidebar() {
           />
 
           <div style={{ fontWeight: 'bold', fontSize: '16px', marginBottom: '10px' }}>{user.displayName}</div>
-
 
           <Button className='button' type="primary" onClick={showModal}>
             Set Language
@@ -125,7 +118,7 @@ export default function Sidebar() {
                         <>
                           {fields.map(({ key, name, fieldKey, ...restField }) => (
                             <Space key={key} style={{ display: 'flex', margin: '0px' }} align="baseline">
-                            
+
                               <Form.Item
                                 {...restField}
                                 name={[name, 'language']}
@@ -177,17 +170,13 @@ export default function Sidebar() {
         </div>
         : null}
 
-
       <Button className='button' type="primary" onClick={logOut} >
         Log out
       </Button>
 
       <div className='calendar'>
-        <Typography><h5>Scheduled Calls</h5></Typography>
         <EventsList />
       </div>
-
-
 
     </div>
 
