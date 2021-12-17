@@ -7,8 +7,8 @@ import port from '../../../back/port.js'
 export default function Transcribe() {
 
   //#region states
-  
-  //#region display 
+
+  //#region display
   const [phraseDivText, _setPhraseDiv] = useState("");
   const [statusDivText, setStatusDiv] = useState("");
   const [startButtonEnabled, setStartButtonEnabled] = useState(false);
@@ -16,7 +16,7 @@ export default function Transcribe() {
   const [enableButtonOnOff, setEnableButtonOnOff] = useState(true);
   const [scroll, setScroll] = useState(0);
   //#endregion
-  
+
   //#region speech sdk states
   const [mySpeechSDK, setSpeechSDK] = useState(null);
   const [key, setKey] = useState({value: null});
@@ -62,7 +62,7 @@ export default function Transcribe() {
         console.log(error);
       }));
     }
-  } 
+  }
 
   // function resetUiForScenarioStart() {
   //   setPhraseDiv("");
@@ -79,11 +79,11 @@ export default function Transcribe() {
 
   const onChangeLanguageTarget = function(e) {
     setLanguageTargetOptions(e.target.value.split("(")[1].substring(0, 5));
-  }  
+  }
 
   const onChangeLanguageInput = function(e) {
     setLanguageOptions(e.target.value);
-  } 
+  }
 
   const onClickScenarioStartButton = function(e) {
     doContinuousTranslation();
@@ -194,7 +194,7 @@ export default function Transcribe() {
     let tempPhrase = '';
     tempStatus = statusDivText + `(recognized)  Reason: ${SpeechSDK.ResultReason[result.reason]}`;
     tempPhrase = phraseRef.current.replace(/(.*)(^|[\r\n]+).*\[\.\.\.\][\r\n]+/, '$1$2')
-    
+
     switch (result.reason) {
       case SpeechSDK.ResultReason.NoMatch:
         var noMatchDetail = SpeechSDK.NoMatchDetails.fromResult(result);
@@ -203,7 +203,7 @@ export default function Transcribe() {
       case SpeechSDK.ResultReason.Canceled:
         var cancelDetails = SpeechSDK.CancellationDetails.fromResult(result);
         tempStatus += ` CancellationReason: ${SpeechSDK.CancellationReason[cancelDetails.reason]}`;
-            + (cancelDetails.reason === SpeechSDK.CancellationReason.Error 
+            + (cancelDetails.reason === SpeechSDK.CancellationReason.Error
                 ? `: ${cancelDetails.errorDetails}` : ``)
             + `\r\n`;
         break;
@@ -253,7 +253,7 @@ export default function Transcribe() {
     if (e.reason === SpeechSDK.CancellationReason.Error) {
       temp += ": " + e.errorDetails;
     }
-    
+
     temp += "\r\n";
     setStatusDiv(temp);
   }
@@ -270,7 +270,7 @@ export default function Transcribe() {
 
   useEffect(()=> {
     RequestAuthorizationToken();
-    
+
   }, []);
 
   useEffect(()=> {
@@ -356,7 +356,7 @@ export default function Transcribe() {
                     </select>
                 </td>
             </tr>
-           
+
             <tr>
                 <td align="right"><b></b></td>
                 <td>
@@ -380,7 +380,7 @@ export default function Transcribe() {
             </tr>
         </table>
       </div>
-      <Script src="microsoft.cognitiveservices.speech.sdk.bundle.js"/>
+      <Script src="../microsoft.cognitiveservices.speech.sdk.bundle.js"/>
     </div>
   )
 }
