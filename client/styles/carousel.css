@@ -88,6 +88,12 @@ body {
   /* padding: 8%; */
 }
 
+.school {
+  font-family: cursive;
+  font-variant-caps: petite-caps;
+  font-weight: bolder;
+  text-shadow: 0 0 black;
+}
 
 /* Featurettes
 ------------------------- */
