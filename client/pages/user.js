@@ -71,20 +71,17 @@ export default function User() {
         <Content className='content'>
           <Tabs tabPosition='left' type="card" className='tab'>
             <TabPane tab=<UserAddOutlined style={{ fontSize: '20px', width: '10px', marginTop: '40px', backgroundColor: 'white' }} /> key="1">
-            <Search />
-          </TabPane>
-          <TabPane tab=<CommentOutlined style={{ fontSize: '20px', width: '10px' }} /> key="2">
-          <Chat />
-        </TabPane>
-        <TabPane tab=<VideoCameraOutlined style={{ fontSize: '20px', width: '10px' }} /> key="3">
-        Content of Tab Pane 3
-      </TabPane>
-    </Tabs>
+              <Search />
+            </TabPane>
+            <TabPane tab=<CommentOutlined style={{ fontSize: '20px', width: '10px' }} /> key="2">
+              <Chat />
+            </TabPane>
+         </Tabs>
 
 
           </Content >
         </Layout >
-    <Footer className='footer'>Footer</Footer>
+    <Footer className='footer'>Copyright©Team Slytherin</Footer>
 
       </Layout >
 
