@@ -8,6 +8,9 @@ import { useTranslation, initReactI18next } from "react-i18next";
 import { createContext, useContext } from "react";
 import LanguageDropdown from "./LanguageDropdown";
 import Hamburger from "./Hamburger";
+// import chat from './'
+
+
 
 export default function LandingPage() {
   const { t } = useTranslation();
@@ -73,7 +76,7 @@ export default function LandingPage() {
               <p className="lead">{t('home:chat_paragraph')}</p>
             </div>
             <div className="col-md-5">
-              <img className="featurette-image img-fluid mx-auto" src='https://i2.wp.com/files.123freevectors.com/wp-content/original/157821-abstract-white-background-vector-illustration.jpg?w=800&q=95' />
+              <img className="featurette-image img-fluid mx-auto" src={'assets/textchat.png'} />
             </div>
           </div>
 
@@ -85,7 +88,7 @@ export default function LandingPage() {
               <p className="lead">{t('home:video_paragraph')}</p>
             </div>
             <div className="col-md-5 order-md-1">
-              <img className="featurette-image img-fluid mx-auto" src="https://i2.wp.com/files.123freevectors.com/wp-content/original/157821-abstract-white-background-vector-illustration.jpg?w=800&q=95" alt="Generic placeholder image" />
+              <img className="featurette-image img-fluid mx-auto" src={'assets/video.png'} alt="Generic placeholder image" />
             </div>
           </div>
 
@@ -97,7 +100,7 @@ export default function LandingPage() {
               <p className="lead">{t('home:anytime_paragraph')}</p>
             </div>
             <div className="col-md-5">
-              <img className="featurette-image img-fluid mx-auto" src="https://i2.wp.com/files.123freevectors.com/wp-content/original/157821-abstract-white-background-vector-illustration.jpg?w=800&q=95" alt="Generic placeholder image" />
+              <img className="featurette-image img-fluid mx-auto" src={'assets/mobile.png'} alt="Generic placeholder image" />
             </div>
           </div>
 
