@@ -368,10 +368,8 @@ export default function Transcribe() {
             
       </table>
       <div id="captionsoutput">
-        <div >
           {/* <textarea id="phraseDiv" style={{width: "250px", height: "250px"}} value={phraseDivText} onChange={onTextAreaChange}></textarea> */}
           <textarea id="phraseDiv"   onChange={onTextAreaChange} ref={phraseTextAreaRef} value={phraseDivText} readOnly={true}></textarea>
-        </div>
         <div style={{display:'none'}}>
           <textarea id="statusDiv" style={{width: "250px", height: "250px"}} value={statusDivText} onChange={onTextAreaChange}>
           </textarea>
