@@ -19,12 +19,12 @@ const EventsList = function(props) {
     const minutes = Math.floor((date.getTime() - new Date().getTime())/1000/60/60%1*60);
     if (days) {
       let result;
-      days > 0 ? result = ` approx. ${days}d` : result = 'In progress';
+      days > 0 ? result = `approx. ${days} day(s) from now` : result = 'In progress';
       return result;
     } else if (hours) {
-      return ` approx. ${hours}h`
+      return `approx. ${hours} hour(s) from now`
     } else {
-      return ` approx. ${minutes}m`
+      return `approx. ${minutes} minute(s) from now`
     }
     console.log(`days: ${days}    hours: ${hours}    minutes: ${minutes}     date: ${date}     now: ${new Date()}`)
   }
@@ -58,20 +58,24 @@ const EventsList = function(props) {
       {console.log(events)}
       {events && events.slice(page,(page * 2 || 3)).map((event, i) => {
         return (
-          <Panel header={`Call with ${displayName === event.description.split('---')[0] ? event.description.split('---')[1] : event.description.split('---')[0]}.
-          \u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0
-          ${timeTill(new Date(event.start.dateTime))}`} key={i}>
+          <Panel header={
+            <div>
+              <div className = {styles.Title}>
+                {`Call with ${displayName === event.description.split('---')[0] ? event.description.split('---')[1] : event.description.split('---')[0]}`}
+              </div>
+              <div className = {styles.TimeTo}>
+                {`${timeTill(new Date(event.start.dateTime))}`}
+              </div>
+           </div>
+          } key={i} className = {styles.Header}>
             <div className = {styles.Message}>
               <div className = {styles.Summary}>{`Conversation in ${event.summary.substring(53)}`}</div>
               <div className = {styles.Desription}>{event.description.split('---')[2]}</div>
               <div className = {styles.Footer}>
-                <a className = {styles.Date} href={event.htmlLink}>{new Date(event.start.dateTime).toDateString()}</a>
+                <a className = {styles.Date} target="_blank" href={event.htmlLink}>{new Date(event.start.dateTime).toDateString()}</a>
                 <a className = {styles.Camera} target="_blank" href={event.description.split('---')[3]}><VideoCameraOutlined style ={{fontSize: '20px', width: '10px'}}/></a>
               </div>
             </div>
-
-
-
          </Panel>
         )
       })}
