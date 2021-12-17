@@ -34,9 +34,10 @@ export default function MessageUser(props) {
       onCancel = {()=> { props.close(null)}}
       title = {`Send a message to ${props.user.displayName}`}
       footer = {null}
+
     >
-      <form className = {styles.form}>
-      <TextArea
+      <form className = {styles.form}  >
+      <TextArea style={{border:'0px'}}
 
           onChange={(e) =>{setMessage(e.target.value)}}
           placeholder="Enter message..."
@@ -45,7 +46,7 @@ export default function MessageUser(props) {
         <div className = {styles.buttonContainer}>
            <Button
             onClick = {sendMessage}
-            className = {styles.button}><SendOutlined /></Button>
+            className = 'buttonS'><SendOutlined /></Button>
         </div>
 
       </form>

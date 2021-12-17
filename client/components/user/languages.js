@@ -15,8 +15,8 @@ export default function Languages() {
   const { curLangList, setCurLangList } = useState([]);
 
   return (
-    <Form name="dynamic_form_nest_item" onFinish={onFinish} autoComplete="off" initialValues={{langs: languages}}>
-      <Form.List name="langs">
+    <Form name="dynamic_form_nest_item" onFinish={onFinish} autoComplete="off" initialValues={{langs: languages}} >
+      <Form.List name="langs" >
         {(fields, { add, remove }) => (
           <>
             {fields.map(({ key, name, fieldKey, ...restField }) => (
@@ -55,7 +55,7 @@ export default function Languages() {
           </>
         )}
       </Form.List>
-  
+
     </Form>
 
   );

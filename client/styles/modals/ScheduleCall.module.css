@@ -5,6 +5,7 @@
   margin: 15px;
 }
 .form {
+  margin-top: -15px;
   display: grid;
   grid-template-columns: 1fr 1fr;
 }
@@ -14,12 +15,16 @@
 }
 .languageContainer {
   margin: 10px;
+  margin-top: -5px;
   display: flex;
   flex-direction: column;
   width: 100%;
+
 }
 .language {
   margin-bottom: 10px;
   padding-bottom: 10px;
+
+
   /* align-self: center; */
 }

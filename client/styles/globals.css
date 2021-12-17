@@ -72,7 +72,7 @@ a {
 }
 
 .sider {
-  background-color: #F0F2F5;
+  background-color: #F5F5F5;
   height: auto;
   flex: 0 0 95vw !important;
   max-width: 355px !important;
@@ -85,7 +85,7 @@ a {
 
 .content {
   background-color: transparent;
-  padding-left: 15px;
+  padding-left: 10px;
   margin-right: 10px;
   min-width: 350px;
   height: auto;
@@ -95,9 +95,9 @@ a {
 
 .footer {
   background-color: transparent;
-  color: white;
-  text-align: center;
-  font-weight: bold;
+  /* color: white; */
+  text-align: left;
+
 }
 
 
@@ -126,25 +126,60 @@ a {
 .button {
   margin: 5px;
   font-size: 14px;
-  width: 130px;
+  width: 300px;
   text-align: center;
   background-color: transparent;
   color: black;
-  border-color: lightgray;
+  border: 0px;
   white-space: normal;
-  height: auto;
-
-
+  height: 40px;
 }
 
 .button:hover {
-  background-color: lightgray;
+  background-color: #F5F5F5;
   color: black;
   border: 0px;
+  border-radius: 20px;
+  box-shadow: 0px 0px 8px -1px rgba(0, 0, 0, 0.3);
+}
+
+.buttonS {
+  font-size: 20px;
+  text-align: center;
+  background-color: transparent;
+  color: black;
+  border: 0px;
+  height: auto;
+
+}
+
+.buttonS:hover {
+  color: black;
+  border: 0px;
+  border-radius: 20px;
+  box-shadow: 0px 0px 8px -1px rgba(0, 0, 0, 0.3);
+}
+
+.buttonL {
+  margin-top: 10px;
+  text-align: center;
+  background-color: transparent;
+  color: black;
+  border: 0px;
+  height: auto;
+}
+
+.buttonL:hover {
+  color: black;
+  border: 0px;
+  border-radius: 20px;
+  box-shadow: 0px 0px 8px -1px rgba(0, 0, 0, 0.3);
+  background-color: transparent;
 }
 
 .calendar {
   margin: 30px;
+  background-color: transparent;
   /* border: solid 1px lightgray; */
   /* max-height: 400px; */
   width: 80%;
@@ -207,6 +242,7 @@ a {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+
 }
 
 .popup {

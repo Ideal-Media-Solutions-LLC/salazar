@@ -11,7 +11,7 @@ import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { useApp, AppContext } from '../context/AppProvider.js';
 import { LogoutUser } from '../homepage/dbUtils.js'
 
-
+import port from '../../../back/port.js';
 
 export default function Sidebar() {
 
@@ -22,7 +22,7 @@ export default function Sidebar() {
   const [langObj, setLangObj] = useState(appContext.user.languages || {});
 
   const user = appContext.user;
-  console.log(user);
+
   const logOut = () => {
     LogoutUser();
   }
@@ -49,7 +49,7 @@ export default function Sidebar() {
 
     axios({
       method: 'post',
-      url: `http://localhost:3002/languages`,
+      url: `http://localhost:${port}/languages`,
       data: body
     })
 
@@ -61,19 +61,16 @@ export default function Sidebar() {
     const newLangs = languages.slice(0);
     newLangs.splice(key, 1, Object.assign(languages[key] || {}, { lang: e }));
     setLanguages(newLangs);
-    console.log('newLanges', newLangs);
   }
 
   const handleLanguageLevelChange = (e, key) => {
-    console.log('e', e);
     const newLangs = languages.slice(0);
     newLangs.splice(key, 1, Object.assign(languages[key] || {}, { langLevel: e, langLevelLabel: levelList[e - 1].label }));
     setLanguages(newLangs);
-    console.log('newLanges', newLangs);
+
   }
 
   useEffect(() => {
-    console.log('init languages', user.languages);
     if (user && user.languages) {
       syncLanguages();
     }
@@ -87,12 +84,11 @@ export default function Sidebar() {
     setTimeout(function () {
       setLanguages(newLanges);
     }, 200);
-    console.log('synced', newLanges);
   }
 
 
   const onFinish = values => {
-    console.log('Received values of form:', values);
+
   };
 
   const { Option } = Select;
@@ -104,7 +100,6 @@ export default function Sidebar() {
 
   return (
     <div className='useinfo'>
-      {console.log('context languages', languages)}
       {user ?
         <div>
           <img className='profilepic'
@@ -130,7 +125,7 @@ export default function Sidebar() {
                         <>
                           {fields.map(({ key, name, fieldKey, ...restField }) => (
                             <Space key={key} style={{ display: 'flex', margin: '0px' }} align="baseline">
-                              {console.log('fields', fields)}
+                            
                               <Form.Item
                                 {...restField}
                                 name={[name, 'language']}

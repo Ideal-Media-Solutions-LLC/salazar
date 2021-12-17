@@ -3,6 +3,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { initializeApp } from 'firebase/app';
 import axios from 'axios';
 import firebaseConfig from "../homepage/FirebaseConfig";
+import port from '../../../back/port.js';
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
@@ -14,14 +15,12 @@ function AppProvider({ children }) {
   //const [loading, setLoading] = useState(true);
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, result => {
-      console.log('onauth', result);
       if (result === null) {
         setUser({});
       } else {
 
         axios.get(`http://localhost:3002/user?uid=${result.uid}`)
         .then(res => {
-          // console.log('api response', res);
           setUser({...result, ...res.data});
         })
         .catch(error => {
@@ -64,7 +63,6 @@ function AppProvider({ children }) {
 }
 
 function useApp() {
-  //console.log('yo');
   const result = useContext(AppContext);
   return result;
 }

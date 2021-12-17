@@ -13,15 +13,7 @@ import port from '../../../back/port.js';
 
 const SignUpForm = function (props) {
   const { user, curUser, signUpPageLanguages } = useApp();
-  //const user = props.value;
-  // console.log(user, 'signupform');
-  // console.log(curUser, 'curuser');
-  // useEffect((=> {
-
-  // }, []);
   const { t } = useTranslation();
-
-
 
   const handleSubmit = function (e) {
     e.preventDefault();

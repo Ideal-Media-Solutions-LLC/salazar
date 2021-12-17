@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Collapse, CalendarOutlined, DoubleLeftOutlined, Typography } from 'antd';
+import { Button, Collapse, CalendarOutlined, DoubleLeftOutlined, Typography, icons } from 'antd';
 import styles from '../../styles/EventsList.module.css';
 import { useApp } from '../context/AppProvider.js';
 import axios from 'axios'
+import { VideoCameraOutlined } from '@ant-design/icons';
+
 import port from '../../../back/port.js';
 const { Panel } = Collapse;
 
@@ -46,24 +48,28 @@ const EventsList = function(props) {
   return (
     <div>
       <div className = {styles.buttons}>
-        {page ? <Button className = 'button' onClick = {()=> {setPage(page-3)}}>◁</Button> : <Button className = 'button'  disabled onClick = {()=> {setPage(page-3)}}>◁</Button>}
-        {/* {page ? <DoubleLeftOutlined className = 'button' onClick = {()=> {setPage(page-3)}}/>: <DoubleLeftOutlined className = 'button'  disabled onClick = {()=> {setPage(page-3)}}>} */}
+        {page ? <Button className = 'buttonS' onClick = {()=> {setPage(page-3)}}>◁</Button> : <Button className = 'buttonS'  disabled onClick = {()=> {setPage(page-3)}}>◁</Button>}
 
-        {events && events.length > 3 + page ? <Button className = 'button' onClick = {()=> {setPage(page+3)}}>▷</Button> : <Button className = 'button' disabled>▷</Button>}
+
+        {events && events.length > 3 + page ? <Button className = 'buttonS' onClick = {()=> {setPage(page+3)}}>▷</Button> : <Button className = 'buttonS' disabled>▷</Button>}
       </div>
 
-      <Collapse accordion>
-      {console.log(events)}
+      <Collapse accordion style={{border:'transparent', backgroundColor: '#F5F5F5'}}>
+      {/* {console.log('events:', events)} */}
       {events && events.slice(page,(page * 2 || 3)).map((event, i) => {
         return (
           <Panel header={`Call with ${displayName === event.description.split('---')[0] ? event.description.split('---')[1] : event.description.split('---')[0]}.
           \u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0
           ${timeTill(new Date(event.start.dateTime))}`} key={i}>
             <div className = {styles.Message}>
-              <p>{`Conversation in ${event.summary.substring(53)}`}</p><br/>
-              <p>{event.description.split('---')[2]}</p>
-              <a href={event.htmlLink}>{new Date(event.start.dateTime).toDateString()}</a>
+              <div className = {styles.Summary}>{`Conversation in ${event.summary.substring(53)}`}</div>
+              <div className = {styles.Desription}>{event.description.split('---')[2]}</div>
+              <div className = {styles.Footer}>
+                <a className = {styles.Date} href={event.htmlLink}>{new Date(event.start.dateTime).toDateString()}</a>
+                <a className = {styles.Camera} href={event.description.split('---')[3]}><VideoCameraOutlined style ={{fontSize: '20px', width: '10px'}}/></a>
+              </div>
             </div>
+
 
 
          </Panel>
