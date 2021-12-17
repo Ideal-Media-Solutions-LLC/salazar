@@ -65,11 +65,16 @@ export default function User() {
             <TabPane tab=<UserAddOutlined style={{ fontSize: '20px', width: '10px', marginTop: '40px', backgroundColor: 'white' }} /> key="1">
               <Search />
             </TabPane>
-            <TabPane tab=<CommentOutlined style={{ fontSize: '20px', width: '10px', paddingLeft:'0'}} /> key="2">
-              <Chat/>
+            <TabPane tab=<CommentOutlined style={{ fontSize: '20px', width: '10px' }} /> key="2">
+              <Chat />
             </TabPane>
-          </Tabs>
-        </Content >
+         </Tabs>
+
+
+          </Content >
+        </Layout >
+    <Footer className='footer'>Copyright©Team Slytherin</Footer>
+
       </Layout >
         <Footer className='footer'>© 2021 Group Salazar, Inc.</Footer>
 
