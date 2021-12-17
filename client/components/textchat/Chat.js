@@ -108,7 +108,7 @@ const Chat = () => {
   const handleContactClick = (receiverId, senderId) => {
     setReceiverId(receiverId);
     getMessages(receiverId, senderId);
-    // setInterval(getMessages(receiverId, senderId), 1000);
+    setInterval(getMessages(receiverId, senderId), 1000);
   }
 
   const handleTextFieldChange = (event) => {
