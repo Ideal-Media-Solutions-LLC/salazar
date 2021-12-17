@@ -133,7 +133,12 @@ const Chat = () => {
   useEffect( () => {
     getContacts();
 
-  }, [])
+  }, []);
+
+  // useEffect( () => {
+  //   setInterval(getMessages(receiverId, user.uid), 1000);
+
+  // }, [])
 
   // console.log('window innerwidth', window.innerWidth);
 
