@@ -80,15 +80,11 @@ const GlobeIcon = ({ width = 24, height = 24 }) => (
 );
 
 export default function LanguageDropdown() {
-
-
-  // const currentLanguage = languages.find((l) => l.code === currentLanguageCode);
   const { t } = useTranslation();
 
   const handleChangeSystemLanguage = function (code) {
     cookies.set('i18next', code);
     const currentLanguageCode = cookies.get('i18next') || code;
-    console.log('cookie >>>', currentLanguageCode);
     return Router.push('/', code);
   };
 
@@ -100,12 +96,15 @@ export default function LanguageDropdown() {
 
       <Dropdown.Menu>
         {languages.map(({ code, name, country_code }) => {
-          return (<Dropdown.Item key={country_code}>
-            <a onClick={() => handleChangeSystemLanguage(code)}>
+          return (
+            <Dropdown.Item
+              key={country_code}
+              onClick={() => handleChangeSystemLanguage(code)}
+            >
               <span className={`flag-icon flag-icon-${country_code} mx-2`}></span>
               {name}
-            </a>
-          </Dropdown.Item>);
+            </Dropdown.Item>
+          );
         })}
       </Dropdown.Menu>
     </Dropdown>
