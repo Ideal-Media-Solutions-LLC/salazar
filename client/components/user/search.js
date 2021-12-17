@@ -10,7 +10,6 @@ import port from '../../../back/port.js';
 import { useTranslation } from "react-i18next";
 
 
-
 const { Option } = Select;
 
 
@@ -86,8 +85,13 @@ export default function Search() {
   useEffect(() => {
 
     if (uid) {
+<<<<<<< HEAD
       axios.get('http://localhost:3001/users', {
         params: { uid }
+=======
+      axios.get(`http://localhost:${port}/users`, {
+        params: {uid}
+>>>>>>> 6812404b4f8291803c41e858a537a7306925771c
       })
         .then(results => {
           console.log(results.data);

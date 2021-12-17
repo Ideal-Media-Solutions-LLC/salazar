@@ -3,8 +3,77 @@
   justify-content: space-between;
   margin: 10px;
 }
+
 .Message {
   display: flex;
   flex-direction: column;
+  row-gap: 10px;
   justify-content: space-between;
+}
+
+.Header {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+}
+
+.Title {
+  display: flex;
+  font-size: 14px;
+  font-weight: 500;
+  justify-content: left;
+}
+
+.TimeTo {
+  display: flex;
+  font-size: 10px;
+  font-weight: 700;
+  color: rgb(67, 158, 116);
+  justify-content: left;
+}
+
+.Summary {
+  display: flex;
+  justify-content: center;
+  font-weight: 500;
+}
+
+.Description{
+  display: flex;
+  font-size: 10px;
+  justify-content: center;
+  font-weight: 500;
+}
+
+.Footer{
+  display: flex;
+  margin: 10px 15px 0px 0px;
+  font-size: 14px;
+  font-weight: 500;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+
+}
+
+.Date {
+  display: flex;
+  width: 50%;
+  justify-content: left;
+}
+
+.Date:hover {
+  cursor: pointer;
+  color: rgb(67, 158, 116);
+}
+
+.Camera {
+  display: flex;
+  width: 50%;
+  justify-content: right;
+}
+
+.Camera:hover {
+  cursor: pointer;
+  color: rgb(67, 158, 116);
 }

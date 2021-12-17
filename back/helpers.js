@@ -1,8 +1,7 @@
 const { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, browserSessionPersistence, setPersistence, onAuthStateChanged, signOut, signInWithRedirect, getRedirectResult } = require('firebase/auth');
 //const functions = require('firebase/auth');
 const { initializeApp } = require('firebase/app');
-const { getFirestore, Timestamp, FieldValue } = require("firebase/firestore");
-const { collection, addDoc, setDoc, getDoc, getDocs, doc, onSnapshot, updateDoc, increment, query, where, orderBy } = require("firebase/firestore");
+const { getFirestore, Timestamp, FieldValue, collection, addDoc, setDoc, getDoc, getDocs, doc, onSnapshot, updateDoc, increment, query, where, orderBy } = require("firebase/firestore");
 //import React, {useState, useEffect} from 'react';
 const config = require('./config.js');
 const app = initializeApp(config.firebaseConfig);
@@ -208,6 +207,39 @@ async function postMessages(user_ID, other_ID, message) {
   const getMessagesFromOther = store[user_ID];
   var time = Timestamp.now();
 
+  //make a history mark
+  const qUser = doc(db, 'Messages', user_ID);
+  const userQ = await getDoc(qUser);
+  const dataUser = userQ.data();
+  const makeHistory = dataUser[user_ID];
+  if (makeHistory) {
+    if (makeHistory.user_ID === undefined) {
+      makeHistory[other_ID] = other_ID;
+    }
+    dataUser[user_ID] = makeHistory;
+    await setDoc(qUser, dataUser);
+  } else {
+    var newObj = {}
+    newObj[user_ID] = {
+      [other_ID] : other_ID
+    };
+    await setDoc(qUser, newObj);
+  }
+  if (getMessagesFromOther) {
+    if (getMessagesFromOther.other_ID === undefined) {
+      getMessagesFromOther[user_ID] = user_ID;
+    }
+    store[other_ID] = getMessagesFromOther;
+    await setDoc(q, store);
+  } else {
+    var newObj = {}
+    newObj[other_ID] = {
+      [user_ID] : user_ID
+    };
+    await setDoc(q, newObj);
+  }
+
+
   //{reviever_ID: sender_ID: {msg}}
   if (getMessagesFromOther) {
     const doc = await getDoc(q);
@@ -239,10 +271,11 @@ async function postMessages(user_ID, other_ID, message) {
 async function getChatUsers(user_ID) {
   const userRef = doc(db, 'Messages', user_ID);
   const result = await getDoc(userRef);
+  const data = result.data();
+  const userInt = data[user_ID]
   var userID_displayName = [];
-  if (result.exists()) {
-    var store = result.data();
-    for (var id in store) {
+  if (userInt) {
+    for (var id in userInt) {
       const userRef = doc(db, 'Users', id);
       const userResult = await getDoc(userRef);
       const temp = userResult.data();
@@ -253,15 +286,6 @@ async function getChatUsers(user_ID) {
   } else {
     console.log('looking in the wrong one');
   }
-
-  // for (var i = 0; i < getAffiliatedUUID.data.length; ++i) {
-  //   console.log('One Step got here');
-  //   const qUser = doc(db, 'Users', getAffiliatedUUID.data[i]);
-  //   const displayName = await getDoc(qUser);
-  //   var obj = {};
-  //   obj[getAffiliatedUUID.data[i]] = displayName.username;
-  //   userID_displayName.push(obj);
-  // }
   return userID_displayName;
 }
 

@@ -23,7 +23,7 @@ app.get('/', (req, res) => {
 //#region user auth
 
 app.get('/auth', async (req, res) => {
-  console.log('/auth');
+  //console.log('/auth');
   const result = await firefunctions.get(req.query.uid, 'Users');
   if (result === null) {
     res.send(true);
@@ -51,7 +51,7 @@ app.post('/auth', async (req, res) => {
   */
   const usersWrite = await firefunctions.write(req.body.uid, data, 'Users');
   const messageWrite = await firefunctions.write(req.body.uid, {}, 'Messages');
-  res.send(201);
+  res.sendStatus(201);
 });
 
 app.get('/user', async (req, res) => {
@@ -88,15 +88,15 @@ app.post('/languages', async (req, res) => {
   let data = req.body.languages;
   let key = req.body.uid;
   let result = await firefunctions.updateLanguages(key, data);
-  res.send(201);
+  res.sendStatus(201);
 })
 
 app.post('/key', async (req, res) => {
-  console.log(req.body);
+  //console.log(req.body);
   let data = req.body.apikey;
   let key = req.body.uid;
   let result = await firefunctions.write(key, {apikey: req.body.apikey}, 'Keys');
-  res.send(201);
+  res.sendStatus(201);
 });
 
 //#endregion
@@ -116,7 +116,6 @@ app.get('/chat', async (req, res) => {
 app.post('/chat', async (req, res) => {
   var decompose = req.body.messageToSend;
   var results = await firefunctions.postMessages(decompose.user_ID, decompose.other_ID, decompose.message);
-  console.log(results);
   if (results) {
     res.send(201);
   } else {
@@ -175,7 +174,6 @@ app.get('/chat/translation', async (req, res) => {
       translatedMessages.push(extract[value]);
     });
   }
-  console.log(translatedMessages);
   res.send(translatedMessages);
 })
 
@@ -194,7 +192,7 @@ app.get('/calendar/list', async (req, res) => {
     'refresh_token': apiToken.refreshToken,
     'expiration_time': apiToken.expirationTime
   }
-  console.log(apiToken);
+  //console.log(apiToken);
   await listEvents(apiToken, (events) => {
     res.send(events);
   })
@@ -202,16 +200,17 @@ app.get('/calendar/list', async (req, res) => {
 
 app.post('/calendar/create', async (req, res) => {
   const event = req.body;
-  console.log(event)
+  //console.log(event)
   const fromUser = await firefunctions.get(event.uid, 'Keys');
   const otherUser = await firefunctions.get(event.toUser, 'Users');
   // let obj = req.body;
   event.token.accessToken = fromUser.apikey;
-  console.log('OtherUser', otherUser)
+  //console.log('OtherUser', otherUser)
   // event.peer = otherUser.email;
   event.peer = otherUser.email;
-  console.log(event, 'obj');
-  await createEvent(event, (events) => {
+  //console.log(event, 'obj');
+  await createEvent(event, async (events) => {
+    await firefunctions.postMessages(event.uid, event.toUser, `Hey! Checkout your calendar: ${event.message}`);
     res.send(events);
   })
 });
