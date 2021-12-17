@@ -18,16 +18,18 @@ function AppProvider({ children }) {
       //console.log('onauth', result);
       if (result === null) {
         setUser({});
+      } else {
+          axios.get(`${url}${port}/user?uid=${result.uid}`)
+            .then(res => {
+              // console.log('api response', res);
+              setUser({...result, ...res.data});
+            })
+            .catch(error => {
+              console.log(error);
+            })
       }
 
-      axios.get(`${url}${port}/user?uid=${result.uid}`)
-      .then(res => {
-        // console.log('api response', res);
-        setUser({...result, ...res.data});
-      })
-      .catch(error => {
-        console.log(error);
-      })
+
     })
     return unsub;
   }, [])
