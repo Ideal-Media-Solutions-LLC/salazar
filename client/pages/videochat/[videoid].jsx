@@ -39,14 +39,15 @@ export default function VideoChat() {
 
     </Header>
 
-    <Layout className='innerlayoutVideo'>
-
-      <Content className='content'>
-      <VideoMeet meetString={useRouter().query.videoid}/>
-        <Transcribe/>
-
+    <div id="videowrapper">
+      <Layout className='innerlayoutVideo'>
+        <Content className='content'>
+          <VideoMeet meetString={useRouter().query.videoid} className='Vtop'/>
+          <Transcribe className='Vbottom'/>
         </Content >
       </Layout >
+    </div>
+    
   <Footer className='footer'>Footer</Footer>
 
     </Layout >
