@@ -8,6 +8,9 @@ import { useApp } from '../components/context/AppProvider.js';
 
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation, initReactI18next } from "react-i18next";
+import Router from 'next/router';
+import axios from 'axios';
+import port from '../../back/port';
 
 export async function getStaticProps({ locale }) {
   return {
@@ -20,6 +23,12 @@ export async function getStaticProps({ locale }) {
 export default function Home() {
   const { t } = useTranslation();
   const { user } = useApp();
+
+  axios.get(`http://localhost:${port}/auth`, { params: { uid: user.uid } }).then((response) => {
+    if (!response.data) {
+      return Router.push('/user');
+    }
+  });
   return (
     <div className="sign-up">
       <Head>
