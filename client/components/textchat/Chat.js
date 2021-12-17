@@ -35,7 +35,7 @@ const useStyles = makeStyles({
   },
   chatSection: {
     width: '100%',
-    height: '80vh'
+    height: '100%'
   },
   headBG: {
       backgroundColor: '#e0e0e0'
@@ -135,20 +135,32 @@ const Chat = () => {
 
   }, [])
 
+  // console.log('window innerwidth', window.innerWidth);
+
 
   return (
       <div>
-        <Grid container>
-            <Grid item xs={9} >
-                {/* <Typography variant="h4" className="header-message"
+        <div style={{width: '350px', right: '10px'}}>
+        <Languages language={language} handleSelect={handleSelect}
+                 style ={{
+                  display: 'inline-block',
+                   width: '50px'
+                   }}/>
+        <Button variant="text" onClick={handleTranslateButtonClick}
                  style={{
-                  color: '#21b6ae',
-                  padding: "7px 5px"
-                }}
-                >
-                Chat</Typography> */}
+                   color: 'black',
+                   display: 'inline-block'
+                 }}
+               >
+                 Translate</Button>
+
+        </div>
+
+
+        {/* <Grid container>
+            <Grid item xs={9} >
             </Grid>
-            <Grid item xs={2} >
+            <Grid item xs={2} align='right' >
               <Languages language={language} handleSelect={handleSelect}/>
 
             </Grid>
@@ -161,7 +173,7 @@ const Chat = () => {
                >
                  Translate</Button>
             </Grid>
-        </Grid>
+        </Grid> */}
         <Grid container component={Paper} className={classes.chatSection}>
             <Grid item xs={3} className={classes.borderRight500}>
               <List>
@@ -178,7 +190,7 @@ const Chat = () => {
                         <TextField value={text} onChange={handleTextFieldChange} id="outlined-basic-email" label="Type Something" fullWidth />
                     </Grid>
                     <Grid item xs={1} align="right">
-                        <Fab onClick={handleMessageSubmit} color="primary" aria-label="add" ><SendIcon /></Fab>
+                        <Fab onClick={handleMessageSubmit} color="primary" aria-label="add" size='small' ><SendIcon /></Fab>
                     </Grid>
                 </Grid>
             </Grid>
