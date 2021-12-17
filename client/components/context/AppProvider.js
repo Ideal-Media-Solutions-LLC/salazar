@@ -18,25 +18,20 @@ function AppProvider({ children }) {
   //const [loading, setLoading] = useState(true);
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, result => {
-
       if (result === null) {
         setUser({});
       } else {
-
-
         axios.get(`http://localhost:3002/user?uid=${result.uid}`)
         .then(res => {
           setUser({...result, ...res.data});
-
-  
         })
         .catch(error => {
           console.log(error);
         })
-
+      }
+      return unsub;
     })
-    return unsub;
-  }, [])
+  }, []);
 
   const [curUser, setCurUser] = useState({
     uid: 'test uid',
