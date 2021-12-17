@@ -39,7 +39,7 @@ export default function VideoChat() {
 
     </Header>
 
-    <Layout className='innerlayout'>
+    <Layout className='innerlayoutVideo'>
 
       <Content className='content'>
       <VideoMeet meetString={useRouter().query.videoid}/>

@@ -300,17 +300,17 @@ export default function Transcribe() {
   }
 
   return (
-    <div id="transcriber" onKeyDown={handleKeyPress}>
-      <div id="content" className="transcription">
-        <table id="captionOptions">
+    <div className='Vcontent' onKeyDown={handleKeyPress}>
+      <div >
+        <table >
             <tr>
-              <td align="right"></td>
-              <td align="left"><button id="enableTranslation" onClick={onClickEnableTranslation} style={{display: enableButtonOnOff ? 'block' : 'none' }} >Enable Translation</button></td>
+              <td ></td>
+              <td ><button  onClick={onClickEnableTranslation} style={{display: enableButtonOnOff ? 'block' : 'none' }} >Enable Translation</button></td>
             </tr>
             <tr>
-                <td align="right">Recognition language:</td>
-                <td align="left">
-                    <select id="languageOptions" onChange={onChangeLanguageInput}>
+                <td >Recognition language:</td>
+                <td >
+                    <select  onChange={onChangeLanguageInput}>
                         <option value="en-US" selected="selected">English - US</option>
                         <option value="zh-CN">Chinese - CN</option>
                         <option value="de-DE">German - DE</option>
@@ -326,11 +326,11 @@ export default function Transcribe() {
                 </td>
             </tr>
 
-            <tr id="translationOptionsRow">
-                <td align="right">Translation:</td>
+            <tr >
+                <td >Translation:</td>
                 <td>
-                    <label htmlFor="languageTargetOptions">Target language</label>
-                    <select id="languageTargetOptions" onChange={onChangeLanguageTarget}>
+                    {/* <label htmlFor="languageTargetOptions">Target language</label> */}
+                    <select  onChange={onChangeLanguageTarget}>
                         <option value="Microsoft Server Speech Text to Speech Voice (de-DE, Hedda)" selected="selected">
                             German - DE</option>
                         <option value="Microsoft Server Speech Text to Speech Voice (en-US, ZiraRUS)">English - US
@@ -358,15 +358,15 @@ export default function Transcribe() {
             </tr>
 
             <tr>
-                <td align="right"><b></b></td>
+                <td ><b></b></td>
                 <td>
-                    <button id="scenarioStartButton" onClick={onClickScenarioStartButton} disabled={!startButtonEnabled}>Start</button>
-                    <button id="scenarioStopButton" onClick={onClickScenarioStopButton} disabled={!stopButtonEnabled}>Stop</button>
+                    <button  onClick={onClickScenarioStartButton} disabled={!startButtonEnabled}>Start</button>
+                    <button  onClick={onClickScenarioStopButton} disabled={!stopButtonEnabled}>Stop</button>
                 </td>
             </tr>
             <tr>
-                <td align="right">Results:</td>
-                <td align="left">
+                <td >Results:</td>
+                <td >
                     {/* <textarea id="phraseDiv" style={{width: "250px", height: "250px"}} value={phraseDivText} onChange={onTextAreaChange}></textarea> */}
                     <textarea id="phraseDiv" style={{width: "500px", height: "500px"}}  onChange={onTextAreaChange} ref={phraseTextAreaRef} value={phraseDivText} readOnly={true}></textarea>
                 </td>
