@@ -303,79 +303,76 @@ export default function Transcribe() {
   return (
     <div className='Vcontent' onKeyDown={handleKeyPress}>
       <table >
-          <div className='Vright'>
-              <tr>
-                <td ></td>
-                <td ><button  onClick={onClickEnableTranslation} style={{display: enableButtonOnOff ? 'block' : 'none' }} >Enable Translation</button></td>
-              </tr>
-              <tr>
-                  <td >Recognition language:</td>
-                  <td >
-                      <select  onChange={onChangeLanguageInput}>
-                          <option value="en-US" selected="selected">English - US</option>
-                          <option value="zh-CN">Chinese - CN</option>
-                          <option value="de-DE">German - DE</option>
-                          <option value="es-ES">Spanish - ES</option>
-                          <option value="fr-FR">French - FR</option>
-                          <option value="it-IT">Italian - IT</option>
-                          <option value="ja-JP">Japanese - JP</option>
-                          <option value="ko-KR">Korean - KR</option>
-                          <option value="pt-PT">Portuguese - PT</option>
-                          <option value="ru-RU">Russian - RU</option>
-                          <option value="sv-SE">Swedish - SE</option>
-                      </select>
-                  </td>
-              </tr>
-
-              <tr >
-                  <td >Translation:</td>
-                  <td>
-                      {/* <label htmlFor="languageTargetOptions">Target language</label> */}
-                      <select  onChange={onChangeLanguageTarget}>
-                          <option value="Microsoft Server Speech Text to Speech Voice (de-DE, Hedda)" selected="selected">
-                              German - DE</option>
-                          <option value="Microsoft Server Speech Text to Speech Voice (en-US, ZiraRUS)">English - US
-                          </option>
-                          <option value="Microsoft Server Speech Text to Speech Voice (es-ES, Laura, Apollo)">Spanish - ES
-                          </option>
-                          <option value="Microsoft Server Speech Text to Speech Voice (fr-FR, Julie, Apollo)">French - FR
-                          </option>
-                          <option value="Microsoft Server Speech Text to Speech Voice (it-IT, LuciaRUS)">Italian - IT
-                          </option>
-                          <option value="Microsoft Server Speech Text to Speech Voice (ja-JP, Ayumi, Apollo)">Japanese -
-                              JP</option>
-                          <option value="Microsoft Server Speech Text to Speech Voice (ko-KR, HeamiRUS)">Korean - KR
-                          </option>
-                          <option value="Microsoft Server Speech Text to Speech Voice (pt-PT, HeliaRUS)">Portuguese - PT
-                          </option>
-                          <option value="Microsoft Server Speech Text to Speech Voice (ru-RU, Irina, Apollo)">Russian - RU
-                          </option>
-                          <option value="Microsoft Server Speech Text to Speech Voice (sv-SE, HedvigRUS)">Swedish - SE
-                          </option>
-                          <option value="Microsoft Server Speech Text to Speech Voice (zh-CN, Kangkang, Apollo)">Chinese -
-                              CN</option>
-                      </select>
-                  </td>
-              </tr>
-
-              <tr>
-                  <td ><b></b></td>
-                  <td>
-                      <button  onClick={onClickScenarioStartButton} disabled={!startButtonEnabled}>Start</button>
-                      <button  onClick={onClickScenarioStopButton} disabled={!stopButtonEnabled}>Stop</button>
-                  </td>
-              </tr>
-            </div>
-            
+        <tbody className='Vright'>
+          <div >
+            <tr>
+              <td ></td>
+              <td ><button  onClick={onClickEnableTranslation} style={{display: enableButtonOnOff ? 'block' : 'none' }} >Enable Translation</button></td>
+            </tr>
+            <tr>
+              <td >Recognition language:</td>
+              <td >
+                <select defaultValue="en-US" onChange={onChangeLanguageInput}>
+                  <option value="en-US">English - US</option>
+                  <option value="zh-CN">Chinese - CN</option>
+                  <option value="de-DE">German - DE</option>
+                  <option value="es-ES">Spanish - ES</option>
+                  <option value="fr-FR">French - FR</option>
+                  <option value="it-IT">Italian - IT</option>
+                  <option value="ja-JP">Japanese - JP</option>
+                  <option value="ko-KR">Korean - KR</option>
+                  <option value="pt-PT">Portuguese - PT</option>
+                  <option value="ru-RU">Russian - RU</option>
+                  <option value="sv-SE">Swedish - SE</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td >Translation:</td>
+              <td>
+                <select defaultValue="Microsoft Server Speech Text to Speech Voice (de-DE, Hedda)" onChange={onChangeLanguageTarget}>
+                  <option value="Microsoft Server Speech Text to Speech Voice (de-DE, Hedda)">
+                      German - DE</option>
+                  <option value="Microsoft Server Speech Text to Speech Voice (en-US, ZiraRUS)">English - US
+                  </option>
+                  <option value="Microsoft Server Speech Text to Speech Voice (es-ES, Laura, Apollo)">Spanish - ES
+                  </option>
+                  <option value="Microsoft Server Speech Text to Speech Voice (fr-FR, Julie, Apollo)">French - FR
+                  </option>
+                  <option value="Microsoft Server Speech Text to Speech Voice (it-IT, LuciaRUS)">Italian - IT
+                  </option>
+                  <option value="Microsoft Server Speech Text to Speech Voice (ja-JP, Ayumi, Apollo)">Japanese -
+                      JP</option>
+                  <option value="Microsoft Server Speech Text to Speech Voice (ko-KR, HeamiRUS)">Korean - KR
+                  </option>
+                  <option value="Microsoft Server Speech Text to Speech Voice (pt-PT, HeliaRUS)">Portuguese - PT
+                  </option>
+                  <option value="Microsoft Server Speech Text to Speech Voice (ru-RU, Irina, Apollo)">Russian - RU
+                  </option>
+                  <option value="Microsoft Server Speech Text to Speech Voice (sv-SE, HedvigRUS)">Swedish - SE
+                  </option>
+                  <option value="Microsoft Server Speech Text to Speech Voice (zh-CN, Kangkang, Apollo)">Chinese -
+                      CN</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><b></b></td>
+              <td>
+                <button  onClick={onClickScenarioStartButton} disabled={!startButtonEnabled}>Start</button>
+                <button  onClick={onClickScenarioStopButton} disabled={!stopButtonEnabled}>Stop</button>
+              </td>
+            </tr>
+          </div>
+        </tbody>
       </table>
       <div id="captionsoutput">
-          {/* <textarea id="phraseDiv" style={{width: "250px", height: "250px"}} value={phraseDivText} onChange={onTextAreaChange}></textarea> */}
-          <textarea id="phraseDiv"   onChange={onTextAreaChange} ref={phraseTextAreaRef} value={phraseDivText} readOnly={true}></textarea>
+        <textarea id="phraseDiv"   onChange={onTextAreaChange} ref={phraseTextAreaRef} value={phraseDivText} readOnly={true}></textarea>
         <div style={{display:'none'}}>
           <textarea id="statusDiv" style={{width: "250px", height: "250px"}} value={statusDivText} onChange={onTextAreaChange}>
           </textarea>
         </div>
-        </div>
+      </div>
       <Script src="../microsoft.cognitiveservices.speech.sdk.bundle.js"/>
     </div>
   )
