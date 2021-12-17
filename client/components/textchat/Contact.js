@@ -27,9 +27,10 @@ const Contact = (props) => {
 
     }
       }>
-        <ListItemIcon>
+        {window.innerWidth > 400? <ListItemIcon>
             <Avatar selected={selected} alt={props.name} src="https://material-ui.com/static/images/avatar/1.jpg" />
-        </ListItemIcon>
+        </ListItemIcon> : null}
+
         <ListItemText primary={props.name}>{props.name}</ListItemText>
         <Divider />
     </ListItem>
