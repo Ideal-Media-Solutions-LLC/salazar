@@ -10,8 +10,8 @@ import { Form, Input, Space, Select } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { useApp, AppContext } from '../context/AppProvider.js';
 import { LogoutUser } from '../homepage/dbUtils.js'
-
 import port from '../../../back/port.js';
+import url from '../../url.js';
 
 export default function Sidebar() {
 
@@ -49,7 +49,7 @@ export default function Sidebar() {
 
     axios({
       method: 'post',
-      url: `http://localhost:${port}/languages`,
+      url: `${url}${port}/languages`,
       data: body
     })
 

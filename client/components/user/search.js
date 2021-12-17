@@ -7,7 +7,7 @@ import Card from './card.js';
 import axios from 'axios';
 import { useApp } from '../context/AppProvider.js';
 import port from '../../../back/port.js';
-
+import url from '../../url.js';
 const { Option } = Select;
 
 
@@ -81,7 +81,7 @@ export default function Search() {
   useEffect(() => {
 
     if (uid) {
-      axios.get(`http://localhost:${port}/users`, {
+      axios.get(`${url}${port}/users`, {
         params: {uid}
       })
         .then(results => {

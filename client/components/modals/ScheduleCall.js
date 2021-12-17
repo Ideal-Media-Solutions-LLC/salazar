@@ -5,7 +5,7 @@ import styles from '../../styles/modals/ScheduleCall.module.css';
 import axios from 'axios';
 import { useApp } from '../context/AppProvider.js';
 import port from '../../../back/port.js';
-
+import url from '../../url.js';
 
 const ScheduleCall = function(props) {
   const { stsTokenManager, uid, displayName } = useApp().user;
@@ -70,7 +70,7 @@ const ScheduleCall = function(props) {
 
     data.date = startTime;
     data.end = endTime;
-    axios.post(`http://localhost:${port}/calendar/create`, data)
+    axios.post(`${url}${port}/calendar/create`, data)
       .then(results => {
         props.close(null);
       })

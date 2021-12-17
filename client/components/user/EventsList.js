@@ -7,7 +7,7 @@ import { VideoCameraOutlined } from '@ant-design/icons';
 
 import port from '../../../back/port.js';
 const { Panel } = Collapse;
-
+import url from '../../url.js';
 const EventsList = function(props) {
   const { stsTokenManager, uid, displayName} = useApp().user;
   const [page, setPage] = useState(0);
@@ -30,7 +30,7 @@ const EventsList = function(props) {
   }
   useEffect(()=>{
     if (uid) {
-      axios.get(`http://localhost:${port}/calendar/list`,{
+      axios.get(`${url}${port}/calendar/list`,{
         params:{
           token: stsTokenManager,
           uid

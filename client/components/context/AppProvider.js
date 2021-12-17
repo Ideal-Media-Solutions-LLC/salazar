@@ -4,7 +4,7 @@ import { initializeApp } from 'firebase/app';
 import axios from 'axios';
 import firebaseConfig from "../homepage/FirebaseConfig";
 import port from '../../../back/port.js';
-
+import url from '../../url.js';
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 
@@ -20,7 +20,7 @@ function AppProvider({ children }) {
         setUser({});
       }
 
-      axios.get(`http://localhost:${port}/user?uid=${result.uid}`)
+      axios.get(`${url}${port}/user?uid=${result.uid}`)
       .then(res => {
         // console.log('api response', res);
         setUser({...result, ...res.data});
