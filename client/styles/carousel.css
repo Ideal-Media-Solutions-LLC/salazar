@@ -29,6 +29,11 @@ body {
   background-size: cover; */
 }
 
+.home-para {
+  text-align: center;
+}
+
+
 .homepage-logo {
   height: 40px;
 }
@@ -75,10 +80,13 @@ body {
 }
 
 .active {
-  padding-top: 100px;
+  padding-top: 120px;
 }
 
-
+.home-para p {
+  font-size: larger;
+  /* padding: 8%; */
+}
 
 
 /* Featurettes
@@ -127,10 +135,24 @@ body {
   .featurette-heading {
     font-size: 50px;
   }
+
+  .home-para p {
+    margin-left: 8%;
+    margin-right: 8%;
+  }
 }
 
 @media (min-width: 62em) {
   .featurette-heading {
     margin-top: 5rem;
+  }
+
+}
+
+@media (max-width: 375px) {
+  .home-para p {
+    font-size: 15px;
+    margin-left: 5%;
+    margin-right: 5%;
   }
 }
