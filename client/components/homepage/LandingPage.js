@@ -42,7 +42,7 @@ export default function LandingPage() {
                 <p>{t('home:home_paragraph')}</p>
                 <div>
 
-                  <div className="btn btn-lg btn-primary" onClick={handleSignInWithGoogle} role="button" style={{marginTop:'0px'}}>{t('home:start_your_journey')} </div>
+                  <div className="btn btn-lg btn-primary" onClick={handleSignInWithGoogle} role="button">{t('home:start_your_journey')}</div>
                 </div>
                 {/* </div> */}
               </div>

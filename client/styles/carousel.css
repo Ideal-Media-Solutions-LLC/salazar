@@ -89,9 +89,9 @@ body {
 }
 
 .school {
-  font-family: Verdana;
+  font-family: cursive;
   font-variant-caps: petite-caps;
-  font-style: italic;
+  font-weight: bolder;
   text-shadow: 0 0 black;
 }
 
