@@ -7,7 +7,7 @@ import Select from '@mui/material/Select';
 const Languages = (props) => {
 
   return (
-    <FormControl fullWidth>
+    <FormControl fullWidth size="small">
         <InputLabel id="demo-simple-select-label">Select a language</InputLabel>
         <Select
                   labelId="demo-simple-select-label"

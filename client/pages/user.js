@@ -76,15 +76,12 @@ export default function User() {
           <TabPane tab=<CommentOutlined style={{ fontSize: '20px', width: '10px' }} /> key="2">
           <Chat />
         </TabPane>
-        <TabPane tab=<VideoCameraOutlined style={{ fontSize: '20px', width: '10px' }} /> key="3">
-        Content of Tab Pane 3
-      </TabPane>
     </Tabs>
 
 
           </Content >
         </Layout >
-    <Footer className='footer'>Footer</Footer>
+    <Footer className='footer'>Copyright©Team Slytherin</Footer>
 
       </Layout >
 
