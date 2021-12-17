@@ -140,16 +140,12 @@ const Chat = () => {
 
   return (
       <div>
-        <div style={{width: '350px', right: '10px'}}>
-        <Languages language={language} handleSelect={handleSelect}
-                 style ={{
-                  display: 'inline-block',
-                   width: '50px'
-                   }}/>
-        <Button variant="text" onClick={handleTranslateButtonClick}
+        <div style={{width: '350px', float: 'right'}}>
+        <Languages language={language} handleSelect={handleSelect}/>
+        <Button variant="text" size='small' onClick={handleTranslateButtonClick}
                  style={{
                    color: 'black',
-                   display: 'inline-block'
+                   padding: '10px 5px'
                  }}
                >
                  Translate</Button>
