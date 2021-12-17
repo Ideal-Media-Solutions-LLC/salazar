@@ -3,11 +3,33 @@
   justify-content: space-between;
   margin: 10px;
 }
+
 .Message {
   display: flex;
   flex-direction: column;
   row-gap: 10px;
   justify-content: space-between;
+}
+
+.Header {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+}
+
+.Title {
+  display: flex;
+  font-size: 14px;
+  font-weight: 500;
+  justify-content: left;
+}
+
+.TimeTo {
+  display: flex;
+  font-size: 10px;
+  font-weight: 700;
+  color: rgb(67, 158, 116);
+  justify-content: left;
 }
 
 .Summary {

@@ -74,9 +74,7 @@ export function LogoutUser() {
   //     console.log(e);
   //   });
   Router.push('/').then(() => {
-    signOut(auth).then(() => {
-      console.log('loggedout');
-    })
+    signOut(auth)
   });
 }
 
