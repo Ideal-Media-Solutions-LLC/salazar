@@ -47,15 +47,17 @@ const EventsList = function(props) {
   },[uid])
   return (
     <div>
-      <div className = {styles.buttons}>
-        {page ? <Button className = 'button' onClick = {()=> {setPage(page-3)}}>◁</Button> : <Button className = 'button'  disabled onClick = {()=> {setPage(page-3)}}>◁</Button>}
-        {/* {page ? <DoubleLeftOutlined className = 'button' onClick = {()=> {setPage(page-3)}}/>: <DoubleLeftOutlined className = 'button'  disabled onClick = {()=> {setPage(page-3)}}>} */}
 
-        {events && events.length > 3 + page ? <Button className = 'button' onClick = {()=> {setPage(page+3)}}>▷</Button> : <Button className = 'button' disabled>▷</Button>}
+      <div className = {styles.buttons}>
+        {page ? <Button className = 'buttonS' onClick = {()=> {setPage(page-3)}}>◁</Button> : <Button className = 'buttonS'  disabled onClick = {()=> {setPage(page-3)}}>◁</Button>}
+
+        <Typography style={{fontWeight:'bold'}}>Scheduled Calls</Typography>
+
+        {events && events.length > 3 + page ? <Button className = 'buttonS' onClick = {()=> {setPage(page+3)}}>▷</Button> : <Button className = 'buttonS' disabled>▷</Button>}
       </div>
 
-      <Collapse accordion>
-      {console.log(events)}
+      <Collapse accordion style={{border:'transparent', backgroundColor: '#F5F5F5'}}>
+      {/* {console.log('events:', events)} */}
       {events && events.slice(page,(page * 2 || 3)).map((event, i) => {
         return (
           <Panel header={

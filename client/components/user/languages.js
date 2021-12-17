@@ -19,8 +19,10 @@ export default function Languages() {
 
 
   return (
-    <Form name="dynamic_form_nest_item" onFinish={onFinish} autoComplete="off" initialValues={{ langs: languages }}>
-      <Form.List name="langs">
+
+    <Form name="dynamic_form_nest_item" onFinish={onFinish} autoComplete="off" initialValues={{langs: languages}} >
+      <Form.List name="langs" >
+
         {(fields, { add, remove }) => (
           <>
             {fields.map(({ key, name, fieldKey, ...restField }) => (

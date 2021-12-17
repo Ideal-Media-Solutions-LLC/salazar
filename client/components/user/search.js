@@ -89,7 +89,6 @@ export default function Search() {
         params: { uid }
       })
         .then(results => {
-          console.log(results.data);
           setUsers(results.data);
           setShowUsers(results.data);
         })

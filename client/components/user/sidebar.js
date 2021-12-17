@@ -16,7 +16,6 @@ import { useTranslation } from "react-i18next";
 import port from '../../../back/port.js';
 
 export default function Sidebar() {
-
   const appContext = useContext(AppContext);
 
   const [visible, setVisible] = useState(false);
@@ -26,7 +25,7 @@ export default function Sidebar() {
 
 
   const user = appContext.user;
-  console.log(user);
+
   const logOut = () => {
     LogoutUser();
   }
@@ -65,19 +64,15 @@ export default function Sidebar() {
     const newLangs = languages.slice(0);
     newLangs.splice(key, 1, Object.assign(languages[key] || {}, { lang: e }));
     setLanguages(newLangs);
-    console.log('newLanges', newLangs);
   }
 
   const handleLanguageLevelChange = (e, key) => {
-    console.log('e', e);
     const newLangs = languages.slice(0);
     newLangs.splice(key, 1, Object.assign(languages[key] || {}, { langLevel: e, langLevelLabel: levelList[e - 1].label }));
     setLanguages(newLangs);
-    console.log('newLanges', newLangs);
   }
 
   useEffect(() => {
-    console.log('init languages', user.languages);
     if (user && user.languages) {
       syncLanguages();
     }
@@ -91,12 +86,9 @@ export default function Sidebar() {
     setTimeout(function () {
       setLanguages(newLanges);
     }, 200);
-    console.log('synced', newLanges);
   }
 
-
   const onFinish = values => {
-    console.log('Received values of form:', values);
   };
 
   const { Option } = Select;
@@ -104,11 +96,8 @@ export default function Sidebar() {
   const { curLangList, setCurLangList } = useState([]);
   const { langchange } = {};
 
-
-
   return (
     <div className='useinfo'>
-      {console.log('context languages', languages)}
       {user ?
         <div>
           <img className='profilepic'
@@ -118,7 +107,6 @@ export default function Sidebar() {
           />
 
           <div style={{ fontWeight: 'bold', fontSize: '16px', marginBottom: '10px' }}>{user.displayName}</div>
-
 
           <Button className='button' type="primary" onClick={showModal}>
             {t('home:language')}
@@ -134,7 +122,7 @@ export default function Sidebar() {
                         <>
                           {fields.map(({ key, name, fieldKey, ...restField }) => (
                             <Space key={key} style={{ display: 'flex', margin: '0px' }} align="baseline">
-                              {console.log('fields', fields)}
+
                               <Form.Item
                                 {...restField}
                                 name={[name, 'language']}
@@ -186,17 +174,14 @@ export default function Sidebar() {
         </div>
         : null}
 
-
       <Button className='button' type="primary" onClick={logOut} >
         {t('home:log_out')}
       </Button>
 
       <div className='calendar'>
-        <Typography><h5>{t('home:schedule')}</h5></Typography>
+
         <EventsList />
       </div>
-
-
 
     </div>
 

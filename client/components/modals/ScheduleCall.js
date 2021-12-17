@@ -92,7 +92,7 @@ const ScheduleCall = function(props) {
     footer = {null}
     >
        <label className = {styles.languageContainer}>
-         <Typography><h5>I want to practice :</h5> </Typography>
+         <Typography>I want to practice :</Typography>
        <Select
         onChange ={(value)=> {setLanguage(value)}}
         className = {styles.language} placeholder = 'Language'>
@@ -101,18 +101,18 @@ const ScheduleCall = function(props) {
           })}
         </Select>
        </label>
-      <form className = {styles.form}>
+      <form className = {styles.form} >
 
         <div className = {styles.date}>
 
         <div className = 'time'>
           <label className = {styles.timeLabel}>
-              <h3 style = {{'align-self': 'center'}}>Time</h3>
+              <p style = {{'align-self': 'center'}}>Time</p>
             <select
               className = {styles.time}
               onChange = {(e) => {setTime({...time, hour: e.target.value})}}
             >
-            <option value="" selected disabled hidden>Hour</option>
+            <option value="" selected disabled hidden style={{border:'solid red 1px'}}>Hour</option>
             {[...Array.from(Array(12).keys())].map(i => {
               return (<option value = {i + 1}>{i+1}</option>)
             })}
@@ -142,7 +142,7 @@ const ScheduleCall = function(props) {
 
 
         <label style = {{display: 'flex', 'flex-direction': 'column'}}>
-          <h3 style = {{'align-self': 'center'}}>Message</h3>
+          <p style = {{'align-self': 'center'}}>Message</p>
           <Input.TextArea
           showCount maxLength = {200}
           style = {{height: 155}}
@@ -151,7 +151,7 @@ const ScheduleCall = function(props) {
 
         </label>
 
-        <Button style = {{'grid-column': '1/span2'}} type="primary" onClick={() => {sendInvitation()}}>
+        <Button className='buttonL' style = {{'grid-column': '1/span2'}} type="primary" onClick={() => {sendInvitation()}}>
             Send Calendar Invite
           </Button>
       </form>

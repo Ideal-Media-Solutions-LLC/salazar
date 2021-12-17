@@ -16,8 +16,6 @@ const SignUpForm = function (props) {
 
   const { t } = useTranslation();
 
-
-
   const handleSubmit = function (e) {
     console.log(e.target);
     e.preventDefault();

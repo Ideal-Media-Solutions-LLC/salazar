@@ -32,6 +32,7 @@ export default function MessageUser(props) {
   }
   return (
     <Modal
+
       visible={true}
       cancelButtonProps={{ disabled: true }}
       onCancel={() => { props.close(null) }}
@@ -41,14 +42,17 @@ export default function MessageUser(props) {
       <form className={styles.form}>
         <TextArea
 
+
           onChange={(e) => { setMessage(e.target.value) }}
           placeholder={t('home:Enter Message..')}
           autoSize={{ minRows: 3, maxRows: 4 }}
         />
-        <div className={styles.buttonContainer}>
-          <Button
-            onClick={sendMessage}
-            className={styles.button}><SendOutlined /></Button>
+
+        <div className = {styles.buttonContainer}>
+           <Button
+            onClick = {sendMessage}
+            className = 'buttonS'><SendOutlined /></Button>
+
         </div>
 
       </form>

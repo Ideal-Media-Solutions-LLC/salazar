@@ -25,7 +25,7 @@ export default function Card(props) {
   return (
     <div className='card'>
       <div >
-        <Image
+        <img
             preview = {false}
             className='profilepic'
             src={props.user.photo || "/assets/icon.png"}
@@ -34,23 +34,23 @@ export default function Card(props) {
             layout='intrinsic'
             alt = 'profile-picture'
         />
-
-      </div>
-
-      <div>
+        <div style={{fontWeight:'bold'}}>
         {displayName}
+        </div>
+
       </div>
 
       <div className = {styles.languagesList}>
         {listLanguages()}
       </div>
 
-      <div>
+      <div style={{marginBottom:'10px'}}>
       <MessageOutlined
       onClick = {()=>{
         props.setModalMessage(<MessageUser user = {{uid, displayName}} close = {props.setModalMessage}/>)
-        }} style ={{fontSize: '20px', margin: '10px'}}/>
-      <CalendarOutlined onClick = {()=> {props.setModalSchedule( <ScheduleCall user = {{uid, displayName, languages}} close = {props.setModalSchedule}/>)}} style ={{fontSize: '20px', margin: '10px'}}/>
+        }} className='buttonS' style={{marginRight:'40px'}}/>
+
+      <CalendarOutlined onClick = {()=> {props.setModalSchedule( <ScheduleCall user = {{uid, displayName, languages}} close = {props.setModalSchedule}/>)}} className='buttonS'/>
       </div>
 
     </div>

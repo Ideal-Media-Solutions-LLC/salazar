@@ -18,19 +18,22 @@ function AppProvider({ children }) {
   //const [loading, setLoading] = useState(true);
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, result => {
-      //console.log('onauth', result);
+
       if (result === null) {
         setUser({});
-      }
+      } else {
 
-      axios.get(`http://localhost:${port}/user?uid=${result.uid}`)
+
+        axios.get(`http://localhost:3002/user?uid=${result.uid}`)
         .then(res => {
-          // console.log('api response', res);
-          setUser({ ...result, ...res.data });
+          setUser({...result, ...res.data});
+
+  
         })
         .catch(error => {
           console.log(error);
         })
+
     })
     return unsub;
   }, [])
@@ -78,7 +81,6 @@ function AppProvider({ children }) {
 }
 
 function useApp() {
-  //console.log('yo');
   const result = useContext(AppContext);
   return result;
 }
