@@ -23,7 +23,7 @@ app.get('/', (req, res) => {
 //#region user auth
 
 app.get('/auth', async (req, res) => {
-  console.log('/auth');
+  //console.log('/auth');
   const result = await firefunctions.get(req.query.uid, 'Users');
   if (result === null) {
     res.send(true);
@@ -51,7 +51,7 @@ app.post('/auth', async (req, res) => {
   */
   const usersWrite = await firefunctions.write(req.body.uid, data, 'Users');
   const messageWrite = await firefunctions.write(req.body.uid, {}, 'Messages');
-  res.send(201);
+  res.sendStatus(201);
 });
 
 app.get('/user', async (req, res) => {
@@ -88,15 +88,15 @@ app.post('/languages', async (req, res) => {
   let data = req.body.languages;
   let key = req.body.uid;
   let result = await firefunctions.updateLanguages(key, data);
-  res.send(201);
+  res.sendStatus(201);
 })
 
 app.post('/key', async (req, res) => {
-  console.log(req.body);
+  //console.log(req.body);
   let data = req.body.apikey;
   let key = req.body.uid;
   let result = await firefunctions.write(key, {apikey: req.body.apikey}, 'Keys');
-  res.send(201);
+  res.sendStatus(201);
 });
 
 //#endregion
