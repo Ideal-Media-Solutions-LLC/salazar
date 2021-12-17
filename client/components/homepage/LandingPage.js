@@ -6,12 +6,10 @@ import { urlObjectKeys } from "next/dist/shared/lib/utils";
 
 import { useTranslation, initReactI18next } from "react-i18next";
 import { createContext, useContext } from "react";
-// import { useAppContext } from "../context/State";
 import LanguageDropdown from "./LanguageDropdown";
 import Hamburger from "./Hamburger";
 
 export default function LandingPage() {
-  // const { uid } = useAppContext();
   const { t } = useTranslation();
 
   const options = {
@@ -39,16 +37,14 @@ export default function LandingPage() {
 
           <div className="carousel-inner">
             <div className="carousel-item active">
-              {/* <img className="homepage-img" src="../public/assets/background.jpg" alt="First slide" /> */}
-              <div className="container" >
-                <div className="carousel-caption text-left" >
-                  <h1>{t('home:Salazar_School')}</h1>
-                  <p>{t('home:home_paragraph')}</p>
-                  <div>
+              <div className="home-para" >
+                <h1 className='school'>{t('home:Salazar_School')}</h1>
+                <p>{t('home:home_paragraph')}</p>
+                <div>
 
-                    <div className="btn btn-lg btn-primary" onClick={handleSignInWithGoogle} role="button">{t('home:start_your_journey')}</div>
-                  </div>
+                  <div className="btn btn-lg btn-primary" onClick={handleSignInWithGoogle} role="button">{t('home:start_your_journey')}</div>
                 </div>
+                {/* </div> */}
               </div>
             </div>
 
@@ -113,10 +109,9 @@ export default function LandingPage() {
 
 
         {/* <!-- FOOTER --> */}
-        {/* <LanguageDropdown /> */}
         <footer className="container">
           <p className="float-right"><a href="#">{t('home:Back_to_top')}</a></p>
-          <p>&copy; 2021 {t('home:Group')}. &middot; <a href="#">{t('home:Privacy')}</a> &middot; <a href="#">{t('home:Terms')}</a></p>
+          <p>&copy; 2021 {t('home:Group')} &middot; <a href="#"></a> &middot; <a href="#"></a></p>
           <div>   </div>
         </footer>
       </main>

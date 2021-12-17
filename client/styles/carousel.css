@@ -29,6 +29,11 @@ body {
   background-size: cover; */
 }
 
+.home-para {
+  text-align: center;
+}
+
+
 .homepage-logo {
   height: 40px;
 }
@@ -55,10 +60,10 @@ body {
 
 }
 
-/* Since positioning the image, we need to help out the caption */
-.carousel-caption {
-  /* z-index: 10; */
+.dropdown-menu {
+  position: absolute !important;
 }
+
 
 /* Declare heights because of positioning of img element */
 .carousel-item {
@@ -68,15 +73,27 @@ body {
 }
 
 .carousel-item>img {
-  position: absolute;
   top: 0;
   left: 0;
   min-width: 100%;
   height: 32rem;
 }
 
+.active {
+  padding-top: 120px;
+}
 
+.home-para p {
+  font-size: larger;
+  /* padding: 8%; */
+}
 
+.school {
+  font-family: cursive;
+  font-variant-caps: petite-caps;
+  font-weight: bolder;
+  text-shadow: 0 0 black;
+}
 
 /* Featurettes
 ------------------------- */
@@ -104,9 +121,11 @@ body {
   padding: 20px;
 }
 
-.container{
+.container {
   padding-bottom: 15px;
+  /* padding-top:120px; */
 }
+
 /* RESPONSIVE CSS
 -------------------------------------------------- */
 
@@ -122,10 +141,24 @@ body {
   .featurette-heading {
     font-size: 50px;
   }
+
+  .home-para p {
+    margin-left: 8%;
+    margin-right: 8%;
+  }
 }
 
 @media (min-width: 62em) {
   .featurette-heading {
     margin-top: 5rem;
+  }
+
+}
+
+@media (max-width: 375px) {
+  .home-para p {
+    font-size: 15px;
+    margin-left: 5%;
+    margin-right: 5%;
   }
 }

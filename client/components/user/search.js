@@ -7,6 +7,8 @@ import Card from './card.js';
 import axios from 'axios';
 import { useApp } from '../context/AppProvider.js';
 import port from '../../../back/port.js';
+import { useTranslation } from "react-i18next";
+
 
 const { Option } = Select;
 
@@ -40,20 +42,20 @@ const levelList = [
   { label: 'Advanced', value: 3 },
   { label: 'Native', value: 4 },
 ];
-const filter = function(users, languages, skills) {
+const filter = function (users, languages, skills) {
   const filtered = users.filter(user => {
     if (user.languages) {
       let result = false;
       languages.forEach(language => {
-          if (Object.keys(user.languages).includes(language)) {
-              if (skills.length > 0) {
-                  skills.forEach(skill => {
-                      user.languages[language] === skill ? result = true : null;
-                  })
-              } else {
-                  result = true
-              }
+        if (Object.keys(user.languages).includes(language)) {
+          if (skills.length > 0) {
+            skills.forEach(skill => {
+              user.languages[language] === skill ? result = true : null;
+            })
+          } else {
+            result = true
           }
+        }
       });
 
       return result;
@@ -72,6 +74,8 @@ export default function Search() {
   const [modalSchedule, setModalSchedule] = useState(null);
   const [modalMessage, setModalMessage] = useState(null);
   const [disabled, setDisabled] = useState(true);
+  const { t } = useTranslation();
+
   function handleChangeLanguage(value) {
     setSearchLanguages(value);
   }
@@ -82,7 +86,7 @@ export default function Search() {
 
     if (uid) {
       axios.get(`http://localhost:${port}/users`, {
-        params: {uid}
+        params: { uid }
       })
         .then(results => {
           setUsers(results.data);
@@ -90,8 +94,8 @@ export default function Search() {
         })
     }
 
-  },[uid])
-  useEffect(()=> {
+  }, [uid])
+  useEffect(() => {
     if (searchLanguages.length > 0) {
       setDisabled(false);
       setShowUsers(filter(users, searchLanguages, searchLevel));
@@ -105,11 +109,11 @@ export default function Search() {
       <div className='searchbar'>
 
         <div >
-          Languages:
+          {t('home:language')}
           <Select
             mode="multiple"
             style={searchbarStyle}
-            placeholder="select language  v"
+            placeholder={t('home:Select_lang')}
             defaultValue={[]}
             onChange={handleChangeLanguage}
             LabelProp="label"
@@ -117,10 +121,10 @@ export default function Search() {
 
             {languagesList.map((language, i) => (
               <Option value={language.value} label={language.label}>
-              <div className="demo-option-label-item">
-                {language.value}
-              </div>
-            </Option>
+                <div className="demo-option-label-item">
+                  {language.value}
+                </div>
+              </Option>
             ))}
 
 
@@ -129,11 +133,11 @@ export default function Search() {
         </div>
 
 
-        <div hidden = {disabled}>Levels:
+        <div hidden={disabled}> {t('home:level')}
           <Select
             mode="multiple"
             style={searchbarStyle}
-            placeholder= {disabled ? 'Select Language First' : "select level  v"}
+            placeholder={disabled ? t('home:Select_lang') : t('home:Select_level')}
 
             defaultValue={[]}
             onChange={handleChangeLevel}
@@ -142,10 +146,10 @@ export default function Search() {
 
             {levelList.map((level, i) => (
               <Option value={level.value} label={level.label}>
-              <div className="demo-option-label-item">
-                {level.label}
-              </div>
-            </Option>
+                <div className="demo-option-label-item">
+                  {level.label}
+                </div>
+              </Option>
             ))}
 
           </Select>
@@ -157,15 +161,15 @@ export default function Search() {
       <div className='userlist'>
         {showUsers.map((user, i) => {
           return <Card
-            user = {user}
-            setModalSchedule = {setModalSchedule}
-            setModalMessage = {setModalMessage}
-            key = {`usercard-${i}`}/>
+            user={user}
+            setModalSchedule={setModalSchedule}
+            setModalMessage={setModalMessage}
+            key={`usercard-${i}`} />
         })}
       </div>
 
-        {modalSchedule}
-        {modalMessage}
+      {modalSchedule}
+      {modalMessage}
     </div>
 
   );

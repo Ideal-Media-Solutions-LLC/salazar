@@ -201,12 +201,6 @@ async function getMessages(user_ID, other_ID) {
 
 async function postMessages(user_ID, other_ID, message) {
 
-  const q = doc(db, 'Messages', other_ID);
-  const qQ = await getDoc(q);
-  const store = qQ.data();
-  const getMessagesFromOther = store[user_ID];
-  var time = Timestamp.now();
-
   //make a history mark
   const qUser = doc(db, 'Messages', user_ID);
   const userQ = await getDoc(qUser);
@@ -225,11 +219,15 @@ async function postMessages(user_ID, other_ID, message) {
     };
     await setDoc(qUser, newObj);
   }
-  if (getMessagesFromOther) {
-    if (getMessagesFromOther.other_ID === undefined) {
-      getMessagesFromOther[user_ID] = user_ID;
+  const q = doc(db, 'Messages', other_ID);
+  const qQ = await getDoc(q);
+  const store = qQ.data();
+  const makeHistoryOther = store[other_ID];
+  if (makeHistoryOther) {
+    if (makeHistoryOther.other_ID === undefined) {
+      makeHistoryOther[user_ID] = user_ID;
     }
-    store[other_ID] = getMessagesFromOther;
+    store[other_ID] = makeHistoryOther;
     await setDoc(q, store);
   } else {
     var newObj = {}
@@ -239,10 +237,16 @@ async function postMessages(user_ID, other_ID, message) {
     await setDoc(q, newObj);
   }
 
+  const qr = doc(db, 'Messages', other_ID);
+  const qRr = await getDoc(qr);
+  const storeMsg = qRr.data();
+  const getMessagesFromOther = storeMsg[user_ID];
+  var time = Timestamp.now();
+
 
   //{reviever_ID: sender_ID: {msg}}
   if (getMessagesFromOther) {
-    const doc = await getDoc(q);
+    const doc = await getDoc(qr);
     const temp = doc.data();
     const chatArr = temp[user_ID];
     var obj = {
@@ -251,10 +255,10 @@ async function postMessages(user_ID, other_ID, message) {
     };
     chatArr.push(obj);
     temp[user_ID] = chatArr;
-    await setDoc(q, temp);
+    await setDoc(qr, temp);
     return true;
   } else {
-    const doc = await getDoc(q);
+    const doc = await getDoc(qr);
     const temp = doc.data();
     const chatArr = [];
     var obj = {
@@ -263,7 +267,7 @@ async function postMessages(user_ID, other_ID, message) {
     };
     chatArr.push(obj);
     temp[user_ID] = chatArr;
-    await setDoc(q, temp);
+    await setDoc(qr, temp);
     return true
   }
 }

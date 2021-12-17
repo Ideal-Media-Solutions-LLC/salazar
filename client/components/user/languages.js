@@ -3,6 +3,8 @@ import { Form, Input, Button, Space, Select } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { useApp, AppContext } from '../context/AppProvider.js';
 import React, { useEffect, useState, useContext } from "react";
+import { useTranslation } from "react-i18next";
+
 
 export default function Languages() {
   const onFinish = values => {
@@ -13,10 +15,14 @@ export default function Languages() {
   const { languagesList, levelList, curUser } = useContext(AppContext);
   const { languages } = curUser;
   const { curLangList, setCurLangList } = useState([]);
+  const { t } = useTranslation();
+
 
   return (
+
     <Form name="dynamic_form_nest_item" onFinish={onFinish} autoComplete="off" initialValues={{langs: languages}} >
       <Form.List name="langs" >
+
         {(fields, { add, remove }) => (
           <>
             {fields.map(({ key, name, fieldKey, ...restField }) => (
@@ -48,7 +54,7 @@ export default function Languages() {
             ))}
             <Form.Item>
               <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
-                Add Language
+                {t('home:add_language')}
               </Button>
             </Form.Item>
 

@@ -13,9 +13,11 @@ import port from '../../../back/port.js';
 
 const SignUpForm = function (props) {
   const { user, curUser, signUpPageLanguages } = useApp();
+
   const { t } = useTranslation();
 
   const handleSubmit = function (e) {
+    console.log(e.target);
     e.preventDefault();
 
     let obj = {
@@ -35,7 +37,6 @@ const SignUpForm = function (props) {
       uid: user.uid
     }
     axios.post(`http://localhost:${port}/auth`, obj).then((result) => {
-      console.log('posted!!!')
       //route
       return Router.push('/user');
     });
@@ -51,15 +52,9 @@ const SignUpForm = function (props) {
 
       <div className="form-group">
         <label>{t('home:user_name')} </label>
-        <input type="text" className="form-control" placeholder={t('home:first_name')} />
+        <input type="text" className="form-control" placeholder={t('home:user_name')} />
       </div>
-
-
-
-
       <LanguageSelector />
-
-
       <button type="submit" className="btn btn-primary btn-block" onClick={handleSubmit}>{t('home:Register')}</button>
 
     </form>
