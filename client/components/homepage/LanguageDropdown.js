@@ -85,7 +85,7 @@ export default function LanguageDropdown() {
   const handleChangeSystemLanguage = function (code) {
     cookies.set('i18next', code);
     const currentLanguageCode = cookies.get('i18next') || code;
-    return Router.push('/', code);
+    return Router.push('/', '/', { locale: code });
   };
 
   return (
