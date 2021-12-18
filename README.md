@@ -1,34 +1,26 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Salazar: Video Chat Language Exchange Application
 
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Summary
+   This application was designed to connect students that speak different languages with each other in order to facilitate language exchange. This is done by allowing students to schedule video calls with each other that have live translation. Allowing students to have conversations with each other in different languages and the ability to convert it into a language of their choice that they can understand. 
+   Since the students speak a variety of different languages the application offers the user a preference of language to display from the home page before signing in.
+## Features
+### Sign Up
+   - Google authentication is implemented using firebase.
+   - Users profiles are created with information from their gmail account
+   - Users can select multiple languages
+       - Identify their profiency of a language using 4 skill levels
+       - These fields are important for the search feature aloowing users to easily find other students of a specific language and proficiency.  
+##
+### Multi-Language Support
+ - il8 Package provides support translating page for following languages.
+     - English
+     - Spanish
+     - Portugues
+     - French
+     - Chinese
+     - Korean
+     - German
+     - Swedish
+     - Italian
+##
+### 
