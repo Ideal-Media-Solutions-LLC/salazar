@@ -51,7 +51,7 @@ export default function Transcribe() {
 
       axios({
         method: 'get',
-        url: `http://35.84.224.138:${port}/video/token`,
+        url: `http://localhost:${port}/video/token`,
         headers: {
           'Content-Type': 'application/json',
         }
@@ -70,7 +70,7 @@ export default function Transcribe() {
   // }
   //#endregion
 
-  var authorizationEndpoint = `http://35.84.224.138:${port}/video/token`;
+  var authorizationEndpoint = `http://localhost:${port}/video/token`;
 
   //#region event handlers
   const onTextAreaChange = function(e) {

@@ -2,6 +2,7 @@
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
+var fs = require("fs");
 require('dotenv').config();
 const port = require('../port.js');
 const api_z = require('../config.js');
@@ -11,6 +12,7 @@ const firefunctions = require('../helpers.js');
 //const req = require('express/lib/request');
 const { listEvents, createEvent } = require('../calendar.js');
 const { loadClient } = require('../googleCalApiClient.js');
+var https = require("https");
 
 const app = express();
 app.use(express.json());
@@ -250,6 +252,16 @@ app.get('/video/token', (req, res) => {
 //#endregion
 
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://35.84.224.138:${port}`)
-});
+https
+  .createServer(
+    {
+      key: fs.readFileSync("/etc/ssl/private/apache-selfsigned.key"),
+      cert: fs.readFileSync("/etc/ssl/certs/apache-selfsigned.crt"),
+    },
+    app
+  )
+  .listen(port, function () {
+    console.log(
+      "Example app listening on port " + port + "! Go to https://localhost:" + port + "/"
+    );
+  });

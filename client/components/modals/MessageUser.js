@@ -21,7 +21,7 @@ export default function MessageUser(props) {
         other_ID: props.user.uid
       }
       console.log({ messageToSend: data });
-      axios.post(`http://35.84.224.138:${port}/chat`, { messageToSend: data })
+      axios.post(`http://localhost:${port}/chat`, { messageToSend: data })
         .then(result => {
           props.close(null);
         })
