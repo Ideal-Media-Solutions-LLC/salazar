@@ -25,11 +25,11 @@ export function handleSignInWithGoogle() {
       const credential = GoogleAuthProvider.credentialFromResult(res);
       const token = credential.accessToken;
       let user = res.user;
-      axios.post(`http://localhost:${port}/key`, {
+      axios.post(`https://localhost:${port}/key`, {
         uid: user.uid,
         apikey: token
       });
-      axios.get(`http://localhost:${port}/auth`, { params: { uid: user.uid } })
+      axios.get(`https://localhost:${port}/auth`, { params: { uid: user.uid } })
         .then((response) => {
           if (response.data) {
             return Router.push('/signup')

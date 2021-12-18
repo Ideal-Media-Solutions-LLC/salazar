@@ -85,7 +85,7 @@ export default function Search() {
   useEffect(() => {
 
     if (uid) {
-      axios.get(`http://localhost:${port}/users`, {
+      axios.get(`https://localhost:${port}/users`, {
         params: { uid }
       })
         .then(results => {

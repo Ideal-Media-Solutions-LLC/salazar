@@ -52,7 +52,7 @@ export default function Sidebar() {
 
     axios({
       method: 'post',
-      url: `http://localhost:${port}/languages`,
+      url: `https://localhost:${port}/languages`,
       data: body
     })
 

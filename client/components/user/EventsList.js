@@ -30,7 +30,7 @@ const EventsList = function(props) {
   }
   useEffect(()=>{
     if (uid) {
-      axios.get(`http://localhost:${port}/calendar/list`,{
+      axios.get(`https://localhost:${port}/calendar/list`,{
         params:{
           token: stsTokenManager,
           uid

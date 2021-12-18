@@ -70,7 +70,7 @@ const ScheduleCall = function(props) {
 
     data.date = startTime;
     data.end = endTime;
-    axios.post(`http://localhost:${port}/calendar/create`, data)
+    axios.post(`https://localhost:${port}/calendar/create`, data)
       .then(results => {
         props.close(null);
       })
