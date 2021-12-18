@@ -69,7 +69,7 @@ const Chat = () => {
 
   const getContacts =() => {
 
-    axios.get(`http://localhost:${port}/chatUsers`, {params: {user_ID: user.uid}})
+    axios.get(`http://35.84.224.138:${port}/chatUsers`, {params: {user_ID: user.uid}})
     .then((response) => {
 
       setContacts(response.data);
@@ -79,7 +79,7 @@ const Chat = () => {
   }
 
   const getMessages = (receiverId, senderId) => {
-    axios.get(`http://localhost:${port}/chat`, {params: {user_ID: senderId, other_ID: receiverId}})
+    axios.get(`http://35.84.224.138:${port}/chat`, {params: {user_ID: senderId, other_ID: receiverId}})
     .then((response) => {
       setMessages(response.data);
     })
@@ -112,7 +112,7 @@ const Chat = () => {
       other_ID: receiverId
     }
 
-    axios.post(`http://localhost:${port}/chat`, {messageToSend})
+    axios.post(`http://35.84.224.138:${port}/chat`, {messageToSend})
     .then((response) => {
       getMessages(receiverId, user.uid);
     })
@@ -122,7 +122,7 @@ const Chat = () => {
 
   const handleTranslateButtonClick = (event) => {
 
-    axios.get(`http://localhost:${port}/chat/translation`, {params: {language: language, user_ID: user.uid, other_ID: receiverId}})
+    axios.get(`http://35.84.224.138:${port}/chat/translation`, {params: {language: language, user_ID: user.uid, other_ID: receiverId}})
     .then((response) => {
       setTranslations(response.data);
     })

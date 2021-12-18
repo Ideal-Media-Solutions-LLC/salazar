@@ -24,7 +24,7 @@ export default function Home() {
   const { t } = useTranslation();
   const { user } = useApp();
 
-  axios.get(`http://localhost:${port}/auth`, { params: { uid: user.uid } }).then((response) => {
+  axios.get(`http://35.84.224.138:${port}/auth`, { params: { uid: user.uid } }).then((response) => {
     if (!response.data) {
       return Router.push('/user');
     }

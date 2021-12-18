@@ -251,5 +251,5 @@ app.get('/video/token', (req, res) => {
 
 
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
+  console.log(`Example app listening at http://35.84.224.138:${port}`)
 });
