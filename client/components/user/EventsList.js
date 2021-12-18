@@ -4,7 +4,7 @@ import styles from '../../styles/EventsList.module.css';
 import { useApp } from '../context/AppProvider.js';
 import axios from 'axios'
 import { VideoCameraOutlined } from '@ant-design/icons';
-
+import url from '../../url.js';
 import port from '../../../back/port.js';
 const { Panel } = Collapse;
 
@@ -30,7 +30,7 @@ const EventsList = function(props) {
   }
   useEffect(()=>{
     if (uid) {
-      axios.get(`http://localhost:${port}/calendar/list`,{
+      axios.get(`${url}${port}/calendar/list`,{
         params:{
           token: stsTokenManager,
           uid

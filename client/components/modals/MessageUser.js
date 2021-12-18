@@ -7,7 +7,7 @@ import { SendOutlined } from '@ant-design/icons';
 import port from '../../../back/port.js';
 const { TextArea } = Input;
 import { useTranslation } from "react-i18next";
-
+import url from '../../url.js';
 export default function MessageUser(props) {
   const { uid } = useApp().user;
   const [message, setMessage] = useState('');
@@ -21,7 +21,7 @@ export default function MessageUser(props) {
         other_ID: props.user.uid
       }
       console.log({ messageToSend: data });
-      axios.post(`http://localhost:${port}/chat`, { messageToSend: data })
+      axios.post(`${url}${port}/chat`, { messageToSend: data })
         .then(result => {
           props.close(null);
         })
