@@ -4,7 +4,7 @@ const {google} = require('googleapis');
 
 const client_id = process.env.CLIENT_ID;
 const client_secret = process.env.CLIENT_SECRET;
-const redirect_uris = ["urn:ietf:wg:oauth:2.0:oob","https://localhost","https://salazar-1ee6b.firebaseapp.com/__/auth/handler"];
+const redirect_uris = ["urn:ietf:wg:oauth:2.0:oob","https://35.84.224.138","https://salazar-1ee6b.firebaseapp.com/__/auth/handler"];
 
 function listEvents( userToken, callback) {
 
@@ -55,7 +55,7 @@ function createEvent(schedule, callback, userToken) {
   const language = schedule.toSpeak
 
   function createVideoUrl() {
-    let baseUrl = "https://localhost:3000/videochat/";
+    let baseUrl = "https://35.84.224.138:3000/videochat/";
     var length = 20;
     var result           = '';
     var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';

@@ -39,7 +39,7 @@ formData.append(card["list_id"], 1);
 formData.append(card["name"], "My Card");
 formData.append(card["content"], "My Content");
 
-fetch(`http://localhost:3000/cards`, {
+fetch(`http://35.84.224.138:3000/cards`, {
     credentials: 'include',
     method: 'post',
     body: formData
@@ -85,7 +85,7 @@ Requires session cookie.
 let formData = new FormData();
 formData.append(card["list_id"], 1);
 
-fetch(`http://localhost:3000/cards`, {
+fetch(`http://35.84.224.138:3000/cards`, {
     credentials: 'include',
     method: 'get',
     body: formData

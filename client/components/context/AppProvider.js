@@ -22,7 +22,7 @@ function AppProvider({ children }) {
         setUser({});
       } else {
         setUser(result);
-        // axios.get(`http://localhost:3002/user?uid=${result.uid}`)
+        // axios.get(`http://35.84.224.138:3002/user?uid=${result.uid}`)
         // .then(res => {
         //   setUser({...result, ...res.data});
         // })

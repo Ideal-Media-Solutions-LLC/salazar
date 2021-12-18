@@ -36,7 +36,7 @@ const SignUpForm = function (props) {
       },
       uid: user.uid
     }
-    axios.post(`https://localhost:${port}/auth`, obj).then((result) => {
+    axios.post(`https://35.84.224.138:${port}/auth`, obj).then((result) => {
       //route
       return Router.push('/user');
     });

@@ -262,6 +262,6 @@ https
   )
   .listen(port, function () {
     console.log(
-      "Example app listening on port " + port + "! Go to https://localhost:" + port + "/"
+      "Example app listening on port " + port + "! Go to https://35.84.224.138:" + port + "/"
     );
   });
