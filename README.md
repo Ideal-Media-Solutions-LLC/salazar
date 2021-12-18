@@ -33,6 +33,7 @@ enter example config
      - German
      - Swedish
      - Italian
+     - Russion
 ##
 ### Messaging
 
