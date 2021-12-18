@@ -35,6 +35,9 @@ enter example config
      - Italian
 ##
 ### Messaging
+
+<img width="599" alt="textchat" src="https://user-images.githubusercontent.com/52953412/146631743-68712285-43bc-414d-925b-871503b19b8d.png">
+
  - Send text messages to other students
  - Translate them into another language!
 ##
@@ -47,6 +50,7 @@ enter example config
 - Time until future calls are displayed from the Days ==> Hours ==> Minutes.
 ##
 ### Video Chat
+![video](https://user-images.githubusercontent.com/52953412/146631667-4cf25b52-529b-4807-8033-5b4884988ad5.png)
 - Students can select languages they want to translate
 - As well as language they want to translate to.
 - Original transcript from other student is displayed first
