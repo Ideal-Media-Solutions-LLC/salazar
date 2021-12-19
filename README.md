@@ -61,7 +61,7 @@ enter example config
     - Spanish
     - French
     - German
-    - Russion
+    - Russian
     - Portuguese
     - Swedish
     - Korean
