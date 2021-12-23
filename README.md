@@ -1,5 +1,16 @@
 # Salazar: Video Chat Language Exchange Application
 
+![javascript](https://img.shields.io/badge/JavaScript-20232A?style=for-the-badge&logo=javascript&logoColor=F7DF1E)
+![react](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![Next.js](https://img.shields.io/badge/Next.js-20232A?style=for-the-badge&logo=nextdotjs&logoColor=00000)
+![node.js](https://img.shields.io/badge/Node.js-20232A?style=for-the-badge&logo=nodedotjs&logoColor=green)
+![HTML5](https://img.shields.io/badge/html5-20232A?style=for-the-badge&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/css3-20232A?style=for-the-badge&logo=css3&logoColor=white)
+![Express](https://img.shields.io/badge/-Express-20232A?style=for-the-badge&logo=express&logoColor=yellow)
+![Axios](https://img.shields.io/badge/-axios-20232A?style=for-the-badge&logo=axios&logoColor=yellow)
+![Git](https://img.shields.io/badge/git-20232A?style=for-the-badge&logo=git&logoColor=white)
+![GitHub](https://img.shields.io/badge/github-20232A?style=for-the-badge&logo=github&logoColor=white)
+
 ## Summary
    This application was designed to connect students that speak different languages with each other in order to facilitate language exchange. This is done by allowing students to schedule video calls with each other that have live translation. Allowing students to have conversations with each other in different languages and the ability to convert it into a language of their choice that they can understand. 
    Since the students speak a variety of different languages the application offers the user a preference of language to display from the home page before signing in.
