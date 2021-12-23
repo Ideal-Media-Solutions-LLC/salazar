@@ -4,7 +4,7 @@
    This application was designed to connect students that speak different languages with each other in order to facilitate language exchange. This is done by allowing students to schedule video calls with each other that have live translation. Allowing students to have conversations with each other in different languages and the ability to convert it into a language of their choice that they can understand. 
    Since the students speak a variety of different languages the application offers the user a preference of language to display from the home page before signing in.
    ```
-   INSERT GIF
+ [Salazar](https://user-images.githubusercontent.com/80747028/147184655-11562915-08df-47e7-8db8-5eaf31fd6082.gif)
    ```
 ## Getting Started
 ```Config.js
@@ -66,3 +66,8 @@ enter example config
     - Swedish
     - Korean
     - Italian
+
+### Responsive Web Design
+<img width="438" alt="mobile (1)" src="https://user-images.githubusercontent.com/80747028/147184870-c443e964-d282-44b3-9103-ede06c1ac6da.png">
+Use of CSS to automatically resize, hide components, or shrink photos, to make our app look good and fully functional on both desktop and mobile devices.
+
