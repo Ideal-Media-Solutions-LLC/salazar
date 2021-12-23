@@ -12,6 +12,10 @@
 ![GitHub](https://img.shields.io/badge/github-20232A?style=for-the-badge&logo=github&logoColor=181717)
 ![Antdesign](https://img.shields.io/badge/AntDesign-20232A?style=for-the-badge&logo=antdesign&logoColor=0170FE)
 ![Boostrap](https://img.shields.io/badge/Bootstrap-20232A?style=for-the-badge&logo=bootstrap&logoColor=7952b3)
+![GoogleCalendar](https://img.shields.io/badge/GoogleCalendar-20232A?style=for-the-badge&logo=googlecalendar&logoColor=4285f4)
+![Firebase](https://img.shields.io/badge/Firebase-20232A?style=for-the-badge&logo=firebase&logoColor=FFCA28)
+![MicrosoftAzure](https://img.shields.io/badge/MicrosoftAzure-20232A?style=for-the-badge&logo=microsoftazure&logoColor=0078d4)
+![Jitsi](https://img.shields.io/badge/Jitsi-20232A?style=for-the-badge&logo=jitsi&logoColor=97979a)
 
 
 ## Summary
