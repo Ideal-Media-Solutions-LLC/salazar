@@ -14,7 +14,7 @@ import { useTranslation } from "react-i18next";
 
 
 import port from '../../../back/port.js';
-
+import url from '../../url.js';
 export default function Sidebar() {
   const appContext = useContext(AppContext);
 
@@ -52,7 +52,7 @@ export default function Sidebar() {
 
     axios({
       method: 'post',
-      url: `http://localhost:${port}/languages`,
+      url: `${url}${port}/languages`,
       data: body
     })
 

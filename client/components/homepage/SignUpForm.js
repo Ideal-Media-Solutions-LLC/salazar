@@ -10,7 +10,7 @@ import axios from 'axios';
 import Router from 'next/router';
 import LanguageSelector from './LanguageSelector';
 import port from '../../../back/port.js';
-
+import url from '../../url.js';
 const SignUpForm = function (props) {
   const { user, curUser, signUpPageLanguages } = useApp();
 
@@ -36,7 +36,7 @@ const SignUpForm = function (props) {
       },
       uid: user.uid
     }
-    axios.post(`http://localhost:${port}/auth`, obj).then((result) => {
+    axios.post(`${url}${port}/auth`, obj).then((result) => {
       //route
       return Router.push('/user');
     });
